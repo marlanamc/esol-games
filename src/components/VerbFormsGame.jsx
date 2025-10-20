@@ -560,7 +560,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V1"
-                  disabled={showFeedback}
+                  disabled={showFeedback && feedback.includes('Correct')}
                 />
               )}
             </div>
@@ -583,7 +583,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V1-3rd"
-                  disabled={showFeedback}
+                  disabled={showFeedback && feedback.includes('Correct')}
                 />
               )}
             </div>
@@ -604,7 +604,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V1-ing"
-                  disabled={showFeedback}
+                  disabled={showFeedback && feedback.includes('Correct')}
                 />
               )}
             </div>
@@ -625,7 +625,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V2"
-                  disabled={showFeedback}
+                  disabled={showFeedback && feedback.includes('Correct')}
                 />
               )}
             </div>
@@ -646,7 +646,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V3"
-                  disabled={showFeedback}
+                  disabled={showFeedback && feedback.includes('Correct')}
                 />
               )}
             </div>
@@ -657,7 +657,7 @@ const VerbFormsGame = ({ onBack }) => {
               className="btn btn-primary" 
               style={{ fontSize: '16px', padding: '12px 24px' }}
               onClick={checkAnswer}
-              disabled={showFeedback}
+              disabled={showFeedback && feedback.includes('Correct')}
             >
               Check Answer
             </button>

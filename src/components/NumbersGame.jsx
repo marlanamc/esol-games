@@ -413,7 +413,7 @@ const NumbersGame = ({ onBack }) => {
             onChange={(e) => setUserAnswer(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Enter the number in words..."
-            disabled={showFeedback}
+            disabled={showFeedback && feedback.includes('Correct')}
           />
           
           <div className="question-actions">
@@ -421,7 +421,7 @@ const NumbersGame = ({ onBack }) => {
               className="btn btn-primary" 
               style={{ fontSize: '16px', padding: '12px 24px' }}
               onClick={checkAnswer}
-              disabled={showFeedback}
+              disabled={showFeedback && feedback.includes('Correct')}
             >
               Check Answer
             </button>

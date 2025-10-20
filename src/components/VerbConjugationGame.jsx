@@ -649,7 +649,7 @@ const VerbConjugationGame = ({ onBack }) => {
             onChange={(e) => setUserAnswer(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Enter your answer..."
-            disabled={showFeedback}
+            disabled={showFeedback && feedback.includes('Correct')}
           />
           
           <div className="question-actions">
@@ -657,7 +657,7 @@ const VerbConjugationGame = ({ onBack }) => {
               className="btn btn-primary" 
               style={{ fontSize: '16px', padding: '12px 24px' }}
               onClick={checkAnswer}
-              disabled={showFeedback}
+              disabled={showFeedback && feedback.includes('Correct')}
             >
               Check Answer
             </button>
