@@ -30,7 +30,7 @@ const VerbConjugationGame = ({ onBack }) => {
   useEffect(() => {
     const loadVerbsFromGoogleSheets = async () => {
       try {
-        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnWBs92Jmx16VHpbXQECyZ5gK6G-oHSQpsGNB569Hh5PPTGgx4_6U-27ScOmJMdl2XRNifF_FClBqC/pub?output=csv'
+        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS00jGWq5Xx7IOU9CNxZQ0AB7MV_DPbdre346fHSHidzzdD-yCuZP2Lklq1RvQdF5HdjM3woNPufJOH/pub?gid=0&single=true&output=csv'
         const response = await fetch(googleSheetUrl)
         
         if (!response.ok) {
@@ -46,14 +46,14 @@ const VerbConjugationGame = ({ onBack }) => {
           const line = lines[i].trim()
           if (line) {
             const columns = line.split(',')
-            if (columns.length >= 4) {
+            if (columns.length >= 6) {
               verbsData.push({
                 infinitive: columns[0].trim().replace(/"/g, ''),
                 base: columns[1].trim().replace(/"/g, ''),
                 third: columns[2].trim().replace(/"/g, ''),
                 gerund: columns[3].trim().replace(/"/g, ''),
-                past: columns[4] ? columns[4].trim().replace(/"/g, '') : '',
-                participle: columns[5] ? columns[5].trim().replace(/"/g, '') : ''
+                past: columns[4].trim().replace(/"/g, ''),
+                participle: columns[5].trim().replace(/"/g, '')
               })
             }
           }
@@ -149,38 +149,47 @@ const VerbConjugationGame = ({ onBack }) => {
     return verbList[Math.floor(Math.random() * verbList.length)]
   }
 
-  const getRandomTense = () => {
-    // Handle time-based filtering first
+  const getRandomTime = () => {
+    const times = ["present", "past", "future"]
+    
     if (settings.time !== 'All Times') {
-      const timeFilteredTenses = Object.keys(tenses).filter(key => {
-        if (settings.time === 'Present') {
-          return key.startsWith('present')
-        } else if (settings.time === 'Past') {
-          return key.startsWith('past')
-        } else if (settings.time === 'Future') {
-          return key.startsWith('future')
-        }
-        return true
-      })
-      
-      if (timeFilteredTenses.length > 0) {
-        return timeFilteredTenses[Math.floor(Math.random() * timeFilteredTenses.length)]
+      const timeMap = {
+        'Present': 'present',
+        'Past': 'past', 
+        'Future': 'future'
       }
+      return timeMap[settings.time] || 'present'
     }
     
-    // Handle specific tense selection
-    if (settings.tense !== 'All Tenses') {
-      const tenseKey = Object.keys(tenses).find(key => tenses[key] === settings.tense)
-      return tenseKey || 'present'
-    }
-    
-    // Default to all tenses if no filters are applied
-    const tenseKeys = Object.keys(tenses)
-    return tenseKeys[Math.floor(Math.random() * tenseKeys.length)]
+    return times[Math.floor(Math.random() * times.length)]
   }
 
-  const getRandomPronoun = (tense) => {
-    const pronounList = pronouns[tense] || pronouns.present
+  const getRandomVerbTense = () => {
+    const verbTenses = ["simple", "continuous", "perfect", "perfect continuous"]
+    
+    if (settings.tense !== 'All Tenses') {
+      const tenseMap = {
+        'Present Simple': 'simple',
+        'Past Simple': 'simple',
+        'Future Simple': 'simple',
+        'Present Continuous': 'continuous',
+        'Past Continuous': 'continuous',
+        'Future Continuous': 'continuous',
+        'Present Perfect': 'perfect',
+        'Past Perfect': 'perfect',
+        'Future Perfect': 'perfect',
+        'Present Perfect Continuous': 'perfect continuous',
+        'Past Perfect Continuous': 'perfect continuous',
+        'Future Perfect Continuous': 'perfect continuous'
+      }
+      return tenseMap[settings.tense] || 'simple'
+    }
+    
+    return verbTenses[Math.floor(Math.random() * verbTenses.length)]
+  }
+
+  const getRandomPronoun = () => {
+    const pronounList = ["he", "she", "it", "they", "we", "I", "you"]
     return pronounList[Math.floor(Math.random() * pronounList.length)]
   }
 
@@ -213,192 +222,178 @@ const VerbConjugationGame = ({ onBack }) => {
       .replace(/wouldn't/g, 'would not')
   }
 
-  const conjugateVerb = (verb, pronoun, tense, form) => {
-    // Use Google Sheets data if available, otherwise fall back to hardcoded logic
-    const verbBase = verb.infinitive || verb.base || verb.infinitive
-    const verbPast = verb.past || verbBase
-    const verbParticiple = verb.participle || verbBase
-    const verbGerund = verb.gerund || `${verbBase}ing`
-    
-    switch (tense) {
-      case 'present':
-        if (form === 'affirmative') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} ${verb.third || verbBase}s`
-          }
-          return `${pronoun} ${verbBase}`
-        } else if (form === 'negative') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} doesn't ${verbBase}`
-          }
-          return `${pronoun} don't ${verbBase}`
-        } else if (form === 'question') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `Does ${pronoun.toLowerCase()} ${verbBase}?`
-          }
-          return `Do ${pronoun.toLowerCase()} ${verbBase}?`
-        }
-        break
-        
-      case 'past':
-        if (form === 'affirmative') {
-          return `${pronoun} ${verbPast}`
-        } else if (form === 'negative') {
-          return `${pronoun} didn't ${verbBase}`
-        } else if (form === 'question') {
-          return `Did ${pronoun.toLowerCase()} ${verbBase}?`
-        }
-        break
-        
-      case 'future':
-        if (form === 'affirmative') {
-          return `${pronoun} will ${verbBase}`
-        } else if (form === 'negative') {
-          return `${pronoun} won't ${verbBase}`
-        } else if (form === 'question') {
-          return `Will ${pronoun.toLowerCase()} ${verbBase}?`
-        }
-        break
-        
-      case 'present_continuous':
-        if (form === 'affirmative') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} is ${verbGerund}`
-          } else if (['I'].includes(pronoun)) {
-            return `${pronoun} am ${verbGerund}`
-          }
-          return `${pronoun} are ${verbGerund}`
-        } else if (form === 'negative') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} isn't ${verbGerund}`
-          } else if (['I'].includes(pronoun)) {
-            return `${pronoun} am not ${verbGerund}`
-          }
-          return `${pronoun} aren't ${verbGerund}`
-        } else if (form === 'question') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `Is ${pronoun.toLowerCase()} ${verbGerund}?`
-          } else if (['I'].includes(pronoun)) {
-            return `Am ${pronoun.toLowerCase()} ${verbGerund}?`
-          }
-          return `Are ${pronoun.toLowerCase()} ${verbGerund}?`
-        }
-        break
-        
-      case 'past_continuous':
-        if (form === 'affirmative') {
-          if (['I', 'he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} was ${verbGerund}`
-          }
-          return `${pronoun} were ${verbGerund}`
-        } else if (form === 'negative') {
-          if (['I', 'he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} wasn't ${verbGerund}`
-          }
-          return `${pronoun} weren't ${verbGerund}`
-        } else if (form === 'question') {
-          if (['I', 'he', 'she', 'it'].includes(pronoun)) {
-            return `Was ${pronoun.toLowerCase()} ${verbGerund}?`
-          }
-          return `Were ${pronoun.toLowerCase()} ${verbGerund}?`
-        }
-        break
-        
-      case 'present_perfect':
-        if (form === 'affirmative') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} has ${verbParticiple}`
-          }
-          return `${pronoun} have ${verbParticiple}`
-        } else if (form === 'negative') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} hasn't ${verbParticiple}`
-          }
-          return `${pronoun} haven't ${verbParticiple}`
-        } else if (form === 'question') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `Has ${pronoun.toLowerCase()} ${verbParticiple}?`
-          }
-          return `Have ${pronoun.toLowerCase()} ${verbParticiple}?`
-        }
-        break
-        
-      case 'past_perfect':
-        if (form === 'affirmative') {
-          return `${pronoun} had ${verbParticiple}`
-        } else if (form === 'negative') {
-          return `${pronoun} hadn't ${verbParticiple}`
-        } else if (form === 'question') {
-          return `Had ${pronoun.toLowerCase()} ${verbParticiple}?`
-        }
-        break
-        
-      case 'future_perfect':
-        if (form === 'affirmative') {
-          return `${pronoun} will have ${verbParticiple}`
-        } else if (form === 'negative') {
-          return `${pronoun} won't have ${verbParticiple}`
-        } else if (form === 'question') {
-          return `Will ${pronoun.toLowerCase()} have ${verbParticiple}?`
-        }
-        break
-        
-      case 'present_perfect_continuous':
-        if (form === 'affirmative') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} has been ${verbGerund}`
-          }
-          return `${pronoun} have been ${verbGerund}`
-        } else if (form === 'negative') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} hasn't been ${verbGerund}`
-          }
-          return `${pronoun} haven't been ${verbGerund}`
-        } else if (form === 'question') {
-          if (['he', 'she', 'it'].includes(pronoun)) {
-            return `Has ${pronoun.toLowerCase()} been ${verbGerund}?`
-          }
-          return `Have ${pronoun.toLowerCase()} been ${verbGerund}?`
-        }
-        break
-        
-      case 'past_perfect_continuous':
-        if (form === 'affirmative') {
-          return `${pronoun} had been ${verbGerund}`
-        } else if (form === 'negative') {
-          return `${pronoun} hadn't been ${verbGerund}`
-        } else if (form === 'question') {
-          return `Had ${pronoun.toLowerCase()} been ${verbGerund}?`
-        }
-        break
-        
-      case 'future_perfect_continuous':
-        if (form === 'affirmative') {
-          return `${pronoun} will have been ${verbGerund}`
-        } else if (form === 'negative') {
-          return `${pronoun} won't have been ${verbGerund}`
-        } else if (form === 'question') {
-          return `Will ${pronoun.toLowerCase()} have been ${verbGerund}?`
-        }
-        break
+  // Helper functions for conjugation
+  const getHaveHas = (pronoun) => {
+    return (pronoun === "he" || pronoun === "she" || pronoun === "it") ? "has" : "have"
+  }
+
+  const getDoDoes = (pronoun) => {
+    return (pronoun === "he" || pronoun === "she" || pronoun === "it") ? "does" : "do"
+  }
+
+  const getBeForm = (pronoun, time) => {
+    if (time === "present") {
+      if (pronoun === "I") return "am"
+      if (pronoun === "he" || pronoun === "she" || pronoun === "it") return "is"
+      return "are"
+    } else { // past
+      if (pronoun === "I" || pronoun === "he" || pronoun === "she" || pronoun === "it") return "was"
+      return "were"
     }
-    
-    return `${pronoun} ${verbBase}`
+  }
+
+  const conjugateVerb = (verb, pronoun, time, verbTense, form) => {
+    // Use Google Sheets data structure: V1, V1_3rd, V1_ing, V2, V3
+    const verbForms = {
+      V1: verb.base || verb.infinitive,
+      V1_3rd: verb.third || verb.base || verb.infinitive,
+      V1_ing: verb.gerund || `${verb.base || verb.infinitive}ing`,
+      V2: verb.past || verb.base || verb.infinitive,
+      V3: verb.participle || verb.base || verb.infinitive
+    }
+
+    // Helper function to get the base verb for negatives and questions
+    const getBaseVerb = () => verbForms.V1
+
+    // Affirmative sentences
+    if (form === "affirmative") {
+      switch(verbTense) {
+        case "simple":
+          if (time === "present") {
+            return `${pronoun} ${(pronoun === "he" || pronoun === "she" || pronoun === "it") ? verbForms.V1_3rd : verbForms.V1}`
+          } else if (time === "past") {
+            return `${pronoun} ${verbForms.V2}`
+          } else { // future
+            return `${pronoun} will ${getBaseVerb()}`
+          }
+
+        case "continuous":
+          if (time === "present") {
+            return `${pronoun} ${getBeForm(pronoun, "present")} ${verbForms.V1_ing}`
+          } else if (time === "past") {
+            return `${pronoun} ${getBeForm(pronoun, "past")} ${verbForms.V1_ing}`
+          } else { // future
+            return `${pronoun} will be ${verbForms.V1_ing}`
+          }
+
+        case "perfect":
+          if (time === "present") {
+            return `${pronoun} ${getHaveHas(pronoun)} ${verbForms.V3}`
+          } else if (time === "past") {
+            return `${pronoun} had ${verbForms.V3}`
+          } else { // future
+            return `${pronoun} will have ${verbForms.V3}`
+          }
+
+        case "perfect continuous":
+          if (time === "present") {
+            return `${pronoun} ${getHaveHas(pronoun)} been ${verbForms.V1_ing}`
+          } else if (time === "past") {
+            return `${pronoun} had been ${verbForms.V1_ing}`
+          } else { // future
+            return `${pronoun} will have been ${verbForms.V1_ing}`
+          }
+      }
+    }
+
+    // Negative sentences
+    else if (form === "negative") {
+      switch(verbTense) {
+        case "simple":
+          if (time === "present") {
+            return `${pronoun} ${getDoDoes(pronoun)} not ${getBaseVerb()}`
+          } else if (time === "past") {
+            return `${pronoun} did not ${getBaseVerb()}`
+          } else { // future
+            return `${pronoun} will not ${getBaseVerb()}`
+          }
+
+        case "continuous":
+          if (time === "present") {
+            return `${pronoun} ${getBeForm(pronoun, "present")} not ${verbForms.V1_ing}`
+          } else if (time === "past") {
+            return `${pronoun} ${getBeForm(pronoun, "past")} not ${verbForms.V1_ing}`
+          } else { // future
+            return `${pronoun} will not be ${verbForms.V1_ing}`
+          }
+
+        case "perfect":
+          if (time === "present") {
+            return `${pronoun} ${getHaveHas(pronoun)} not ${verbForms.V3}`
+          } else if (time === "past") {
+            return `${pronoun} had not ${verbForms.V3}`
+          } else { // future
+            return `${pronoun} will not have ${verbForms.V3}`
+          }
+
+        case "perfect continuous":
+          if (time === "present") {
+            return `${pronoun} ${getHaveHas(pronoun)} not been ${verbForms.V1_ing}`
+          } else if (time === "past") {
+            return `${pronoun} had not been ${verbForms.V1_ing}`
+          } else { // future
+            return `${pronoun} will not have been ${verbForms.V1_ing}`
+          }
+      }
+    }
+
+    // Questions
+    else if (form === "question") {
+      switch(verbTense) {
+        case "simple":
+          if (time === "present") {
+            return `${getDoDoes(pronoun)} ${pronoun} ${getBaseVerb()}?`
+          } else if (time === "past") {
+            return `Did ${pronoun} ${getBaseVerb()}?`
+          } else { // future
+            return `Will ${pronoun} ${getBaseVerb()}?`
+          }
+
+        case "continuous":
+          if (time === "present") {
+            return `${getBeForm(pronoun, "present").charAt(0).toUpperCase() + getBeForm(pronoun, "present").slice(1)} ${pronoun} ${verbForms.V1_ing}?`
+          } else if (time === "past") {
+            return `${getBeForm(pronoun, "past").charAt(0).toUpperCase() + getBeForm(pronoun, "past").slice(1)} ${pronoun} ${verbForms.V1_ing}?`
+          } else { // future
+            return `Will ${pronoun} be ${verbForms.V1_ing}?`
+          }
+
+        case "perfect":
+          if (time === "present") {
+            return `${getHaveHas(pronoun).charAt(0).toUpperCase() + getHaveHas(pronoun).slice(1)} ${pronoun} ${verbForms.V3}?`
+          } else if (time === "past") {
+            return `Had ${pronoun} ${verbForms.V3}?`
+          } else { // future
+            return `Will ${pronoun} have ${verbForms.V3}?`
+          }
+
+        case "perfect continuous":
+          if (time === "present") {
+            return `${getHaveHas(pronoun).charAt(0).toUpperCase() + getHaveHas(pronoun).slice(1)} ${pronoun} been ${verbForms.V1_ing}?`
+          } else if (time === "past") {
+            return `Had ${pronoun} been ${verbForms.V1_ing}?`
+          } else { // future
+            return `Will ${pronoun} have been ${verbForms.V1_ing}?`
+          }
+      }
+    }
   }
 
   const generateQuestion = () => {
     const verb = getRandomVerb()
-    const tense = getRandomTense()
-    const pronoun = getRandomPronoun(tense)
+    const pronoun = getRandomPronoun()
+    const time = getRandomTime()
+    const verbTense = getRandomVerbTense()
     const form = getRandomForm()
     
-    const correctAnswer = conjugateVerb(verb, pronoun, tense, form)
+    const correctAnswer = conjugateVerb(verb, pronoun, time, verbTense, form)
     
     setCurrentGame(prev => ({
       ...prev,
       currentVerb: verb,
-      currentTense: tense,
       currentPronoun: pronoun,
+      currentTime: time,
+      currentVerbTense: verbTense,
       currentForm: form,
       correctAnswer: correctAnswer
     }))
@@ -750,7 +745,10 @@ const VerbConjugationGame = ({ onBack }) => {
                 <strong>Pronoun:</strong> {currentGame.currentPronoun}
               </span>
               <span className="detail-badge" style={{ fontSize: '16px' }}>
-                <strong>Tense:</strong> {tenses[currentGame.currentTense]}
+                <strong>Time:</strong> {currentGame.currentTime}
+              </span>
+              <span className="detail-badge" style={{ fontSize: '16px' }}>
+                <strong>Verb Tense:</strong> {currentGame.currentVerbTense}
               </span>
               <span className="detail-badge" style={{ fontSize: '16px' }}>
                 <strong>Form:</strong> {forms[currentGame.currentForm]}
