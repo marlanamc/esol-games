@@ -411,54 +411,132 @@ const VerbConjugationGame = ({ onBack }) => {
   const getEnhancedFeedback = (userAnswer, correctAnswer, combination) => {
     const { currentTime, currentVerbTense, currentForm } = combination
     
-    // Tense-specific guidance
-    if (currentVerbTense === 'perfect continuous') {
-      if (currentTime === 'present') {
-        return `Remember: Present Perfect Continuous = "have/has + been + -ing"`
-      } else if (currentTime === 'past') {
-        return `Remember: Past Perfect Continuous = "had + been + -ing"`
-      } else if (currentTime === 'future') {
-        return `Remember: Future Perfect Continuous = "will + have + been + -ing"`
-      }
-    }
-    
-    if (currentVerbTense === 'perfect') {
-      if (currentTime === 'present') {
-        return `Remember: Present Perfect = "have/has + past participle"`
-      } else if (currentTime === 'past') {
-        return `Remember: Past Perfect = "had + past participle"`
-      } else if (currentTime === 'future') {
-        return `Remember: Future Perfect = "will + have + past participle"`
-      }
-    }
-    
-    if (currentVerbTense === 'continuous') {
-      if (currentTime === 'present') {
-        return `Remember: Present Continuous = "am/is/are + -ing"`
-      } else if (currentTime === 'past') {
-        return `Remember: Past Continuous = "was/were + -ing"`
-      } else if (currentTime === 'future') {
-        return `Remember: Future Continuous = "will + be + -ing"`
-      }
-    }
-    
-    if (currentVerbTense === 'simple') {
-      if (currentTime === 'present') {
-        return `Remember: Present Simple = base form (add -s for he/she/it)`
-      } else if (currentTime === 'past') {
-        return `Remember: Past Simple = past tense form`
-      } else if (currentTime === 'future') {
-        return `Remember: Future Simple = "will + base form"`
-      }
-    }
-    
-    // Form-specific guidance
+    // Form-specific guidance that accounts for sentence type
     if (currentForm === 'question') {
-      return `For questions, start with the auxiliary verb (do/does/did/will/have/has/had)`
+      if (currentVerbTense === 'perfect continuous') {
+        if (currentTime === 'present') {
+          return `Remember: Present Perfect Continuous Question = "Have/Has + pronoun + been + -ing?"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Perfect Continuous Question = "Had + pronoun + been + -ing?"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Perfect Continuous Question = "Will + pronoun + have + been + -ing?"`
+        }
+      }
+      
+      if (currentVerbTense === 'perfect') {
+        if (currentTime === 'present') {
+          return `Remember: Present Perfect Question = "Have/Has + pronoun + past participle?"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Perfect Question = "Had + pronoun + past participle?"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Perfect Question = "Will + pronoun + have + past participle?"`
+        }
+      }
+      
+      if (currentVerbTense === 'continuous') {
+        if (currentTime === 'present') {
+          return `Remember: Present Continuous Question = "Am/Is/Are + pronoun + -ing?"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Continuous Question = "Was/Were + pronoun + -ing?"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Continuous Question = "Will + pronoun + be + -ing?"`
+        }
+      }
+      
+      if (currentVerbTense === 'simple') {
+        if (currentTime === 'present') {
+          return `Remember: Present Simple Question = "Do/Does + pronoun + base form?"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Simple Question = "Did + pronoun + base form?"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Simple Question = "Will + pronoun + base form?"`
+        }
+      }
     }
     
     if (currentForm === 'negative') {
-      return `For negatives, use "not" after the auxiliary verb`
+      if (currentVerbTense === 'perfect continuous') {
+        if (currentTime === 'present') {
+          return `Remember: Present Perfect Continuous Negative = "pronoun + have/has + not + been + -ing"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Perfect Continuous Negative = "pronoun + had + not + been + -ing"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Perfect Continuous Negative = "pronoun + will + not + have + been + -ing"`
+        }
+      }
+      
+      if (currentVerbTense === 'perfect') {
+        if (currentTime === 'present') {
+          return `Remember: Present Perfect Negative = "pronoun + have/has + not + past participle"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Perfect Negative = "pronoun + had + not + past participle"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Perfect Negative = "pronoun + will + not + have + past participle"`
+        }
+      }
+      
+      if (currentVerbTense === 'continuous') {
+        if (currentTime === 'present') {
+          return `Remember: Present Continuous Negative = "pronoun + am/is/are + not + -ing"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Continuous Negative = "pronoun + was/were + not + -ing"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Continuous Negative = "pronoun + will + not + be + -ing"`
+        }
+      }
+      
+      if (currentVerbTense === 'simple') {
+        if (currentTime === 'present') {
+          return `Remember: Present Simple Negative = "pronoun + do/does + not + base form"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Simple Negative = "pronoun + did + not + base form"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Simple Negative = "pronoun + will + not + base form"`
+        }
+      }
+    }
+    
+    // Affirmative guidance
+    if (currentForm === 'affirmative') {
+      if (currentVerbTense === 'perfect continuous') {
+        if (currentTime === 'present') {
+          return `Remember: Present Perfect Continuous = "pronoun + have/has + been + -ing"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Perfect Continuous = "pronoun + had + been + -ing"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Perfect Continuous = "pronoun + will + have + been + -ing"`
+        }
+      }
+      
+      if (currentVerbTense === 'perfect') {
+        if (currentTime === 'present') {
+          return `Remember: Present Perfect = "pronoun + have/has + past participle"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Perfect = "pronoun + had + past participle"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Perfect = "pronoun + will + have + past participle"`
+        }
+      }
+      
+      if (currentVerbTense === 'continuous') {
+        if (currentTime === 'present') {
+          return `Remember: Present Continuous = "pronoun + am/is/are + -ing"`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Continuous = "pronoun + was/were + -ing"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Continuous = "pronoun + will + be + -ing"`
+        }
+      }
+      
+      if (currentVerbTense === 'simple') {
+        if (currentTime === 'present') {
+          return `Remember: Present Simple = "pronoun + base form" (add -s for he/she/it)`
+        } else if (currentTime === 'past') {
+          return `Remember: Past Simple = "pronoun + past tense form"`
+        } else if (currentTime === 'future') {
+          return `Remember: Future Simple = "pronoun + will + base form"`
+        }
+      }
     }
     
     return `Incorrect. The correct answer is: "${correctAnswer}"`
