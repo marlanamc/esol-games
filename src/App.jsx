@@ -269,10 +269,7 @@ const HomePage = () => {
     <div className="game-container">
       <nav className="nav">
         <h1 className="nav-title">ESOL Games by Marlie</h1>
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Home</Link>
-          <a href="#" className="nav-link">About</a>
-        </div>
+        <div></div>
       </nav>
 
       <div className="game-header">
