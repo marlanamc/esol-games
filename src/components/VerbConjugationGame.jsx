@@ -99,11 +99,6 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const getRandomTense = () => {
-    if (settings.tense === 'All Tenses') {
-      const tenseKeys = Object.keys(tenses)
-      return tenseKeys[Math.floor(Math.random() * tenseKeys.length)]
-    }
-    
     // Handle time-based filtering first
     if (settings.time !== 'All Times') {
       const timeFilteredTenses = Object.keys(tenses).filter(key => {
@@ -122,9 +117,15 @@ const VerbConjugationGame = ({ onBack }) => {
       }
     }
     
-    // Convert display name to key for specific tense selection
-    const tenseKey = Object.keys(tenses).find(key => tenses[key] === settings.tense)
-    return tenseKey || 'present'
+    // Handle specific tense selection
+    if (settings.tense !== 'All Tenses') {
+      const tenseKey = Object.keys(tenses).find(key => tenses[key] === settings.tense)
+      return tenseKey || 'present'
+    }
+    
+    // Default to all tenses if no filters are applied
+    const tenseKeys = Object.keys(tenses)
+    return tenseKeys[Math.floor(Math.random() * tenseKeys.length)]
   }
 
   const getRandomPronoun = (tense) => {
