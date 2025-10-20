@@ -108,16 +108,57 @@ const NumbersGame = ({ onBack }) => {
   }
 
   const yearToWords = (year) => {
-    const standardForm = numberToWords(year)
-    
-    // For years 2010 and later, also accept "twenty-XX" format
-    if (year >= 2010) {
-      const lastTwoDigits = year % 100
-      const alternativeForm = `twenty-${numberToWords(lastTwoDigits)}`
-      return [standardForm, alternativeForm]
+    // Special handling for years based on your HTML logic
+    if (year >= 2000) {
+      const lastTwo = year % 100
+
+      // Format 1: "two thousand and nineteen"
+      let format1 = 'two thousand' + (lastTwo > 0 ? ' and ' + numberToWords(lastTwo) : '')
+
+      // Format 2: "twenty nineteen" (only for years 2010 and after)
+      if (lastTwo < 10) {
+        // For 2000-2009, only use "two thousand" format
+        return [format1]
+      } else {
+        const firstTwo = Math.floor(year / 100)
+        let firstPart = numberToWords(firstTwo)
+        let secondPart = lastTwo <= 19 ? numberWords[lastTwo] : numberToWords(lastTwo)
+        let format2 = firstPart + ' ' + secondPart
+
+        return [format1, format2]
+      }
+    } else if (year < 2000) {
+      const century = Math.floor(year / 100)
+      const remainder = year % 100
+
+      let centuryWord = ''
+      if (century >= 20) {
+        centuryWord = numberWords[Math.floor(century / 10) * 10] + '-' + numberWords[century % 10]
+      } else if (century >= 10) {
+        centuryWord = numberWords[century]
+      } else {
+        centuryWord = numberWords[century]
+      }
+
+      if (remainder === 0) {
+        return [centuryWord + ' hundred']
+      } else {
+        if (remainder < 10) {
+          return [centuryWord + ' oh ' + numberWords[remainder]]
+        } else if (remainder >= 10 && remainder <= 19) {
+          return [centuryWord + ' ' + numberWords[remainder]]
+        } else {
+          let remainderWord = numberWords[Math.floor(remainder / 10) * 10]
+          if (remainder % 10 > 0) {
+            remainderWord += '-' + numberWords[remainder % 10]
+          }
+          return [centuryWord + ' ' + remainderWord]
+        }
+      }
     }
     
-    return [standardForm]
+    // Fallback to regular number conversion
+    return [numberToWords(year)]
   }
 
   const formatNumber = (num, category) => {
