@@ -103,7 +103,26 @@ const VerbConjugationGame = ({ onBack }) => {
       const tenseKeys = Object.keys(tenses)
       return tenseKeys[Math.floor(Math.random() * tenseKeys.length)]
     }
-    // Convert display name to key
+    
+    // Handle time-based filtering first
+    if (settings.time !== 'All Times') {
+      const timeFilteredTenses = Object.keys(tenses).filter(key => {
+        if (settings.time === 'Present') {
+          return key.startsWith('present')
+        } else if (settings.time === 'Past') {
+          return key.startsWith('past')
+        } else if (settings.time === 'Future') {
+          return key.startsWith('future')
+        }
+        return true
+      })
+      
+      if (timeFilteredTenses.length > 0) {
+        return timeFilteredTenses[Math.floor(Math.random() * timeFilteredTenses.length)]
+      }
+    }
+    
+    // Convert display name to key for specific tense selection
     const tenseKey = Object.keys(tenses).find(key => tenses[key] === settings.tense)
     return tenseKey || 'present'
   }
