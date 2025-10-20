@@ -192,6 +192,27 @@ const VerbConjugationGame = ({ onBack }) => {
     return settings.form.toLowerCase()
   }
 
+  const normalizeAnswer = (answer) => {
+    return answer.toLowerCase()
+      .trim()
+      .replace(/\s+/g, ' ') // normalize multiple spaces
+      .replace(/don't/g, 'do not')
+      .replace(/doesn't/g, 'does not')
+      .replace(/didn't/g, 'did not')
+      .replace(/won't/g, 'will not')
+      .replace(/haven't/g, 'have not')
+      .replace(/hasn't/g, 'has not')
+      .replace(/hadn't/g, 'had not')
+      .replace(/isn't/g, 'is not')
+      .replace(/aren't/g, 'are not')
+      .replace(/wasn't/g, 'was not')
+      .replace(/weren't/g, 'were not')
+      .replace(/can't/g, 'cannot')
+      .replace(/couldn't/g, 'could not')
+      .replace(/shouldn't/g, 'should not')
+      .replace(/wouldn't/g, 'would not')
+  }
+
   const conjugateVerb = (verb, pronoun, tense, form) => {
     // Use Google Sheets data if available, otherwise fall back to hardcoded logic
     const verbBase = verb.infinitive || verb.base || verb.infinitive
@@ -399,7 +420,11 @@ const VerbConjugationGame = ({ onBack }) => {
       return
     }
 
-    const isCorrect = userAnswer.toLowerCase().trim() === currentGame.correctAnswer.toLowerCase()
+    // Normalize both user answer and correct answer to handle contractions
+    const normalizedUserAnswer = normalizeAnswer(userAnswer)
+    const normalizedCorrectAnswer = normalizeAnswer(currentGame.correctAnswer)
+    
+    const isCorrect = normalizedUserAnswer === normalizedCorrectAnswer
     
     if (isCorrect) {
       setCurrentGame(prev => ({
