@@ -391,6 +391,12 @@ const NumbersGame = ({ onBack }) => {
           </div>
         )}
 
+      {showFeedback && (
+        <div className={`feedback ${feedback.includes('Correct') ? 'correct' : 'incorrect'}`} style={{ fontSize: '18px', padding: '16px 24px', margin: '16px auto', maxWidth: '600px', borderRadius: '8px' }}>
+          {feedback}
+        </div>
+      )}
+
       {currentGame.currentNumber !== null && (
         <div className="question-container">
           <div className="question-header">
@@ -431,12 +437,6 @@ const NumbersGame = ({ onBack }) => {
               </button>
             )}
           </div>
-        </div>
-      )}
-
-      {showFeedback && (
-        <div className={`feedback ${feedback.includes('Correct') ? 'correct' : 'incorrect'}`} style={{ fontSize: '18px', padding: '16px 24px', margin: '16px auto', maxWidth: '600px', borderRadius: '8px' }}>
-          {feedback}
         </div>
       )}
 
