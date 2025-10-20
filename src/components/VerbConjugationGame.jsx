@@ -408,6 +408,62 @@ const VerbConjugationGame = ({ onBack }) => {
     generateQuestion()
   }
 
+  const getEnhancedFeedback = (userAnswer, correctAnswer, combination) => {
+    const { currentTime, currentVerbTense, currentForm } = combination
+    
+    // Tense-specific guidance
+    if (currentVerbTense === 'perfect continuous') {
+      if (currentTime === 'present') {
+        return `Remember: Present Perfect Continuous = "have/has + been + -ing"`
+      } else if (currentTime === 'past') {
+        return `Remember: Past Perfect Continuous = "had + been + -ing"`
+      } else if (currentTime === 'future') {
+        return `Remember: Future Perfect Continuous = "will + have + been + -ing"`
+      }
+    }
+    
+    if (currentVerbTense === 'perfect') {
+      if (currentTime === 'present') {
+        return `Remember: Present Perfect = "have/has + past participle"`
+      } else if (currentTime === 'past') {
+        return `Remember: Past Perfect = "had + past participle"`
+      } else if (currentTime === 'future') {
+        return `Remember: Future Perfect = "will + have + past participle"`
+      }
+    }
+    
+    if (currentVerbTense === 'continuous') {
+      if (currentTime === 'present') {
+        return `Remember: Present Continuous = "am/is/are + -ing"`
+      } else if (currentTime === 'past') {
+        return `Remember: Past Continuous = "was/were + -ing"`
+      } else if (currentTime === 'future') {
+        return `Remember: Future Continuous = "will + be + -ing"`
+      }
+    }
+    
+    if (currentVerbTense === 'simple') {
+      if (currentTime === 'present') {
+        return `Remember: Present Simple = base form (add -s for he/she/it)`
+      } else if (currentTime === 'past') {
+        return `Remember: Past Simple = past tense form`
+      } else if (currentTime === 'future') {
+        return `Remember: Future Simple = "will + base form"`
+      }
+    }
+    
+    // Form-specific guidance
+    if (currentForm === 'question') {
+      return `For questions, start with the auxiliary verb (do/does/did/will/have/has/had)`
+    }
+    
+    if (currentForm === 'negative') {
+      return `For negatives, use "not" after the auxiliary verb`
+    }
+    
+    return `Incorrect. The correct answer is: "${correctAnswer}"`
+  }
+
   const checkAnswer = () => {
     if (!userAnswer.trim()) {
       setFeedback('Please enter an answer!')
@@ -435,7 +491,19 @@ const VerbConjugationGame = ({ onBack }) => {
         streak: 0,
         questionCount: prev.questionCount + 1
       }))
-      setFeedback(`Incorrect. The correct answer is "${currentGame.correctAnswer}"`)
+      
+      // Enhanced feedback with specific guidance
+      const enhancedFeedback = getEnhancedFeedback(
+        userAnswer, 
+        currentGame.correctAnswer, 
+        {
+          currentTime: currentGame.currentTime,
+          currentVerbTense: currentGame.currentVerbTense,
+          currentForm: currentGame.currentForm
+        }
+      )
+      
+      setFeedback(`${enhancedFeedback}`)
     }
     
     setShowFeedback(true)
@@ -741,18 +809,43 @@ const VerbConjugationGame = ({ onBack }) => {
               Conjugate: <strong>{currentGame.currentVerb.infinitive}</strong>
             </h2>
             <div className="question-details">
+              <div className="concept-group" style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: '8px',
+                marginBottom: '12px'
+              }}>
+                <div className="time-group" style={{
+                  display: 'flex',
+                  gap: '8px',
+                  padding: '8px 12px',
+                  backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(99, 102, 241, 0.3)'
+                }}>
+                  <span className="detail-badge" style={{ fontSize: '16px' }}>
+                    <strong>Time:</strong> {currentGame.currentTime}
+                  </span>
+                  <span className="detail-badge" style={{ fontSize: '16px' }}>
+                    <strong>Verb Tense:</strong> {currentGame.currentVerbTense}
+                  </span>
+                </div>
+                <div className="form-group" style={{
+                  display: 'flex',
+                  gap: '8px',
+                  padding: '8px 12px',
+                  backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(34, 197, 94, 0.3)'
+                }}>
               <span className="detail-badge" style={{ fontSize: '16px' }}>
                 <strong>Pronoun:</strong> {currentGame.currentPronoun}
               </span>
               <span className="detail-badge" style={{ fontSize: '16px' }}>
-                <strong>Time:</strong> {currentGame.currentTime}
-              </span>
-              <span className="detail-badge" style={{ fontSize: '16px' }}>
-                <strong>Verb Tense:</strong> {currentGame.currentVerbTense}
-              </span>
-              <span className="detail-badge" style={{ fontSize: '16px' }}>
                 <strong>Form:</strong> {forms[currentGame.currentForm]}
               </span>
+                </div>
+              </div>
             </div>
           </div>
           
