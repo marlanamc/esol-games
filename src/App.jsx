@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useParams } from 'react-router-dom'
-import { Target, BookOpen, Hash } from 'lucide-react'
+import { Target, BookOpen, Hash, Home } from 'lucide-react'
 import VerbConjugationGame from './components/VerbConjugationGame'
 import VerbFormsGame from './components/VerbFormsGame'
 import NumbersGame from './components/NumbersGame'
@@ -351,6 +351,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/game/:gameId" element={<GamePageWrapper />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   )
@@ -360,6 +361,81 @@ const GamePageWrapper = () => {
   const { gameId } = useParams()
   
   return <GamePage gameId={gameId} />
+}
+
+const NotFoundPage = () => {
+  const navigate = useNavigate()
+  
+  const handleGoHome = () => {
+    navigate('/')
+  }
+
+  return (
+    <div className="game-container">
+      <nav className="nav">
+        <h1 className="nav-title">ESOL Games by Marlie</h1>
+        <div></div>
+      </nav>
+
+      <div className="game-header">
+        <div className="game-header-content">
+          <div className="game-icon" style={{ 
+            background: '#ff6b6b',
+            color: '#ffffff',
+            width: '80px',
+            height: '80px',
+            borderRadius: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 24px auto',
+            boxShadow: '0 8px 24px rgba(255, 107, 107, 0.3)'
+          }}>
+            <Home size={40} />
+          </div>
+          <h1 className="game-title" style={{ fontSize: '48px', marginBottom: '16px' }}>404</h1>
+          <p className="game-subtitle" style={{ fontSize: '20px', marginBottom: '32px' }}>
+            Oops! This page doesn't exist.
+          </p>
+          <p style={{ color: '#cbd5e1', fontSize: '16px', marginBottom: '32px' }}>
+            The page you're looking for might have been moved, deleted, or doesn't exist.
+          </p>
+          
+          <button 
+            className="btn btn-primary" 
+            onClick={handleGoHome}
+            style={{
+              fontSize: '18px',
+              padding: '16px 32px',
+              background: 'linear-gradient(135deg, #667eea, #764ba2)',
+              border: 'none',
+              borderRadius: '12px',
+              color: 'white',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              margin: '0 auto'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)'
+            }}
+          >
+            <Home size={20} />
+            Return to Home
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default App
