@@ -107,6 +107,19 @@ const NumbersGame = ({ onBack }) => {
     return `${numberToWords(trillions)} trillion ${numberToWords(remainder)}`
   }
 
+  const yearToWords = (year) => {
+    const standardForm = numberToWords(year)
+    
+    // For years 2010 and later, also accept "twenty-XX" format
+    if (year >= 2010) {
+      const lastTwoDigits = year % 100
+      const alternativeForm = `twenty-${numberToWords(lastTwoDigits)}`
+      return [standardForm, alternativeForm]
+    }
+    
+    return [standardForm]
+  }
+
   const formatNumber = (num, category) => {
     // Don't add commas for years
     if (category === 'years') {
@@ -145,7 +158,8 @@ const NumbersGame = ({ onBack }) => {
       displayNumber = formatNumber(number, 'ordinal')
     } else if (category === 'years') {
       number = Math.floor(Math.random() * (2099 - 1100 + 1)) + 1100
-      correctAnswer = numberToWords(number)
+      const yearAnswers = yearToWords(number)
+      correctAnswer = yearAnswers[0] // Use the first (standard) form as the primary answer
       displayNumber = formatNumber(number, 'years')
     } else {
       number = Math.floor(Math.random() * (category.max - category.min + 1)) + category.min
@@ -177,7 +191,15 @@ const NumbersGame = ({ onBack }) => {
       return
     }
 
-    const isCorrect = userAnswer.toLowerCase().trim() === currentGame.correctAnswer.toLowerCase()
+    let isCorrect = userAnswer.toLowerCase().trim() === currentGame.correctAnswer.toLowerCase()
+    
+    // For years 2010 and later, also check alternative "twenty-XX" format
+    if (!isCorrect && settings.category === 'Years (1100-2099)' && currentGame.currentNumber >= 2010) {
+      const yearAnswers = yearToWords(currentGame.currentNumber)
+      isCorrect = yearAnswers.some(answer => 
+        userAnswer.toLowerCase().trim() === answer.toLowerCase()
+      )
+    }
     
     if (isCorrect) {
       setCurrentGame(prev => ({
@@ -194,7 +216,15 @@ const NumbersGame = ({ onBack }) => {
         questionCount: prev.questionCount + 1,
         incorrect: prev.incorrect + 1
       }))
-      setFeedback(`Incorrect. The correct answer is "${currentGame.correctAnswer}"`)
+      
+      // Show all acceptable answers for years 2010+
+      if (settings.category === 'Years (1100-2099)' && currentGame.currentNumber >= 2010) {
+        const yearAnswers = yearToWords(currentGame.currentNumber)
+        const allAnswers = yearAnswers.join('" or "')
+        setFeedback(`Incorrect. The correct answer is "${allAnswers}"`)
+      } else {
+        setFeedback(`Incorrect. The correct answer is "${currentGame.correctAnswer}"`)
+      }
     }
     
     setShowFeedback(true)
