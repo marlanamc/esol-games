@@ -23,6 +23,52 @@ const VerbConjugationGame = ({ onBack }) => {
     form: 'All Forms',
     verbType: 'All Verbs'
   })
+  const [googleVerbs, setGoogleVerbs] = useState([])
+  const [isLoadingVerbs, setIsLoadingVerbs] = useState(true)
+
+  // Load verbs from Google Sheets
+  useEffect(() => {
+    const loadVerbsFromGoogleSheets = async () => {
+      try {
+        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnWBs92Jmx16VHpbXQECyZ5gK6G-oHSQpsGNB569Hh5PPTGgx4_6U-27ScOmJMdl2XRNifF_FClBqC/pub?output=csv'
+        const response = await fetch(googleSheetUrl)
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch verbs from Google Sheets')
+        }
+        
+        const csvText = await response.text()
+        const lines = csvText.split('\n')
+        const verbsData = []
+        
+        // Skip header row and process data
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim()
+          if (line) {
+            const columns = line.split(',')
+            if (columns.length >= 4) {
+              verbsData.push({
+                infinitive: columns[0].trim().replace(/"/g, ''),
+                base: columns[1].trim().replace(/"/g, ''),
+                third: columns[2].trim().replace(/"/g, ''),
+                gerund: columns[3].trim().replace(/"/g, ''),
+                past: columns[4] ? columns[4].trim().replace(/"/g, '') : '',
+                participle: columns[5] ? columns[5].trim().replace(/"/g, '') : ''
+              })
+            }
+          }
+        }
+        
+        setGoogleVerbs(verbsData)
+        setIsLoadingVerbs(false)
+      } catch (error) {
+        console.error('Error loading verbs from Google Sheets:', error)
+        setIsLoadingVerbs(false)
+      }
+    }
+    
+    loadVerbsFromGoogleSheets()
+  }, [])
 
   const verbs = {
     regular: [
@@ -90,6 +136,11 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const getRandomVerb = () => {
+    // Use Google Sheets data if available, otherwise fall back to hardcoded data
+    if (googleVerbs.length > 0) {
+      return googleVerbs[Math.floor(Math.random() * googleVerbs.length)]
+    }
+    
     const verbType = settings.verbType === 'All Verbs' ? 
       (Math.random() > 0.5 ? 'regular' : 'irregular') :
       settings.verbType.toLowerCase().replace(' verbs', '')
@@ -142,13 +193,17 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const conjugateVerb = (verb, pronoun, tense, form) => {
-    const verbBase = verb.infinitive
+    // Use Google Sheets data if available, otherwise fall back to hardcoded logic
+    const verbBase = verb.infinitive || verb.base || verb.infinitive
+    const verbPast = verb.past || verbBase
+    const verbParticiple = verb.participle || verbBase
+    const verbGerund = verb.gerund || `${verbBase}ing`
     
     switch (tense) {
       case 'present':
         if (form === 'affirmative') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} ${verbBase}s`
+            return `${pronoun} ${verb.third || verbBase}s`
           }
           return `${pronoun} ${verbBase}`
         } else if (form === 'negative') {
@@ -166,7 +221,7 @@ const VerbConjugationGame = ({ onBack }) => {
         
       case 'past':
         if (form === 'affirmative') {
-          return `${pronoun} ${verb.past}`
+          return `${pronoun} ${verbPast}`
         } else if (form === 'negative') {
           return `${pronoun} didn't ${verbBase}`
         } else if (form === 'question') {
@@ -187,122 +242,122 @@ const VerbConjugationGame = ({ onBack }) => {
       case 'present_continuous':
         if (form === 'affirmative') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} is ${verbBase}ing`
+            return `${pronoun} is ${verbGerund}`
           } else if (['I'].includes(pronoun)) {
-            return `${pronoun} am ${verbBase}ing`
+            return `${pronoun} am ${verbGerund}`
           }
-          return `${pronoun} are ${verbBase}ing`
+          return `${pronoun} are ${verbGerund}`
         } else if (form === 'negative') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} isn't ${verbBase}ing`
+            return `${pronoun} isn't ${verbGerund}`
           } else if (['I'].includes(pronoun)) {
-            return `${pronoun} am not ${verbBase}ing`
+            return `${pronoun} am not ${verbGerund}`
           }
-          return `${pronoun} aren't ${verbBase}ing`
+          return `${pronoun} aren't ${verbGerund}`
         } else if (form === 'question') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `Is ${pronoun.toLowerCase()} ${verbBase}ing?`
+            return `Is ${pronoun.toLowerCase()} ${verbGerund}?`
           } else if (['I'].includes(pronoun)) {
-            return `Am ${pronoun.toLowerCase()} ${verbBase}ing?`
+            return `Am ${pronoun.toLowerCase()} ${verbGerund}?`
           }
-          return `Are ${pronoun.toLowerCase()} ${verbBase}ing?`
+          return `Are ${pronoun.toLowerCase()} ${verbGerund}?`
         }
         break
         
       case 'past_continuous':
         if (form === 'affirmative') {
           if (['I', 'he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} was ${verbBase}ing`
+            return `${pronoun} was ${verbGerund}`
           }
-          return `${pronoun} were ${verbBase}ing`
+          return `${pronoun} were ${verbGerund}`
         } else if (form === 'negative') {
           if (['I', 'he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} wasn't ${verbBase}ing`
+            return `${pronoun} wasn't ${verbGerund}`
           }
-          return `${pronoun} weren't ${verbBase}ing`
+          return `${pronoun} weren't ${verbGerund}`
         } else if (form === 'question') {
           if (['I', 'he', 'she', 'it'].includes(pronoun)) {
-            return `Was ${pronoun.toLowerCase()} ${verbBase}ing?`
+            return `Was ${pronoun.toLowerCase()} ${verbGerund}?`
           }
-          return `Were ${pronoun.toLowerCase()} ${verbBase}ing?`
+          return `Were ${pronoun.toLowerCase()} ${verbGerund}?`
         }
         break
         
       case 'present_perfect':
         if (form === 'affirmative') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} has ${verb.participle}`
+            return `${pronoun} has ${verbParticiple}`
           }
-          return `${pronoun} have ${verb.participle}`
+          return `${pronoun} have ${verbParticiple}`
         } else if (form === 'negative') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} hasn't ${verb.participle}`
+            return `${pronoun} hasn't ${verbParticiple}`
           }
-          return `${pronoun} haven't ${verb.participle}`
+          return `${pronoun} haven't ${verbParticiple}`
         } else if (form === 'question') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `Has ${pronoun.toLowerCase()} ${verb.participle}?`
+            return `Has ${pronoun.toLowerCase()} ${verbParticiple}?`
           }
-          return `Have ${pronoun.toLowerCase()} ${verb.participle}?`
+          return `Have ${pronoun.toLowerCase()} ${verbParticiple}?`
         }
         break
         
       case 'past_perfect':
         if (form === 'affirmative') {
-          return `${pronoun} had ${verb.participle}`
+          return `${pronoun} had ${verbParticiple}`
         } else if (form === 'negative') {
-          return `${pronoun} hadn't ${verb.participle}`
+          return `${pronoun} hadn't ${verbParticiple}`
         } else if (form === 'question') {
-          return `Had ${pronoun.toLowerCase()} ${verb.participle}?`
+          return `Had ${pronoun.toLowerCase()} ${verbParticiple}?`
         }
         break
         
       case 'future_perfect':
         if (form === 'affirmative') {
-          return `${pronoun} will have ${verb.participle}`
+          return `${pronoun} will have ${verbParticiple}`
         } else if (form === 'negative') {
-          return `${pronoun} won't have ${verb.participle}`
+          return `${pronoun} won't have ${verbParticiple}`
         } else if (form === 'question') {
-          return `Will ${pronoun.toLowerCase()} have ${verb.participle}?`
+          return `Will ${pronoun.toLowerCase()} have ${verbParticiple}?`
         }
         break
         
       case 'present_perfect_continuous':
         if (form === 'affirmative') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} has been ${verbBase}ing`
+            return `${pronoun} has been ${verbGerund}`
           }
-          return `${pronoun} have been ${verbBase}ing`
+          return `${pronoun} have been ${verbGerund}`
         } else if (form === 'negative') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `${pronoun} hasn't been ${verbBase}ing`
+            return `${pronoun} hasn't been ${verbGerund}`
           }
-          return `${pronoun} haven't been ${verbBase}ing`
+          return `${pronoun} haven't been ${verbGerund}`
         } else if (form === 'question') {
           if (['he', 'she', 'it'].includes(pronoun)) {
-            return `Has ${pronoun.toLowerCase()} been ${verbBase}ing?`
+            return `Has ${pronoun.toLowerCase()} been ${verbGerund}?`
           }
-          return `Have ${pronoun.toLowerCase()} been ${verbBase}ing?`
+          return `Have ${pronoun.toLowerCase()} been ${verbGerund}?`
         }
         break
         
       case 'past_perfect_continuous':
         if (form === 'affirmative') {
-          return `${pronoun} had been ${verbBase}ing`
+          return `${pronoun} had been ${verbGerund}`
         } else if (form === 'negative') {
-          return `${pronoun} hadn't been ${verbBase}ing`
+          return `${pronoun} hadn't been ${verbGerund}`
         } else if (form === 'question') {
-          return `Had ${pronoun.toLowerCase()} been ${verbBase}ing?`
+          return `Had ${pronoun.toLowerCase()} been ${verbGerund}?`
         }
         break
         
       case 'future_perfect_continuous':
         if (form === 'affirmative') {
-          return `${pronoun} will have been ${verbBase}ing`
+          return `${pronoun} will have been ${verbGerund}`
         } else if (form === 'negative') {
-          return `${pronoun} won't have been ${verbBase}ing`
+          return `${pronoun} won't have been ${verbGerund}`
         } else if (form === 'question') {
-          return `Will ${pronoun.toLowerCase()} have been ${verbBase}ing?`
+          return `Will ${pronoun.toLowerCase()} have been ${verbGerund}?`
         }
         break
     }
@@ -396,6 +451,42 @@ const VerbConjugationGame = ({ onBack }) => {
     setFeedback('')
     setShowFeedback(false)
     setGameStarted(false)
+  }
+
+  if (isLoadingVerbs) {
+    return (
+      <div className="game-container">
+        <nav className="nav">
+          <button className="btn btn-secondary" onClick={onBack}>
+            ← Back to Games
+          </button>
+          <h1 className="nav-title">Verb Conjugation Game</h1>
+          <div></div>
+        </nav>
+        <div className="game-header">
+          <div className="game-header-content" style={{ textAlign: 'center' }}>
+            <div className="game-icon" style={{ 
+              background: '#ff6b6b',
+              color: '#ffffff',
+              width: '80px',
+              height: '80px',
+              borderRadius: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 24px auto',
+              boxShadow: '0 8px 24px rgba(255, 107, 107, 0.3)'
+            }}>
+              <Target size={40} />
+            </div>
+            <h1 className="game-title" style={{ fontSize: '48px', marginBottom: '16px' }}>Loading...</h1>
+            <p className="game-subtitle" style={{ fontSize: '20px', marginBottom: '32px' }}>
+              Loading verbs from Google Sheets...
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (!gameStarted) {
