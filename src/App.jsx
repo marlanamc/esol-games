@@ -197,42 +197,42 @@ const GameCard = ({ game }) => {
         zIndex: 1
       }}>{game.description}</p>
 
-      {/* Play Now Button */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: '8px'
-      }}>
-        <button
-          onClick={handleGameClick}
-          style={{
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '8px 16px',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)'
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)'
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)'
-          }}
-        >
-          <span>▶</span>
-          Play Now
-        </button>
-      </div>
+            {/* Play Now Button */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '8px'
+            }}>
+              <button
+                onClick={handleGameClick}
+                style={{
+                  background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)'
+                }}
+              >
+                <span>▶</span>
+                Play Now
+              </button>
+            </div>
     </div>
   )
 }
