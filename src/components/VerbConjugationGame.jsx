@@ -907,7 +907,10 @@ const VerbConjugationGame = ({ onBack }) => {
                 borderRadius: '8px',
                 border: currentGame.currentTime === 'past' ? '1px solid #EF9A9A' : 
                         currentGame.currentTime === 'present' ? '1px solid #A5D6A7' : '1px solid #81D4FA',
-                fontWeight: '500'
+                fontWeight: '700',
+                textAlign: 'center',
+                display: 'block',
+                width: '100%'
               }}>
                 {currentGame.currentTime.charAt(0).toUpperCase() + currentGame.currentTime.slice(1)} {currentGame.currentVerbTense.charAt(0).toUpperCase() + currentGame.currentVerbTense.slice(1)}
               </span>
@@ -931,12 +934,12 @@ const VerbConjugationGame = ({ onBack }) => {
               <span className="detail-badge" style={{ 
                 fontSize: '16px',
                 backgroundColor: currentGame.currentForm === 'affirmative' ? '#FFF9C4' : 
-                                currentGame.currentForm === 'negative' ? '#FFCDD2' : '#B2DFDB',
+                                currentGame.currentForm === 'negative' ? '#FFCDD2' : '#FFE0B2',
                 color: '#333333',
                 padding: '6px 12px',
                 borderRadius: '8px',
                 border: currentGame.currentForm === 'affirmative' ? '1px solid #FFECB3' : 
-                        currentGame.currentForm === 'negative' ? '1px solid #EF9A9A' : '1px solid #80CBC4',
+                        currentGame.currentForm === 'negative' ? '1px solid #EF9A9A' : '1px solid #FFCC80',
                 fontWeight: '500'
               }}>
                 <strong>Form:</strong> {forms[currentGame.currentForm]}
