@@ -670,7 +670,8 @@ const HomePage = () => {
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
         borderRadius: '0 0 clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px)',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        minHeight: '60px'
       }}>
         <h1 className="nav-title" style={{
           fontSize: 'clamp(18px, 4vw, 28px)',
@@ -682,7 +683,10 @@ const HomePage = () => {
           position: 'relative',
           zIndex: 1,
           textAlign: 'left',
-          margin: 0
+          margin: 0,
+          display: 'flex',
+          alignItems: 'center',
+          height: '100%'
         }}>ESOL Games by Marlie</h1>
         <a 
           href="https://marlanacreed.com" 
@@ -691,7 +695,10 @@ const HomePage = () => {
           className="author-badge"
           style={{
             fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
-            padding: 'clamp(6px, 1.5vw, 8px) clamp(12px, 3vw, 16px)'
+            padding: 'clamp(6px, 1.5vw, 8px) clamp(12px, 3vw, 16px)',
+            display: 'flex',
+            alignItems: 'center',
+            height: '100%'
           }}
         >
           Created by Marlie
