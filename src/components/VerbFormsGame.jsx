@@ -64,35 +64,7 @@ const VerbFormsGame = ({ onBack }) => {
     loadVerbsFromGoogleSheets()
   }, [])
 
-  const verbs = {
-    regular: [
-      { base: 'play', third: 'plays', past: 'played', participle: 'played', gerund: 'playing', infinitive: 'to play' },
-      { base: 'work', third: 'works', past: 'worked', participle: 'worked', gerund: 'working', infinitive: 'to work' },
-      { base: 'study', third: 'studies', past: 'studied', participle: 'studied', gerund: 'studying', infinitive: 'to study' },
-      { base: 'help', third: 'helps', past: 'helped', participle: 'helped', gerund: 'helping', infinitive: 'to help' },
-      { base: 'talk', third: 'talks', past: 'talked', participle: 'talked', gerund: 'talking', infinitive: 'to talk' },
-      { base: 'watch', third: 'watches', past: 'watched', participle: 'watched', gerund: 'watching', infinitive: 'to watch' },
-      { base: 'listen', third: 'listens', past: 'listened', participle: 'listened', gerund: 'listening', infinitive: 'to listen' },
-      { base: 'learn', third: 'learns', past: 'learned', participle: 'learned', gerund: 'learning', infinitive: 'to learn' }
-    ],
-    irregular: [
-      { base: 'go', third: 'goes', past: 'went', participle: 'gone', gerund: 'going', infinitive: 'to go' },
-      { base: 'be', third: 'is', past: 'was/were', participle: 'been', gerund: 'being', infinitive: 'to be' },
-      { base: 'have', third: 'has', past: 'had', participle: 'had', gerund: 'having', infinitive: 'to have' },
-      { base: 'do', third: 'does', past: 'did', participle: 'done', gerund: 'doing', infinitive: 'to do' },
-      { base: 'see', third: 'sees', past: 'saw', participle: 'seen', gerund: 'seeing', infinitive: 'to see' },
-      { base: 'eat', third: 'eats', past: 'ate', participle: 'eaten', gerund: 'eating', infinitive: 'to eat' },
-      { base: 'drink', third: 'drinks', past: 'drank', participle: 'drunk', gerund: 'drinking', infinitive: 'to drink' },
-      { base: 'sleep', third: 'sleeps', past: 'slept', participle: 'slept', gerund: 'sleeping', infinitive: 'to sleep' },
-      { base: 'write', third: 'writes', past: 'wrote', participle: 'written', gerund: 'writing', infinitive: 'to write' },
-      { base: 'drive', third: 'drives', past: 'drove', participle: 'driven', gerund: 'driving', infinitive: 'to drive' },
-      { base: 'take', third: 'takes', past: 'took', participle: 'taken', gerund: 'taking', infinitive: 'to take' },
-      { base: 'give', third: 'gives', past: 'gave', participle: 'given', gerund: 'giving', infinitive: 'to give' },
-      { base: 'make', third: 'makes', past: 'made', participle: 'made', gerund: 'making', infinitive: 'to make' },
-      { base: 'know', third: 'knows', past: 'knew', participle: 'known', gerund: 'knowing', infinitive: 'to know' },
-      { base: 'think', third: 'thinks', past: 'thought', participle: 'thought', gerund: 'thinking', infinitive: 'to think' }
-    ]
-  }
+  // Verbs now come exclusively from Google Sheets
 
   const questionTypes = {
     base: { display: 'Base Form (V1)', field: 'base', description: 'The basic form of the verb' },
@@ -103,18 +75,14 @@ const VerbFormsGame = ({ onBack }) => {
   }
 
   const getRandomVerb = () => {
-    // Use Google Sheets data if available, otherwise fall back to hardcoded data
+    // Only use Google Sheets data
     if (verbsData && verbsData.length > 0) {
       return verbsData[Math.floor(Math.random() * verbsData.length)]
     }
     
-    // Fallback to hardcoded data
-    const verbType = settings.verbType === 'All Verbs' ? 
-      (Math.random() > 0.5 ? 'regular' : 'irregular') :
-      settings.verbType.toLowerCase().replace(' verbs', '')
-    
-    const verbList = verbs[verbType] || verbs.regular
-    return verbList[Math.floor(Math.random() * verbList.length)]
+    // If no Google Sheets data is available, return null to prevent errors
+    console.warn('No Google Sheets verbs loaded yet')
+    return null
   }
 
   const getRandomQuestionType = () => {
@@ -132,6 +100,12 @@ const VerbFormsGame = ({ onBack }) => {
 
   const generateQuestion = () => {
     const verb = getRandomVerb()
+    
+    // Don't generate questions if no verbs are loaded
+    if (!verb) {
+      console.warn('Cannot generate question: no verbs loaded from Google Sheets')
+      return
+    }
     
     // Determine which forms to show based on difficulty
     let formsToShow = []
