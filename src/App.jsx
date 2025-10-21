@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useParams } from 'react-router-dom'
-import { Target, BookOpen, Hash, Home } from 'lucide-react'
+import { Target, BookOpen, Hash, Home, GraduationCap } from 'lucide-react'
 import VerbConjugationGame from './components/VerbConjugationGame'
 import VerbFormsGame from './components/VerbFormsGame'
 import NumbersGame from './components/NumbersGame'
@@ -245,6 +245,323 @@ const GameCard = ({ game }) => {
   )
 }
 
+const TeachingPage = () => {
+  const navigate = useNavigate()
+
+  return (
+    <div style={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+      color: '#f1f5f9',
+      padding: '20px'
+    }}>
+      <nav style={{
+        background: 'rgba(15, 23, 42, 0.8)',
+        backdropFilter: 'blur(10px)',
+        padding: 'clamp(12px, 3vw, 20px) clamp(16px, 4vw, 32px)',
+        marginBottom: 'clamp(16px, 4vw, 32px)',
+        borderRadius: '0 0 clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1 style={{
+            fontSize: 'clamp(18px, 4vw, 28px)',
+            fontWeight: '800',
+            background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            margin: 0
+          }}>
+            ESOL Games by Marlie
+          </h1>
+          <button 
+            onClick={() => navigate('/')}
+            style={{
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '8px 16px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-2px)'
+              e.target.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.4)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0)'
+              e.target.style.boxShadow = 'none'
+            }}
+          >
+            <Home size={16} />
+            Back to Games
+          </button>
+        </div>
+      </nav>
+
+      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        <div style={{
+          background: 'rgba(30, 41, 59, 0.9)',
+          borderRadius: '16px',
+          padding: '32px',
+          marginBottom: '24px',
+          border: '1px solid rgba(71, 85, 105, 0.3)'
+        }}>
+          <h1 style={{
+            fontSize: 'clamp(24px, 5vw, 36px)',
+            fontWeight: '800',
+            textAlign: 'center',
+            marginBottom: '8px',
+            background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
+            <GraduationCap size={32} style={{ marginRight: '12px', verticalAlign: 'middle' }} />
+            Understanding Verb Forms
+          </h1>
+          <p style={{
+            fontSize: 'clamp(16px, 3vw, 20px)',
+            textAlign: 'center',
+            color: '#cbd5e1',
+            marginBottom: '32px'
+          }}>
+            Learn the V1, V1-3rd, V1-ing, V2, V3 system used in our games
+          </p>
+        </div>
+
+        <div style={{
+          background: 'rgba(30, 41, 59, 0.9)',
+          borderRadius: '16px',
+          padding: '32px',
+          marginBottom: '24px',
+          border: '1px solid rgba(71, 85, 105, 0.3)'
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(20px, 4vw, 28px)',
+            fontWeight: '700',
+            color: '#f1f5f9',
+            marginBottom: '24px',
+            textAlign: 'center'
+          }}>
+            The Five Verb Forms
+          </h2>
+          
+          <div style={{ display: 'grid', gap: '16px', marginBottom: '32px' }}>
+            {[
+              {
+                form: 'V1',
+                name: 'Base Form',
+                description: 'The basic form of the verb',
+                example: 'walk, eat, go',
+                usage: 'I walk, you walk, we walk, they walk'
+              },
+              {
+                form: 'V1-3rd',
+                name: 'Third Person Singular',
+                description: 'Used with he, she, it in present simple',
+                example: 'walks, eats, goes',
+                usage: 'he walks, she eats, it goes'
+              },
+              {
+                form: 'V1-ing',
+                name: 'Present Participle',
+                description: 'Used for continuous tenses',
+                example: 'walking, eating, going',
+                usage: 'I am walking, continuous tenses'
+              },
+              {
+                form: 'V2',
+                name: 'Past Simple',
+                description: 'Used for completed actions in the past',
+                example: 'walked, ate, went',
+                usage: 'I walked yesterday'
+              },
+              {
+                form: 'V3',
+                name: 'Past Participle',
+                description: 'Used with have/has/had and passive voice',
+                example: 'walked, eaten, gone',
+                usage: 'I have walked, perfect tenses'
+              }
+            ].map((verbForm, index) => (
+              <div key={index} style={{
+                background: 'rgba(51, 65, 85, 0.6)',
+                borderRadius: '12px',
+                padding: '20px',
+                border: '1px solid rgba(71, 85, 105, 0.3)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#6366f1'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(71, 85, 105, 0.3)'
+                e.currentTarget.style.transform = 'translateY(0)'
+              }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                  <div style={{
+                    background: '#6366f1',
+                    color: 'white',
+                    fontWeight: '700',
+                    fontSize: '18px',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    marginRight: '16px',
+                    minWidth: '60px',
+                    textAlign: 'center'
+                  }}>
+                    {verbForm.form}
+                  </div>
+                  <h3 style={{
+                    fontSize: '20px',
+                    fontWeight: '600',
+                    color: '#f1f5f9',
+                    margin: 0
+                  }}>
+                    {verbForm.name}
+                  </h3>
+                </div>
+                <p style={{
+                  color: '#cbd5e1',
+                  marginBottom: '8px',
+                  fontSize: '16px'
+                }}>
+                  {verbForm.description}
+                </p>
+                <div style={{ marginBottom: '8px' }}>
+                  <strong style={{ color: '#fbbf24' }}>Examples:</strong> {verbForm.example}
+                </div>
+                <div>
+                  <strong style={{ color: '#34d399' }}>Usage:</strong> {verbForm.usage}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{
+          background: 'rgba(30, 41, 59, 0.9)',
+          borderRadius: '16px',
+          padding: '32px',
+          marginBottom: '24px',
+          border: '1px solid rgba(71, 85, 105, 0.3)'
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(20px, 4vw, 28px)',
+            fontWeight: '700',
+            color: '#f1f5f9',
+            marginBottom: '24px',
+            textAlign: 'center'
+          }}>
+            Verb Tense Formulas
+          </h2>
+          
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              background: 'rgba(51, 65, 85, 0.6)',
+              borderRadius: '12px',
+              overflow: 'hidden'
+            }}>
+              <thead>
+                <tr style={{ background: 'rgba(99, 102, 241, 0.2)' }}>
+                  <th style={{ padding: '16px', textAlign: 'left', color: '#f1f5f9', fontWeight: '600' }}>Tense</th>
+                  <th style={{ padding: '16px', textAlign: 'left', color: '#f1f5f9', fontWeight: '600' }}>Affirmative</th>
+                  <th style={{ padding: '16px', textAlign: 'left', color: '#f1f5f9', fontWeight: '600' }}>Negative</th>
+                  <th style={{ padding: '16px', textAlign: 'left', color: '#f1f5f9', fontWeight: '600' }}>Question</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { tense: 'Present Simple', affirmative: 'subject + V1/V1-3rd', negative: 'subject + do(es) + not + V1', question: 'Do(es) + subject + V1?' },
+                  { tense: 'Past Simple', affirmative: 'subject + V2', negative: 'subject + did + not + V1', question: 'Did + subject + V1?' },
+                  { tense: 'Future Simple', affirmative: 'subject + will + V1', negative: 'subject + will + not + V1', question: 'Will + subject + V1?' },
+                  { tense: 'Present Continuous', affirmative: 'subject + am/is/are + V1-ing', negative: 'subject + am/is/are + not + V1-ing', question: 'Am/Is/Are + subject + V1-ing?' },
+                  { tense: 'Past Continuous', affirmative: 'subject + was/were + V1-ing', negative: 'subject + was/were + not + V1-ing', question: 'Was/Were + subject + V1-ing?' },
+                  { tense: 'Future Continuous', affirmative: 'subject + will be + V1-ing', negative: 'subject + will not be + V1-ing', question: 'Will + subject + be + V1-ing?' },
+                  { tense: 'Present Perfect', affirmative: 'subject + have/has + V3', negative: 'subject + have/has + not + V3', question: 'Have/Has + subject + V3?' },
+                  { tense: 'Past Perfect', affirmative: 'subject + had + V3', negative: 'subject + had + not + V3', question: 'Had + subject + V3?' },
+                  { tense: 'Future Perfect', affirmative: 'subject + will have + V3', negative: 'subject + will not have + V3', question: 'Will + subject + have + V3?' },
+                  { tense: 'Present Perfect Continuous', affirmative: 'subject + have/has been + V1-ing', negative: 'subject + have/has not been + V1-ing', question: 'Have/Has + subject + been + V1-ing?' },
+                  { tense: 'Past Perfect Continuous', affirmative: 'subject + had been + V1-ing', negative: 'subject + had not been + V1-ing', question: 'Had + subject + been + V1-ing?' },
+                  { tense: 'Future Perfect Continuous', affirmative: 'subject + will have been + V1-ing', negative: 'subject + will not have been + V1-ing', question: 'Will + subject + have been + V1-ing?' }
+                ].map((row, index) => (
+                  <tr key={index} style={{ borderBottom: '1px solid rgba(71, 85, 105, 0.3)' }}>
+                    <td style={{ padding: '16px', color: '#f1f5f9', fontWeight: '600' }}>{row.tense}</td>
+                    <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.affirmative}</td>
+                    <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.negative}</td>
+                    <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.question}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style={{
+          background: 'rgba(30, 41, 59, 0.9)',
+          borderRadius: '16px',
+          padding: '32px',
+          border: '1px solid rgba(71, 85, 105, 0.3)',
+          textAlign: 'center'
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(20px, 4vw, 28px)',
+            fontWeight: '700',
+            color: '#f1f5f9',
+            marginBottom: '16px'
+          }}>
+            Ready to Practice?
+          </h2>
+          <p style={{
+            color: '#cbd5e1',
+            marginBottom: '24px',
+            fontSize: '16px'
+          }}>
+            Now that you understand the verb forms, try our games to practice!
+          </p>
+          <button 
+            onClick={() => navigate('/')}
+            style={{
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '16px 32px',
+              fontSize: '18px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-2px)'
+              e.target.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.4)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0)'
+              e.target.style.boxShadow = 'none'
+            }}
+          >
+            Start Playing Games
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const HomePage = () => {
   const games = [
     {
@@ -305,7 +622,33 @@ const HomePage = () => {
           textAlign: 'center',
           width: '100%'
         }}>ESOL Games by Marlie</h1>
-        <div></div>
+        <Link 
+          to="/teaching" 
+          style={{
+            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            fontSize: '14px',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-2px)'
+            e.target.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.4)'
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)'
+            e.target.style.boxShadow = 'none'
+          }}
+        >
+          <GraduationCap size={16} />
+          Learn Verb Forms
+        </Link>
       </nav>
 
       <div className="game-header" style={{
@@ -416,6 +759,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/teaching" element={<TeachingPage />} />
         <Route path="/game/:gameId" element={<GamePageWrapper />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
