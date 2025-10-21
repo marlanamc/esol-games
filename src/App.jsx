@@ -355,40 +355,45 @@ const TeachingPage = () => {
             The Five Verb Forms
           </h2>
           
-          <div style={{ display: 'grid', gap: '16px', marginBottom: '32px' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+            gap: '12px', 
+            marginBottom: '32px' 
+          }}>
             {[
               {
                 form: 'V1',
                 name: 'Base Form',
-                description: 'The basic form of the verb',
+                description: 'Basic form of the verb',
                 example: 'walk, eat, go',
                 usage: 'I walk, you walk, we walk, they walk'
               },
               {
                 form: 'V1-3rd',
                 name: 'Third Person Singular',
-                description: 'Used with he, she, it in present simple',
+                description: 'Used with he, she, it',
                 example: 'walks, eats, goes',
                 usage: 'he walks, she eats, it goes'
               },
               {
                 form: 'V1-ing',
                 name: 'Present Participle',
-                description: 'Used for continuous tenses',
+                description: 'Continuous tenses',
                 example: 'walking, eating, going',
                 usage: 'I am walking, continuous tenses'
               },
               {
                 form: 'V2',
                 name: 'Past Simple',
-                description: 'Used for completed actions in the past',
+                description: 'Completed past actions',
                 example: 'walked, ate, went',
                 usage: 'I walked yesterday'
               },
               {
                 form: 'V3',
                 name: 'Past Participle',
-                description: 'Used with have/has/had and passive voice',
+                description: 'Perfect tenses & passive',
                 example: 'walked, eaten, gone',
                 usage: 'I have walked, perfect tenses'
               }
@@ -396,7 +401,7 @@ const TeachingPage = () => {
               <div key={index} style={{
                 background: 'rgba(51, 65, 85, 0.6)',
                 borderRadius: '12px',
-                padding: '20px',
+                padding: '16px',
                 border: '1px solid rgba(71, 85, 105, 0.3)',
                 transition: 'all 0.3s ease'
               }}
@@ -409,22 +414,22 @@ const TeachingPage = () => {
                 e.currentTarget.style.transform = 'translateY(0)'
               }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
                   <div style={{
                     background: '#6366f1',
                     color: 'white',
                     fontWeight: '700',
-                    fontSize: '18px',
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    marginRight: '16px',
-                    minWidth: '60px',
+                    fontSize: '16px',
+                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    marginRight: '12px',
+                    minWidth: '50px',
                     textAlign: 'center'
                   }}>
                     {verbForm.form}
                   </div>
                   <h3 style={{
-                    fontSize: '20px',
+                    fontSize: '18px',
                     fontWeight: '600',
                     color: '#f1f5f9',
                     margin: 0
@@ -434,15 +439,15 @@ const TeachingPage = () => {
                 </div>
                 <p style={{
                   color: '#cbd5e1',
-                  marginBottom: '8px',
-                  fontSize: '16px'
+                  marginBottom: '6px',
+                  fontSize: '14px'
                 }}>
                   {verbForm.description}
                 </p>
-                <div style={{ marginBottom: '8px' }}>
+                <div style={{ marginBottom: '4px', fontSize: '13px' }}>
                   <strong style={{ color: '#fbbf24' }}>Examples:</strong> {verbForm.example}
                 </div>
-                <div>
+                <div style={{ fontSize: '13px' }}>
                   <strong style={{ color: '#34d399' }}>Usage:</strong> {verbForm.usage}
                 </div>
               </div>
