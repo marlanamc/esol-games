@@ -207,7 +207,10 @@ const VerbFormsGame = ({ onBack }) => {
     console.log('Empty fields:', emptyFields)
     
     if (emptyFields.length > 0) {
-      setFeedback(`Please fill in all the missing forms! Missing: ${emptyFields.map(field => fieldNameMap[field]).join(', ')}`)
+      // Sort empty fields to match UI order
+      const fieldOrder = ['base', 'third', 'gerund', 'past', 'participle']
+      const orderedEmptyFields = fieldOrder.filter(field => emptyFields.includes(field))
+      setFeedback(`Please fill in all the missing forms! Missing: ${orderedEmptyFields.map(field => fieldNameMap[field]).join(', ')}`)
       setShowFeedback(true)
       return
     }
@@ -217,14 +220,20 @@ const VerbFormsGame = ({ onBack }) => {
     let totalCount = requiredFields.length
     let incorrectAnswers = []
     
-    requiredFields.forEach(field => {
-      const userAnswer = userAnswers[field].toLowerCase().trim()
-      const correctAnswer = correctAnswers[field].toLowerCase().trim()
-      
-      if (userAnswer === correctAnswer) {
-        correctCount++
-      } else {
-        incorrectAnswers.push(`${fieldNameMap[field]}: "${correctAnswers[field]}"`)
+    // Define the order of fields to match the UI card order
+    const fieldOrder = ['base', 'third', 'gerund', 'past', 'participle']
+    
+    // Process fields in the correct order
+    fieldOrder.forEach(field => {
+      if (requiredFields.includes(field)) {
+        const userAnswer = userAnswers[field].toLowerCase().trim()
+        const correctAnswer = correctAnswers[field].toLowerCase().trim()
+        
+        if (userAnswer === correctAnswer) {
+          correctCount++
+        } else {
+          incorrectAnswers.push(`${fieldNameMap[field]}: "${correctAnswers[field]}"`)
+        }
       }
     })
     
