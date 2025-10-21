@@ -18,10 +18,10 @@ const VerbConjugationGame = ({ onBack }) => {
   const [gameStarted, setGameStarted] = useState(false)
   const [showInstructions, setShowInstructions] = useState(false)
   const [settings, setSettings] = useState({
-    time: 'All Times',
-    tense: 'All Tenses', 
-    form: 'All Forms',
-    verbType: 'All Verbs'
+    time: ['present', 'past', 'future'],
+    tense: ['simple', 'continuous', 'perfect', 'perfect continuous'], 
+    form: ['affirmative', 'negative', 'question'],
+    verbType: ['regular', 'irregular']
   })
   const [googleVerbs, setGoogleVerbs] = useState([])
   const [isLoadingVerbs, setIsLoadingVerbs] = useState(true)
@@ -118,42 +118,11 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const getRandomTime = () => {
-    const times = ["present", "past", "future"]
-    
-    if (settings.time !== 'All Times') {
-      const timeMap = {
-        'Present': 'present',
-        'Past': 'past', 
-        'Future': 'future'
-      }
-      return timeMap[settings.time] || 'present'
-    }
-    
-    return times[Math.floor(Math.random() * times.length)]
+    return settings.time[Math.floor(Math.random() * settings.time.length)]
   }
 
   const getRandomVerbTense = () => {
-    const verbTenses = ["simple", "continuous", "perfect", "perfect continuous"]
-    
-    if (settings.tense !== 'All Tenses') {
-      const tenseMap = {
-        'Present Simple': 'simple',
-        'Past Simple': 'simple',
-        'Future Simple': 'simple',
-        'Present Continuous': 'continuous',
-        'Past Continuous': 'continuous',
-        'Future Continuous': 'continuous',
-        'Present Perfect': 'perfect',
-        'Past Perfect': 'perfect',
-        'Future Perfect': 'perfect',
-        'Present Perfect Continuous': 'perfect continuous',
-        'Past Perfect Continuous': 'perfect continuous',
-        'Future Perfect Continuous': 'perfect continuous'
-      }
-      return tenseMap[settings.tense] || 'simple'
-    }
-    
-    return verbTenses[Math.floor(Math.random() * verbTenses.length)]
+    return settings.tense[Math.floor(Math.random() * settings.tense.length)]
   }
 
   const getRandomPronoun = () => {
@@ -162,11 +131,28 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const getRandomForm = () => {
-    if (settings.form === 'All Forms') {
-      const formKeys = Object.keys(forms)
-      return formKeys[Math.floor(Math.random() * formKeys.length)]
-    }
-    return settings.form.toLowerCase()
+    return settings.form[Math.floor(Math.random() * settings.form.length)]
+  }
+
+  const toggleSetting = (category, value) => {
+    setSettings(prev => {
+      const currentArray = prev[category]
+      const isSelected = currentArray.includes(value)
+      
+      if (isSelected) {
+        // Don't allow removing the last item
+        if (currentArray.length === 1) return prev
+        return {
+          ...prev,
+          [category]: currentArray.filter(item => item !== value)
+        }
+      } else {
+        return {
+          ...prev,
+          [category]: [...currentArray, value]
+        }
+      }
+    })
   }
 
   const normalizeAnswer = (answer) => {
@@ -693,71 +679,84 @@ const VerbConjugationGame = ({ onBack }) => {
           <div className="controls-row">
             <div className="control-group">
               <label className="control-label" style={{ color: '#FF6B6B' }}>⏰ TIME</label>
-              <select 
-                className="esol-select"
-                style={{ backgroundColor: '#FF6B6B20', borderColor: '#FF6B6B' }}
-                value={settings.time}
-                onChange={(e) => setSettings(prev => ({ ...prev, time: e.target.value }))}
-              >
-                <option value="All Times">All Times</option>
-                <option value="Present">Present</option>
-                <option value="Past">Past</option>
-                <option value="Future">Future</option>
-              </select>
+              <div className="button-group">
+                {['present', 'past', 'future'].map(time => (
+                  <button
+                    key={time}
+                    className={`setting-button ${settings.time.includes(time) ? 'active' : ''}`}
+                    style={{ 
+                      backgroundColor: settings.time.includes(time) ? '#FF6B6B' : '#FF6B6B20',
+                      borderColor: '#FF6B6B',
+                      color: settings.time.includes(time) ? 'white' : '#FF6B6B'
+                    }}
+                    onClick={() => toggleSetting('time', time)}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
             </div>
             
             <div className="control-group">
               <label className="control-label" style={{ color: '#4ECDC4' }}>📚 TENSE</label>
-              <select 
-                className="esol-select"
-                style={{ backgroundColor: '#4ECDC420', borderColor: '#4ECDC4' }}
-                value={settings.tense}
-                onChange={(e) => setSettings(prev => ({ ...prev, tense: e.target.value }))}
-              >
-                <option value="All Tenses">All Tenses</option>
-                <option value="Present Simple">Present Simple</option>
-                <option value="Past Simple">Past Simple</option>
-                <option value="Future Simple">Future Simple</option>
-                <option value="Present Continuous">Present Continuous</option>
-                <option value="Past Continuous">Past Continuous</option>
-                <option value="Present Perfect">Present Perfect</option>
-                <option value="Past Perfect">Past Perfect</option>
-                <option value="Future Perfect">Future Perfect</option>
-                <option value="Present Perfect Continuous">Present Perfect Continuous</option>
-                <option value="Past Perfect Continuous">Past Perfect Continuous</option>
-                <option value="Future Perfect Continuous">Future Perfect Continuous</option>
-              </select>
+              <div className="button-group">
+                {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
+                  <button
+                    key={tense}
+                    className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
+                    style={{ 
+                      backgroundColor: settings.tense.includes(tense) ? '#4ECDC4' : '#4ECDC420',
+                      borderColor: '#4ECDC4',
+                      color: settings.tense.includes(tense) ? 'white' : '#4ECDC4'
+                    }}
+                    onClick={() => toggleSetting('tense', tense)}
+                  >
+                    {tense}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           
           <div className="controls-row">
             <div className="control-group">
               <label className="control-label" style={{ color: '#45B7D1' }}>📝 FORM</label>
-              <select 
-                className="esol-select"
-                style={{ backgroundColor: '#45B7D120', borderColor: '#45B7D1' }}
-                value={settings.form}
-                onChange={(e) => setSettings(prev => ({ ...prev, form: e.target.value }))}
-              >
-                <option value="All Forms">All Forms</option>
-                <option value="Affirmative">Affirmative</option>
-                <option value="Negative">Negative</option>
-                <option value="Question">Question</option>
-              </select>
+              <div className="button-group">
+                {['affirmative', 'negative', 'question'].map(form => (
+                  <button
+                    key={form}
+                    className={`setting-button ${settings.form.includes(form) ? 'active' : ''}`}
+                    style={{ 
+                      backgroundColor: settings.form.includes(form) ? '#45B7D1' : '#45B7D120',
+                      borderColor: '#45B7D1',
+                      color: settings.form.includes(form) ? 'white' : '#45B7D1'
+                    }}
+                    onClick={() => toggleSetting('form', form)}
+                  >
+                    {form}
+                  </button>
+                ))}
+              </div>
             </div>
             
             <div className="control-group">
               <label className="control-label" style={{ color: '#96CEB4' }}>🔤 VERB TYPE</label>
-              <select 
-                className="esol-select"
-                style={{ backgroundColor: '#96CEB420', borderColor: '#96CEB4' }}
-                value={settings.verbType}
-                onChange={(e) => setSettings(prev => ({ ...prev, verbType: e.target.value }))}
-              >
-                <option value="All Verbs">All Verbs</option>
-                <option value="Regular Verbs">Regular Verbs</option>
-                <option value="Irregular Verbs">Irregular Verbs</option>
-              </select>
+              <div className="button-group">
+                {['regular', 'irregular'].map(type => (
+                  <button
+                    key={type}
+                    className={`setting-button ${settings.verbType.includes(type) ? 'active' : ''}`}
+                    style={{ 
+                      backgroundColor: settings.verbType.includes(type) ? '#96CEB4' : '#96CEB420',
+                      borderColor: '#96CEB4',
+                      color: settings.verbType.includes(type) ? 'white' : '#96CEB4'
+                    }}
+                    onClick={() => toggleSetting('verbType', type)}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           
