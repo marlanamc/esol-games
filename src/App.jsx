@@ -718,21 +718,7 @@ const HomePage = () => {
           className="author-badge"
           style={{
             fontSize: 'clamp(0.875rem, 2.5vw, 1rem)',
-            padding: 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px)',
-            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-            color: 'white',
-            textDecoration: 'none',
-            borderRadius: '8px',
-            fontWeight: '600',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.transform = 'translateY(-2px)'
-            e.target.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.4)'
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.transform = 'translateY(0)'
-            e.target.style.boxShadow = 'none'
+            padding: 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px)'
           }}
         >
           Created by Marlie
