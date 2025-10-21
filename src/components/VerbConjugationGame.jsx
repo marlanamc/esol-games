@@ -553,6 +553,12 @@ const VerbConjugationGame = ({ onBack }) => {
     const normalizedUserAnswer = normalizeAnswer(userAnswer)
     const normalizedCorrectAnswer = normalizeAnswer(currentGame.correctAnswer)
     
+    // Debug logging
+    console.log('User answer:', userAnswer)
+    console.log('Correct answer:', currentGame.correctAnswer)
+    console.log('Normalized user:', normalizedUserAnswer)
+    console.log('Normalized correct:', normalizedCorrectAnswer)
+    
     const isCorrect = normalizedUserAnswer === normalizedCorrectAnswer
     
     if (isCorrect) {
@@ -581,7 +587,7 @@ const VerbConjugationGame = ({ onBack }) => {
         }
       )
       
-      setFeedback(`${enhancedFeedback}`)
+      setFeedback(`Incorrect. ${enhancedFeedback}`)
     }
     
     setShowFeedback(true)

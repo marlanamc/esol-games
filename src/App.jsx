@@ -61,14 +61,18 @@ const GameCard = ({ game }) => {
         background: gameStyle.background,
         backdropFilter: 'blur(20px)',
         border: `1px solid ${gameStyle.borderColor}`,
-        borderRadius: '16px',
-        padding: '20px',
+        borderRadius: 'clamp(12px, 3vw, 16px)',
+        padding: 'clamp(16px, 4vw, 20px)',
         cursor: 'pointer',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
         position: 'relative',
         overflow: 'hidden',
-        textAlign: 'center'
+        textAlign: 'center',
+        minHeight: 'clamp(200px, 40vw, 280px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)'
@@ -130,13 +134,13 @@ const GameCard = ({ game }) => {
         style={{ 
           background: gameStyle.iconBg,
           color: gameStyle.iconColor,
-          width: '48px',
-          height: '48px',
-          borderRadius: '12px',
+          width: 'clamp(40px, 8vw, 48px)',
+          height: 'clamp(40px, 8vw, 48px)',
+          borderRadius: 'clamp(8px, 2vw, 12px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          margin: '0 auto 16px auto',
+          margin: '0 auto clamp(8px, 2vw, 16px) auto',
           boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
           transition: 'all 0.3s ease',
           position: 'relative'
@@ -156,16 +160,17 @@ const GameCard = ({ game }) => {
       {/* Game Title */}
       <h2 className="game-name" style={{ 
         color: '#f1f5f9', 
-        fontSize: '20px', 
+        fontSize: 'clamp(16px, 3.5vw, 20px)', 
         fontWeight: '700', 
-        marginBottom: '8px', 
+        marginBottom: 'clamp(6px, 1.5vw, 8px)', 
         textAlign: 'center',
         background: 'linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%)',
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',
         position: 'relative',
-        zIndex: 1
+        zIndex: 1,
+        lineHeight: '1.2'
       }}>{game.name}</h2>
 
       {/* Category Badge */}
@@ -188,13 +193,14 @@ const GameCard = ({ game }) => {
       {/* Game Description */}
       <p className="game-description" style={{ 
         color: '#cbd5e1', 
-        fontSize: '14px', 
-        lineHeight: '1.5', 
+        fontSize: 'clamp(12px, 2.5vw, 14px)', 
+        lineHeight: '1.4', 
         textAlign: 'center',
-        marginBottom: '16px',
+        marginBottom: 'clamp(12px, 3vw, 16px)',
         fontWeight: '400',
         position: 'relative',
-        zIndex: 1
+        zIndex: 1,
+        flexGrow: 1
       }}>{game.description}</p>
 
             {/* Play Now Button */}
@@ -209,16 +215,18 @@ const GameCard = ({ game }) => {
                   background: 'linear-gradient(135deg, #667eea, #764ba2)',
                   color: 'white',
                   border: 'none',
-                  borderRadius: '8px',
-                  padding: '8px 16px',
-                  fontSize: '14px',
+                  borderRadius: 'clamp(6px, 1.5vw, 8px)',
+                  padding: 'clamp(6px, 1.5vw, 8px) clamp(12px, 3vw, 16px)',
+                  fontSize: 'clamp(12px, 2.5vw, 14px)',
                   fontWeight: '600',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px'
+                  gap: 'clamp(4px, 1vw, 6px)',
+                  width: '100%',
+                  justifyContent: 'center'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)'
@@ -266,26 +274,84 @@ const HomePage = () => {
   ]
 
   return (
-    <div className="game-container">
-      <nav className="nav">
-        <h1 className="nav-title">ESOL Games by Marlie</h1>
+    <div className="game-container" style={{
+      maxWidth: '1000px',
+      margin: '0 auto',
+      padding: 'clamp(16px, 4vw, 24px)'
+    }}>
+      <nav className="nav" style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 'clamp(12px, 3vw, 20px) clamp(16px, 4vw, 32px)',
+        background: 'rgba(30, 41, 59, 0.95)',
+        backdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(71, 85, 105, 0.3)',
+        marginBottom: 'clamp(16px, 4vw, 32px)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+        borderRadius: '0 0 clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <h1 className="nav-title" style={{
+          fontSize: 'clamp(18px, 4vw, 28px)',
+          fontWeight: '800',
+          background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          position: 'relative',
+          zIndex: 1,
+          textAlign: 'center',
+          width: '100%'
+        }}>ESOL Games by Marlie</h1>
         <div></div>
       </nav>
 
-      <div className="game-header">
-        <h1 className="game-title">Master Your English Skills</h1>
-        <p className="game-subtitle">Interactive grammar games for ESOL students</p>
+      <div className="game-header" style={{
+        textAlign: 'center',
+        marginBottom: '32px',
+        padding: '24px 16px'
+      }}>
+        <h1 className="game-title" style={{
+          fontSize: 'clamp(2rem, 5vw, 3rem)',
+          fontWeight: '800',
+          background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          marginBottom: '16px',
+          letterSpacing: '-0.025em',
+          lineHeight: '1.1'
+        }}>Master Your English Skills</h1>
+        <p className="game-subtitle" style={{
+          fontSize: 'clamp(1rem, 3vw, 1.25rem)',
+          color: '#cbd5e1',
+          marginBottom: '24px',
+          maxWidth: '600px',
+          margin: '0 auto 24px auto'
+        }}>Interactive grammar games for ESOL students</p>
         <a 
           href="https://marlanacreed.com" 
           target="_blank" 
           rel="noopener noreferrer"
           className="author-badge"
+          style={{
+            fontSize: 'clamp(0.875rem, 2.5vw, 1rem)',
+            padding: 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px)'
+          }}
         >
           Created by Marlie
         </a>
       </div>
 
-      <div className="games-grid">
+      <div className="games-grid" style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: 'clamp(16px, 4vw, 24px)',
+        marginTop: '32px',
+        padding: '0 clamp(16px, 4vw, 24px)'
+      }}>
         {games.map(game => (
           <GameCard key={game.id} game={game} />
         ))}
