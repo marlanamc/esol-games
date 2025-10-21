@@ -893,32 +893,23 @@ const VerbConjugationGame = ({ onBack }) => {
                 gap: '8px',
                 marginBottom: '12px'
               }}>
-            <div className="time-group" style={{
+            <div className="tense-group" style={{
               display: 'flex',
               gap: '8px',
               flexWrap: 'wrap'
             }}>
               <span className="detail-badge" style={{ 
                 fontSize: '16px',
-                backgroundColor: '#B3E5FC',
+                backgroundColor: currentGame.currentTime === 'past' ? '#FFCDD2' : 
+                                currentGame.currentTime === 'present' ? '#C8E6C9' : '#B3E5FC',
                 color: '#333333',
                 padding: '6px 12px',
                 borderRadius: '8px',
-                border: '1px solid #81D4FA',
+                border: currentGame.currentTime === 'past' ? '1px solid #EF9A9A' : 
+                        currentGame.currentTime === 'present' ? '1px solid #A5D6A7' : '1px solid #81D4FA',
                 fontWeight: '500'
               }}>
-                <strong>Time:</strong> {currentGame.currentTime}
-              </span>
-              <span className="detail-badge" style={{ 
-                fontSize: '16px',
-                backgroundColor: '#C8E6C9',
-                color: '#333333',
-                padding: '6px 12px',
-                borderRadius: '8px',
-                border: '1px solid #A5D6A7',
-                fontWeight: '500'
-              }}>
-                <strong>Verb Tense:</strong> {currentGame.currentVerbTense}
+                {currentGame.currentTime.charAt(0).toUpperCase() + currentGame.currentTime.slice(1)} {currentGame.currentVerbTense.charAt(0).toUpperCase() + currentGame.currentVerbTense.slice(1)}
               </span>
             </div>
             <div className="form-group" style={{
@@ -928,22 +919,24 @@ const VerbConjugationGame = ({ onBack }) => {
             }}>
               <span className="detail-badge" style={{ 
                 fontSize: '16px',
-                backgroundColor: '#FFF9C4',
+                backgroundColor: '#E1BEE7',
                 color: '#333333',
                 padding: '6px 12px',
                 borderRadius: '8px',
-                border: '1px solid #FFECB3',
+                border: '1px solid #CE93D8',
                 fontWeight: '500'
               }}>
                 <strong>Pronoun:</strong> {currentGame.currentPronoun}
               </span>
               <span className="detail-badge" style={{ 
                 fontSize: '16px',
-                backgroundColor: '#FFCDD2',
+                backgroundColor: currentGame.currentForm === 'affirmative' ? '#FFF9C4' : 
+                                currentGame.currentForm === 'negative' ? '#FFCDD2' : '#B2DFDB',
                 color: '#333333',
                 padding: '6px 12px',
                 borderRadius: '8px',
-                border: '1px solid #EF9A9A',
+                border: currentGame.currentForm === 'affirmative' ? '1px solid #FFECB3' : 
+                        currentGame.currentForm === 'negative' ? '1px solid #EF9A9A' : '1px solid #80CBC4',
                 fontWeight: '500'
               }}>
                 <strong>Form:</strong> {forms[currentGame.currentForm]}
