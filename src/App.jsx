@@ -467,6 +467,41 @@ const TeachingPage = () => {
             Verb Tense Formulas
           </h2>
           
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '16px',
+            marginBottom: '24px',
+            flexWrap: 'wrap'
+          }}>
+            {[
+              { name: 'Simple Tenses', color: 'rgba(34, 197, 94, 0.3)' },
+              { name: 'Continuous Tenses', color: 'rgba(59, 130, 246, 0.3)' },
+              { name: 'Perfect Tenses', color: 'rgba(168, 85, 247, 0.3)' },
+              { name: 'Perfect Continuous Tenses', color: 'rgba(245, 158, 11, 0.3)' }
+            ].map((category, index) => (
+              <div key={index} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 12px',
+                background: 'rgba(51, 65, 85, 0.6)',
+                borderRadius: '8px',
+                border: `2px solid ${category.color}`
+              }}>
+                <div style={{
+                  width: '12px',
+                  height: '12px',
+                  background: category.color,
+                  borderRadius: '50%'
+                }}></div>
+                <span style={{ color: '#cbd5e1', fontSize: '14px', fontWeight: '500' }}>
+                  {category.name}
+                </span>
+              </div>
+            ))}
+          </div>
+          
           <div style={{ overflowX: 'auto' }}>
             <table style={{
               width: '100%',
@@ -485,26 +520,48 @@ const TeachingPage = () => {
               </thead>
               <tbody>
                 {[
-                  { tense: 'Present Simple', affirmative: 'subject + V1/V1-3rd', negative: 'subject + do(es) + not + V1', question: 'Do(es) + subject + V1?' },
-                  { tense: 'Past Simple', affirmative: 'subject + V2', negative: 'subject + did + not + V1', question: 'Did + subject + V1?' },
-                  { tense: 'Future Simple', affirmative: 'subject + will + V1', negative: 'subject + will + not + V1', question: 'Will + subject + V1?' },
-                  { tense: 'Present Continuous', affirmative: 'subject + am/is/are + V1-ing', negative: 'subject + am/is/are + not + V1-ing', question: 'Am/Is/Are + subject + V1-ing?' },
-                  { tense: 'Past Continuous', affirmative: 'subject + was/were + V1-ing', negative: 'subject + was/were + not + V1-ing', question: 'Was/Were + subject + V1-ing?' },
-                  { tense: 'Future Continuous', affirmative: 'subject + will be + V1-ing', negative: 'subject + will not be + V1-ing', question: 'Will + subject + be + V1-ing?' },
-                  { tense: 'Present Perfect', affirmative: 'subject + have/has + V3', negative: 'subject + have/has + not + V3', question: 'Have/Has + subject + V3?' },
-                  { tense: 'Past Perfect', affirmative: 'subject + had + V3', negative: 'subject + had + not + V3', question: 'Had + subject + V3?' },
-                  { tense: 'Future Perfect', affirmative: 'subject + will have + V3', negative: 'subject + will not have + V3', question: 'Will + subject + have + V3?' },
-                  { tense: 'Present Perfect Continuous', affirmative: 'subject + have/has been + V1-ing', negative: 'subject + have/has not been + V1-ing', question: 'Have/Has + subject + been + V1-ing?' },
-                  { tense: 'Past Perfect Continuous', affirmative: 'subject + had been + V1-ing', negative: 'subject + had not been + V1-ing', question: 'Had + subject + been + V1-ing?' },
-                  { tense: 'Future Perfect Continuous', affirmative: 'subject + will have been + V1-ing', negative: 'subject + will not have been + V1-ing', question: 'Will + subject + have been + V1-ing?' }
-                ].map((row, index) => (
-                  <tr key={index} style={{ borderBottom: '1px solid rgba(71, 85, 105, 0.3)' }}>
-                    <td style={{ padding: '16px', color: '#f1f5f9', fontWeight: '600' }}>{row.tense}</td>
-                    <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.affirmative}</td>
-                    <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.negative}</td>
-                    <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.question}</td>
-                  </tr>
-                ))}
+                  { tense: 'Present Simple', affirmative: 'subject + V1/V1-3rd', negative: 'subject + do(es) + not + V1', question: 'Do(es) + subject + V1?', category: 'simple' },
+                  { tense: 'Past Simple', affirmative: 'subject + V2', negative: 'subject + did + not + V1', question: 'Did + subject + V1?', category: 'simple' },
+                  { tense: 'Future Simple', affirmative: 'subject + will + V1', negative: 'subject + will + not + V1', question: 'Will + subject + V1?', category: 'simple' },
+                  { tense: 'Present Continuous', affirmative: 'subject + am/is/are + V1-ing', negative: 'subject + am/is/are + not + V1-ing', question: 'Am/Is/Are + subject + V1-ing?', category: 'continuous' },
+                  { tense: 'Past Continuous', affirmative: 'subject + was/were + V1-ing', negative: 'subject + was/were + not + V1-ing', question: 'Was/Were + subject + V1-ing?', category: 'continuous' },
+                  { tense: 'Future Continuous', affirmative: 'subject + will be + V1-ing', negative: 'subject + will not be + V1-ing', question: 'Will + subject + be + V1-ing?', category: 'continuous' },
+                  { tense: 'Present Perfect', affirmative: 'subject + have/has + V3', negative: 'subject + have/has + not + V3', question: 'Have/Has + subject + V3?', category: 'perfect' },
+                  { tense: 'Past Perfect', affirmative: 'subject + had + V3', negative: 'subject + had + not + V3', question: 'Had + subject + V3?', category: 'perfect' },
+                  { tense: 'Future Perfect', affirmative: 'subject + will have + V3', negative: 'subject + will not have + V3', question: 'Will + subject + have + V3?', category: 'perfect' },
+                  { tense: 'Present Perfect Continuous', affirmative: 'subject + have/has been + V1-ing', negative: 'subject + have/has not been + V1-ing', question: 'Have/Has + subject + been + V1-ing?', category: 'perfect-continuous' },
+                  { tense: 'Past Perfect Continuous', affirmative: 'subject + had been + V1-ing', negative: 'subject + had not been + V1-ing', question: 'Had + subject + been + V1-ing?', category: 'perfect-continuous' },
+                  { tense: 'Future Perfect Continuous', affirmative: 'subject + will have been + V1-ing', negative: 'subject + will not have been + V1-ing', question: 'Will + subject + have been + V1-ing?', category: 'perfect-continuous' }
+                ].map((row, index) => {
+                  const getCategoryColor = (category) => {
+                    switch (category) {
+                      case 'simple': return { bg: 'rgba(34, 197, 94, 0.1)', border: 'rgba(34, 197, 94, 0.3)' }
+                      case 'continuous': return { bg: 'rgba(59, 130, 246, 0.1)', border: 'rgba(59, 130, 246, 0.3)' }
+                      case 'perfect': return { bg: 'rgba(168, 85, 247, 0.1)', border: 'rgba(168, 85, 247, 0.3)' }
+                      case 'perfect-continuous': return { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)' }
+                      default: return { bg: 'rgba(51, 65, 85, 0.6)', border: 'rgba(71, 85, 105, 0.3)' }
+                    }
+                  }
+                  
+                  const colors = getCategoryColor(row.category)
+                  
+                  return (
+                    <tr key={index} style={{ 
+                      borderBottom: '1px solid rgba(71, 85, 105, 0.3)',
+                      backgroundColor: colors.bg
+                    }}>
+                      <td style={{ 
+                        padding: '16px', 
+                        color: '#f1f5f9', 
+                        fontWeight: '600',
+                        borderLeft: `4px solid ${colors.border}`
+                      }}>{row.tense}</td>
+                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.affirmative}</td>
+                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.negative}</td>
+                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.question}</td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
