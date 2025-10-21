@@ -531,7 +531,7 @@ const VerbFormsGame = ({ onBack }) => {
         <div className="question-container">
           <div className="question-header">
             <h2 className="question-text" style={{ fontSize: '24px', textAlign: 'center', marginBottom: '24px' }}>
-              Complete the verb forms for: <strong>{currentGame.currentVerb.base}</strong>
+              Complete the verb forms for: <strong style={{ textDecoration: 'underline', textDecorationColor: '#6366f1', textDecorationThickness: '3px' }}>{currentGame.currentVerb.base}</strong>
             </h2>
           </div>
           

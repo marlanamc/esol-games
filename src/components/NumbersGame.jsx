@@ -220,6 +220,13 @@ const NumbersGame = ({ onBack }) => {
     setFeedback('')
   }
 
+  const normalizeAnswer = (answer) => {
+    return answer.toLowerCase()
+      .replace(/[-,]/g, ' ')  // Remove commas and dashes
+      .replace(/\s+/g, ' ')  // Normalize multiple spaces to single space
+      .trim()
+  }
+
   const startGame = () => {
     setGameStarted(true)
     generateNumber()
@@ -232,13 +239,13 @@ const NumbersGame = ({ onBack }) => {
       return
     }
 
-    let isCorrect = userAnswer.toLowerCase().trim() === currentGame.correctAnswer.toLowerCase()
+    let isCorrect = normalizeAnswer(userAnswer) === normalizeAnswer(currentGame.correctAnswer)
     
     // For years 2010 and later, also check alternative "twenty-XX" format
     if (!isCorrect && settings.category === 'Years (1100-2099)' && currentGame.currentNumber >= 2010) {
       const yearAnswers = yearToWords(currentGame.currentNumber)
       isCorrect = yearAnswers.some(answer => 
-        userAnswer.toLowerCase().trim() === answer.toLowerCase()
+        normalizeAnswer(userAnswer) === normalizeAnswer(answer)
       )
     }
     
