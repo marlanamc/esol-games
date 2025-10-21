@@ -674,6 +674,7 @@ const VerbConjugationGame = ({ onBack }) => {
           <div className="controls-header">
             <h2 className="controls-title">Game Settings</h2>
             <p className="controls-subtitle">Customize your practice session</p>
+            <p className="controls-instructions">Click buttons to select/deselect options. You can choose multiple options in each category.</p>
           </div>
           
           <div className="controls-row">
@@ -684,11 +685,6 @@ const VerbConjugationGame = ({ onBack }) => {
                   <button
                     key={time}
                     className={`setting-button ${settings.time.includes(time) ? 'active' : ''}`}
-                    style={{ 
-                      backgroundColor: settings.time.includes(time) ? '#FF6B6B' : '#FF6B6B20',
-                      borderColor: '#FF6B6B',
-                      color: settings.time.includes(time) ? 'white' : '#FF6B6B'
-                    }}
                     onClick={() => toggleSetting('time', time)}
                   >
                     {time}
@@ -704,11 +700,6 @@ const VerbConjugationGame = ({ onBack }) => {
                   <button
                     key={tense}
                     className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
-                    style={{ 
-                      backgroundColor: settings.tense.includes(tense) ? '#4ECDC4' : '#4ECDC420',
-                      borderColor: '#4ECDC4',
-                      color: settings.tense.includes(tense) ? 'white' : '#4ECDC4'
-                    }}
                     onClick={() => toggleSetting('tense', tense)}
                   >
                     {tense}
@@ -726,11 +717,6 @@ const VerbConjugationGame = ({ onBack }) => {
                   <button
                     key={form}
                     className={`setting-button ${settings.form.includes(form) ? 'active' : ''}`}
-                    style={{ 
-                      backgroundColor: settings.form.includes(form) ? '#45B7D1' : '#45B7D120',
-                      borderColor: '#45B7D1',
-                      color: settings.form.includes(form) ? 'white' : '#45B7D1'
-                    }}
                     onClick={() => toggleSetting('form', form)}
                   >
                     {form}
@@ -746,11 +732,6 @@ const VerbConjugationGame = ({ onBack }) => {
                   <button
                     key={type}
                     className={`setting-button ${settings.verbType.includes(type) ? 'active' : ''}`}
-                    style={{ 
-                      backgroundColor: settings.verbType.includes(type) ? '#96CEB4' : '#96CEB420',
-                      borderColor: '#96CEB4',
-                      color: settings.verbType.includes(type) ? 'white' : '#96CEB4'
-                    }}
                     onClick={() => toggleSetting('verbType', type)}
                   >
                     {type}
