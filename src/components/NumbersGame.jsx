@@ -227,6 +227,11 @@ const NumbersGame = ({ onBack }) => {
       .trim()
   }
 
+  const formatAnswerForDisplay = (answer) => {
+    // Add proper dashes for compound numbers (twenty-one, thirty-two, etc.)
+    return answer.replace(/\b(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)\s+(one|two|three|four|five|six|seven|eight|nine)\b/g, '$1-$2')
+  }
+
   const startGame = () => {
     setGameStarted(true)
     generateNumber()
@@ -268,10 +273,11 @@ const NumbersGame = ({ onBack }) => {
       // Show all acceptable answers for years 2010+
       if (settings.category === 'Years (1100-2099)' && currentGame.currentNumber >= 2010) {
         const yearAnswers = yearToWords(currentGame.currentNumber)
-        const allAnswers = yearAnswers.join('" or "')
+        const formattedAnswers = yearAnswers.map(answer => formatAnswerForDisplay(answer))
+        const allAnswers = formattedAnswers.join('" or "')
         setFeedback(`Incorrect. The correct answer is "${allAnswers}"`)
       } else {
-        setFeedback(`Incorrect. The correct answer is "${currentGame.correctAnswer}"`)
+        setFeedback(`Incorrect. The correct answer is "${formatAnswerForDisplay(currentGame.correctAnswer)}"`)
       }
     }
     
