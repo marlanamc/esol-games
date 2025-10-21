@@ -70,36 +70,7 @@ const VerbConjugationGame = ({ onBack }) => {
     loadVerbsFromGoogleSheets()
   }, [])
 
-  const verbs = {
-    regular: [
-      { infinitive: 'play', past: 'played', participle: 'played' },
-      { infinitive: 'work', past: 'worked', participle: 'worked' },
-      { infinitive: 'study', past: 'studied', participle: 'studied' },
-      { infinitive: 'help', past: 'helped', participle: 'helped' },
-      { infinitive: 'talk', past: 'talked', participle: 'talked' },
-      { infinitive: 'watch', past: 'watched', participle: 'watched' },
-      { infinitive: 'listen', past: 'listened', participle: 'listened' },
-      { infinitive: 'learn', past: 'learned', participle: 'learned' },
-      { infinitive: 'teach', past: 'taught', participle: 'taught' }
-    ],
-    irregular: [
-      { infinitive: 'go', past: 'went', participle: 'gone' },
-      { infinitive: 'be', past: 'was/were', participle: 'been' },
-      { infinitive: 'have', past: 'had', participle: 'had' },
-      { infinitive: 'do', past: 'did', participle: 'done' },
-      { infinitive: 'see', past: 'saw', participle: 'seen' },
-      { infinitive: 'eat', past: 'ate', participle: 'eaten' },
-      { infinitive: 'drink', past: 'drank', participle: 'drunk' },
-      { infinitive: 'sleep', past: 'slept', participle: 'slept' },
-      { infinitive: 'write', past: 'wrote', participle: 'written' },
-      { infinitive: 'drive', past: 'drove', participle: 'driven' },
-      { infinitive: 'take', past: 'took', participle: 'taken' },
-      { infinitive: 'give', past: 'gave', participle: 'given' },
-      { infinitive: 'make', past: 'made', participle: 'made' },
-      { infinitive: 'know', past: 'knew', participle: 'known' },
-      { infinitive: 'think', past: 'thought', participle: 'thought' }
-    ]
-  }
+  // Verbs now come exclusively from Google Sheets
 
   const pronouns = {
     present: ['I', 'you', 'he', 'she', 'it', 'we', 'they'],
@@ -136,17 +107,14 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const getRandomVerb = () => {
-    // Use Google Sheets data if available, otherwise fall back to hardcoded data
+    // Only use Google Sheets data
     if (googleVerbs.length > 0) {
       return googleVerbs[Math.floor(Math.random() * googleVerbs.length)]
     }
     
-    const verbType = settings.verbType === 'All Verbs' ? 
-      (Math.random() > 0.5 ? 'regular' : 'irregular') :
-      settings.verbType.toLowerCase().replace(' verbs', '')
-    
-    const verbList = verbs[verbType] || verbs.regular
-    return verbList[Math.floor(Math.random() * verbList.length)]
+    // If no Google Sheets data is available, return null to prevent errors
+    console.warn('No Google Sheets verbs loaded yet')
+    return null
   }
 
   const getRandomTime = () => {
@@ -381,6 +349,13 @@ const VerbConjugationGame = ({ onBack }) => {
 
   const generateQuestion = () => {
     const verb = getRandomVerb()
+    
+    // Don't generate questions if no verbs are loaded
+    if (!verb) {
+      console.warn('Cannot generate question: no verbs loaded from Google Sheets')
+      return
+    }
+    
     const pronoun = getRandomPronoun()
     const time = getRandomTime()
     const verbTense = getRandomVerbTense()
@@ -552,12 +527,6 @@ const VerbConjugationGame = ({ onBack }) => {
     // Normalize both user answer and correct answer to handle contractions
     const normalizedUserAnswer = normalizeAnswer(userAnswer)
     const normalizedCorrectAnswer = normalizeAnswer(currentGame.correctAnswer)
-    
-    // Debug logging
-    console.log('User answer:', userAnswer)
-    console.log('Correct answer:', currentGame.correctAnswer)
-    console.log('Normalized user:', normalizedUserAnswer)
-    console.log('Normalized correct:', normalizedCorrectAnswer)
     
     const isCorrect = normalizedUserAnswer === normalizedCorrectAnswer
     
