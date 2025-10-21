@@ -309,12 +309,12 @@ const TeachingPage = () => {
 
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         <div style={{
-          background: 'rgba(255, 245, 238, 0.9)',
+          background: 'rgba(30, 41, 59, 0.9)',
           borderRadius: '16px',
           padding: '32px',
           marginBottom: '24px',
-          border: '1px solid rgba(255, 218, 185, 0.5)',
-          boxShadow: '0 4px 20px rgba(255, 218, 185, 0.2)'
+          border: '1px solid rgba(255, 218, 185, 0.3)',
+          boxShadow: '0 4px 20px rgba(255, 218, 185, 0.1)'
         }}>
           <h1 style={{
             fontSize: 'clamp(24px, 5vw, 36px)',
@@ -332,7 +332,7 @@ const TeachingPage = () => {
           <p style={{
             fontSize: 'clamp(16px, 3vw, 20px)',
             textAlign: 'center',
-            color: '#8B7355',
+            color: '#cbd5e1',
             marginBottom: '32px'
           }}>
             Learn the V1, V1-3rd, V1-ing, V2, V3 system used in our games
