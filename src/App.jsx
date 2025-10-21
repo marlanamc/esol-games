@@ -662,39 +662,37 @@ const HomePage = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 'clamp(12px, 3vw, 20px) clamp(16px, 4vw, 32px)',
+        padding: '20px 32px',
         background: 'rgba(30, 41, 59, 0.95)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(71, 85, 105, 0.3)',
-        marginBottom: 'clamp(16px, 4vw, 32px)',
+        marginBottom: '32px',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-        borderRadius: '0 0 clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px)',
+        borderRadius: '0 0 24px 24px',
         position: 'relative',
-        overflow: 'hidden',
-        minHeight: '60px'
+        overflow: 'hidden'
       }}>
-        <h1 className="nav-title" style={{
-          fontSize: 'clamp(18px, 4vw, 28px)',
+        <h1 style={{
+          fontSize: '24px',
           fontWeight: '800',
           background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
-          position: 'relative',
-          zIndex: 1,
-          textAlign: 'left',
-          margin: 0,
-          lineHeight: '1'
+          margin: 0
         }}>ESOL Games</h1>
         <a 
           href="https://marlanacreed.com" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="author-badge"
           style={{
-            fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
-            padding: 'clamp(6px, 1.5vw, 8px) clamp(12px, 3vw, 16px)',
-            lineHeight: '1'
+            fontSize: '14px',
+            padding: '8px 16px',
+            background: 'rgba(71, 85, 105, 0.3)',
+            color: '#cbd5e1',
+            textDecoration: 'none',
+            borderRadius: '6px',
+            border: '1px solid rgba(71, 85, 105, 0.5)'
           }}
         >
           Created by Marlie
