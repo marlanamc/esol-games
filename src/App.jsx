@@ -552,6 +552,19 @@ const TeachingPage = () => {
                     }
                   }
                   
+                  const formatFormula = (formula) => {
+                    return formula.replace(/\b(V1-3rd|V1-ing|V1|V2|V3)\b/g, (match) => {
+                      const colors = {
+                        'V1': '#DDA0DD',
+                        'V1-3rd': '#98FB98', 
+                        'V1-ing': '#87CEEB',
+                        'V2': '#F0E68C',
+                        'V3': '#FFB6C1'
+                      }
+                      return `<span style="background: ${colors[match]}; color: #4A4A4A; padding: 2px 6px; border-radius: 8px; font-weight: 600; font-size: 12px; display: inline-block; margin: 0 2px;">${match}</span>`
+                    })
+                  }
+                  
                   const colors = getCategoryColor(row.category)
                   
                   return (
@@ -565,9 +578,9 @@ const TeachingPage = () => {
                         fontWeight: '600',
                         borderLeft: `4px solid ${colors.border}`
                       }}>{row.tense}</td>
-                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.affirmative}</td>
-                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.negative}</td>
-                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }}>{row.question}</td>
+                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }} dangerouslySetInnerHTML={{ __html: formatFormula(row.affirmative) }}></td>
+                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }} dangerouslySetInnerHTML={{ __html: formatFormula(row.negative) }}></td>
+                      <td style={{ padding: '16px', color: '#cbd5e1', fontFamily: 'monospace' }} dangerouslySetInnerHTML={{ __html: formatFormula(row.question) }}></td>
                     </tr>
                   )
                 })}
