@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master your English skills - ESOL Learning Platform</title>
+    <link rel="stylesheet" href="css/esol-games.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f23;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 80px;
+            background: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+        }
+
+        .sidebar-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-icon.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .sidebar-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 80px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+        }
+
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #4a5568;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-info p {
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Course Filters */
+        .course-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-btn.active {
+            background: #3182ce;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Game Cards */
+        .course-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 200% 0; }
+            50% { background-position: -200% 0; }
+        }
+
+        .course-card.pink { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+        .course-card.orange { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+        .course-card.purple { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+        .course-card.green { background: linear-gradient(135deg, #d299c2, #fef9d7); }
+        .course-card.blue { background: linear-gradient(135deg, #a8c8ec, #d4e1f7); }
+        .course-card.yellow { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+
+        .course-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .course-card:hover .course-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-icon::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 18px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 400% 400%;
+            animation: gradientShift 4s ease infinite;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .course-card:hover .course-icon::after {
+            opacity: 1;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .course-info h3 {
+            color: #2d3748;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .course-card:hover .course-info h3 {
+            color: #1a202c;
+        }
+
+        .course-category {
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            display: inline-block;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .course-students {
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .course-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #2d3748;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.25rem 0.5rem;
+            border-radius: 8px;
+        }
+
+        /* Play Button */
+        .play-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .course-card:hover .play-button {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .play-button::before {
+            content: '▶';
+            color: white;
+            font-size: 0.8rem;
+            margin-left: 2px;
+        }
+
+        /* Difficulty Badge */
+        .difficulty-badge {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .difficulty-badge.beginner {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .difficulty-badge.intermediate {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            color: white;
+        }
+
+        .difficulty-badge.advanced {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            color: white;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.8rem;
+            color: #4a5568;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        .course-tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .course-tag {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .course-tag.blue { background: #3182ce; }
+        .course-tag.purple { background: #805ad5; }
+        .course-tag.green { background: #38a169; }
+        .course-tag.pink { background: #e53e3e; }
+        .course-tag.yellow { background: #f59e0b; }
+
+        .top-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #fbbf24;
+            color: #1f2937;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Activity Section */
+        .activity-section {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .activity-dropdown {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .activity-stats {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-time {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-result {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #a0aec0;
+        }
+
+        .activity-chart {
+            display: flex;
+            align-items: end;
+            gap: 0.5rem;
+            height: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            min-height: 20px;
+        }
+
+        .chart-bar.pink { background: #ff6b6b; }
+        .chart-bar.orange { background: #ffa726; }
+        .chart-bar.green { background: #66bb6a; }
+        .chart-bar.blue { background: #42a5f5; }
+        .chart-bar.purple { background: #ab47bc; }
+        .chart-bar.dark-blue { background: #5c6bc0; }
+
+        .chart-months {
+            display: flex;
+            justify-content: space-between;
+            color: #a0aec0;
+            font-size: 0.8rem;
+        }
+
+        /* My Courses Section */
+        .my-courses-section {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .my-courses-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .my-course-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .my-course-card:hover {
+            transform: translateX(4px);
+        }
+
+        .my-course-card.pink { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+        .my-course-card.orange { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+        .my-course-card.yellow { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .my-course-card.blue { background: linear-gradient(135deg, #a8c8ec, #d4e1f7); }
+
+        .my-course-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .my-course-info h4 {
+            color: #2d3748;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .my-course-category {
+            color: #4a5568;
+            font-size: 0.8rem;
+        }
+
+        .my-course-rating {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .main-content {
+                margin-left: 60px;
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .course-filters {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-icon active">🎓</div>
+        <div class="sidebar-icon">🎮</div>
+        <div class="sidebar-icon">🏆</div>
+        <div class="sidebar-icon">📊</div>
+        <div class="sidebar-icon">📖</div>
+        <div class="sidebar-icon">🎯</div>
+        <div class="sidebar-icon">👥</div>
+        <div class="sidebar-icon" style="background: linear-gradient(135deg, #ff6b6b, #4ecdc4);">N</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Master your English skills</h1>
+            <div class="user-profile">
+                <div class="user-avatar">DS</div>
+                <div class="user-info">
+                    <h3>Demo Student</h3>
+                    <p>274 Friends</p>
+                </div>
+                <div class="profile-icon">N</div>
+            </div>
+        </div>
+
+        <!-- Left Column -->
+        <div class="left-column">
+            <!-- Course Filters -->
+            <div class="course-filters">
+                <button class="filter-btn active">• All</button>
+                <button class="filter-btn">📖 Grammar</button>
+                <button class="filter-btn">🎯 Verbs</button>
+                <button class="filter-btn">🏆 Numbers</button>
+            </div>
+
+            <!-- Available Games Section -->
+            <div class="section">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: white;">Available Games</h2>
+                <div class="courses-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <a href="games/articles_practice.html" class="course-card pink">
+                        <div class="play-button"></div>
+                        <div class="course-header">
+                            <div class="course-icon">🎯</div>
+                            <div class="course-info">
+                                <h3>Articles & Prepositions Mastery</h3>
+                                <div class="course-category">Grammar</div>
+                            </div>
+                        </div>
+                        <div class="course-stats">
+                            <div class="course-students">847 students</div>
+                            <div class="course-rating">⭐ 4.9</div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
+                            <div class="progress-text">85% Complete</div>
+                        </div>
+                        <div class="course-tags">
+                            <div class="course-tag blue"></div>
+                            <div class="course-tag purple"></div>
+                            <div class="course-tag green"></div>
+                        </div>
+                        <div class="difficulty-badge beginner">Beginner</div>
+                    </a>
+
+                    <a href="games/random_verb_conjugation_game_improved.html" class="course-card orange">
+                        <div class="play-button"></div>
+                        <div class="course-header">
+                            <div class="course-icon">⚡</div>
+                            <div class="course-info">
+                                <h3>Verb Conjugation Challenge</h3>
+                                <div class="course-category">Verbs</div>
+                            </div>
+                        </div>
+                        <div class="course-stats">
+                            <div class="course-students">1,204 students</div>
+                            <div class="course-rating">⭐ 4.8</div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 72%"></div>
+                            </div>
+                            <div class="progress-text">72% Complete</div>
+                        </div>
+                        <div class="course-tags">
+                            <div class="course-tag pink"></div>
+                            <div class="course-tag green"></div>
+                        </div>
+                        <div class="difficulty-badge intermediate">Intermediate</div>
+                    </a>
+
+                    <a href="games/all_verb_form_game_professional.html" class="course-card purple">
+                        <div class="play-button"></div>
+                        <div class="course-header">
+                            <div class="course-icon">🎮</div>
+                            <div class="course-info">
+                                <h3>All Verb Forms Master</h3>
+                                <div class="course-category">Verbs</div>
+                            </div>
+                        </div>
+                        <div class="course-stats">
+                            <div class="course-students">756 students</div>
+                            <div class="course-rating">⭐ 4.7</div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                            <div class="progress-text">60% Complete</div>
+                        </div>
+                        <div class="course-tags">
+                            <div class="course-tag purple"></div>
+                            <div class="course-tag green"></div>
+                        </div>
+                        <div class="difficulty-badge advanced">Advanced</div>
+                    </a>
+
+                    <a href="games/gerund_infinitive_game_professional.html" class="course-card green">
+                        <div class="play-button"></div>
+                        <div class="course-header">
+                            <div class="course-icon">🔄</div>
+                            <div class="course-info">
+                                <h3>Gerunds vs Infinitives</h3>
+                                <div class="course-category">Grammar</div>
+                            </div>
+                        </div>
+                        <div class="course-stats">
+                            <div class="course-students">623 students</div>
+                            <div class="course-rating">⭐ 4.6</div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                            <div class="progress-text">45% Complete</div>
+                        </div>
+                        <div class="course-tags">
+                            <div class="course-tag green"></div>
+                        </div>
+                        <div class="difficulty-badge intermediate">Intermediate</div>
+                    </a>
+
+                    <a href="games/numbers_to_english_game_professional.html" class="course-card blue">
+                        <div class="play-button"></div>
+                        <div class="course-header">
+                            <div class="course-icon">🔢</div>
+                            <div class="course-info">
+                                <h3>Numbers to English Words</h3>
+                                <div class="course-category">Numbers</div>
+                            </div>
+                        </div>
+                        <div class="course-stats">
+                            <div class="course-students">892 students</div>
+                            <div class="course-rating">⭐ 4.8</div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%"></div>
+                            </div>
+                            <div class="progress-text">90% Complete</div>
+                        </div>
+                        <div class="course-tags">
+                            <div class="course-tag blue"></div>
+                            <div class="course-tag green"></div>
+                        </div>
+                        <div class="difficulty-badge beginner">Beginner</div>
+                    </a>
+
+                    <a href="games/sentence_builder.html" class="course-card yellow">
+                        <div class="play-button"></div>
+                        <div class="course-header">
+                            <div class="course-icon">🧩</div>
+                            <div class="course-info">
+                                <h3>Sentence Builder</h3>
+                                <div class="course-category">Sentence Structure</div>
+                            </div>
+                            <div class="top-badge">New!</div>
+                        </div>
+                        <div class="course-stats">
+                            <div class="course-students">1,156 students</div>
+                            <div class="course-rating">⭐ 5.0</div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 95%"></div>
+                            </div>
+                            <div class="progress-text">95% Complete</div>
+                        </div>
+                        <div class="course-tags">
+                            <div class="course-tag yellow"></div>
+                        </div>
+                        <div class="difficulty-badge intermediate">Intermediate</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Featured Course Section -->
+            <div class="section" style="margin-top: 2rem;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: white;">Featured course</h2>
+                <!-- Featured course content would go here -->
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-column">
+            <!-- Activity Section -->
+            <div class="activity-section">
+                <div class="activity-header">
+                    <h3 class="activity-title">Activity</h3>
+                    <select class="activity-dropdown">
+                        <option>Year</option>
+                    </select>
+                </div>
+                <div class="activity-stats">
+                    <div class="activity-time">3.5h</div>
+                    <div class="activity-result">
+                        🏆 Great result!
+                    </div>
+                </div>
+                <div class="activity-chart">
+                    <div class="chart-bar pink" style="height: 60%;"></div>
+                    <div class="chart-bar orange" style="height: 40%;"></div>
+                    <div class="chart-bar green" style="height: 80%;"></div>
+                    <div class="chart-bar blue" style="height: 30%;"></div>
+                    <div class="chart-bar purple" style="height: 70%;"></div>
+                    <div class="chart-bar dark-blue" style="height: 50%;"></div>
+                </div>
+                <div class="chart-months">
+                    <span>Jan</span>
+                    <span>Mar</span>
+                    <span>Aug</span>
+                    <span>Sep</span>
+                    <span>Oct</span>
+                    <span>Dec</span>
+                </div>
+            </div>
+
+            <!-- My Courses Section -->
+            <div class="my-courses-section">
+                <h3 class="my-courses-title">My courses</h3>
+                
+                <a href="games/random_verb_conjugation_game_improved.html" class="my-course-card orange">
+                    <div class="my-course-icon">🎯</div>
+                    <div class="my-course-info">
+                        <h4>Verb Conjugation Challenge</h4>
+                        <div class="my-course-category">Verbs</div>
+                    </div>
+                    <div class="my-course-rating">⭐ 4.8</div>
+                </a>
+
+                <a href="games/sentence_builder.html" class="my-course-card yellow">
+                    <div class="my-course-icon">🏗️</div>
+                    <div class="my-course-info">
+                        <h4>Sentence Builder</h4>
+                        <div class="my-course-category">Sentence Structure</div>
+                    </div>
+                    <div class="my-course-rating">⭐ 5.0</div>
+                </a>
+
+                <a href="games/numbers_to_english_game_professional.html" class="my-course-card blue">
+                    <div class="my-course-icon">💯</div>
+                    <div class="my-course-info">
+                        <h4>Numbers to English Words</h4>
+                        <div class="my-course-category">Numbers</div>
+                    </div>
+                    <div class="my-course-rating">⭐ 4.8</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter buttons
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Sidebar icons
+            const sidebarIcons = document.querySelectorAll('.sidebar-icon');
+            sidebarIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    sidebarIcons.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Course card animations
+            const courseCards = document.querySelectorAll('.course-card, .my-course-card');
+            courseCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
