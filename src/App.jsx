@@ -400,22 +400,22 @@ const TeachingPage = () => {
               }
             ].map((verbForm, index) => (
               <div key={index} style={{
-                background: 'rgba(255, 248, 240, 0.9)',
+                background: 'rgba(51, 65, 85, 0.6)',
                 borderRadius: '12px',
                 padding: '16px',
-                border: '1px solid rgba(255, 218, 185, 0.5)',
+                border: '1px solid rgba(255, 218, 185, 0.3)',
                 transition: 'all 0.3s ease',
-                boxShadow: '0 2px 8px rgba(255, 218, 185, 0.2)'
+                boxShadow: '0 2px 8px rgba(255, 218, 185, 0.1)'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = '#DDA0DD'
                 e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(255, 218, 185, 0.3)'
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(255, 218, 185, 0.2)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 218, 185, 0.5)'
+                e.currentTarget.style.borderColor = 'rgba(255, 218, 185, 0.3)'
                 e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 218, 185, 0.2)'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 218, 185, 0.1)'
               }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
@@ -435,24 +435,24 @@ const TeachingPage = () => {
                   <h3 style={{
                     fontSize: '18px',
                     fontWeight: '600',
-                    color: '#5D4E37',
+                    color: '#f1f5f9',
                     margin: 0
                   }}>
                     {verbForm.name}
                   </h3>
                 </div>
                 <p style={{
-                  color: '#8B7355',
+                  color: '#cbd5e1',
                   marginBottom: '6px',
                   fontSize: '14px'
                 }}>
                   {verbForm.description}
                 </p>
                 <div style={{ marginBottom: '4px', fontSize: '13px' }}>
-                  <strong style={{ color: '#DAA520' }}>Examples:</strong> <span style={{ color: '#5D4E37' }}>{verbForm.example}</span>
+                  <strong style={{ color: '#DAA520' }}>Examples:</strong> <span style={{ color: '#f1f5f9' }}>{verbForm.example}</span>
                 </div>
                 <div style={{ fontSize: '13px' }}>
-                  <strong style={{ color: '#90EE90' }}>Usage:</strong> <span style={{ color: '#5D4E37' }}>{verbForm.usage}</span>
+                  <strong style={{ color: '#90EE90' }}>Usage:</strong> <span style={{ color: '#f1f5f9' }}>{verbForm.usage}</span>
                 </div>
               </div>
             ))}
