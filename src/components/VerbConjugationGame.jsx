@@ -700,7 +700,7 @@ const VerbConjugationGame = ({ onBack }) => {
           
           <div className="controls-row">
             <div className="control-group">
-              <label className="control-label" style={{ color: '#FF6B6B' }}>⏰ TIME</label>
+              <label className="control-label">⏰ TIME</label>
               <div className="button-group">
                 <button
                   className={`setting-button all-button ${['present', 'past', 'future'].every(time => settings.time.includes(time)) ? 'active' : ''}`}
@@ -721,7 +721,7 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>
             
             <div className="control-group">
-              <label className="control-label" style={{ color: '#4ECDC4' }}>📚 TENSE</label>
+              <label className="control-label">📚 TENSE</label>
               <div className="button-group">
                 <button
                   className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
@@ -744,7 +744,7 @@ const VerbConjugationGame = ({ onBack }) => {
           
           <div className="controls-row">
             <div className="control-group">
-              <label className="control-label" style={{ color: '#45B7D1' }}>📝 FORM</label>
+              <label className="control-label">📝 FORM</label>
               <div className="button-group">
                 <button
                   className={`setting-button all-button ${['affirmative', 'negative', 'question'].every(form => settings.form.includes(form)) ? 'active' : ''}`}
@@ -765,7 +765,7 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>
             
             <div className="control-group">
-              <label className="control-label" style={{ color: '#96CEB4' }}>🔤 VERB TYPE</label>
+              <label className="control-label">🔤 VERB TYPE</label>
               <div className="button-group">
                 <button
                   className={`setting-button all-button ${['regular', 'irregular'].every(type => settings.verbType.includes(type)) ? 'active' : ''}`}
