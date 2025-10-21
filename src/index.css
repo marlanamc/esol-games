@@ -1059,3 +1059,13 @@ body::before {
   margin-top: 8px;
   font-style: italic;
 }
+
+.all-button {
+  font-weight: 600;
+  border-color: var(--primary-color) !important;
+}
+
+.all-button.active {
+  background: var(--primary-color) !important;
+  color: white !important;
+}

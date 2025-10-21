@@ -155,6 +155,27 @@ const VerbConjugationGame = ({ onBack }) => {
     })
   }
 
+  const toggleAll = (category, allOptions) => {
+    setSettings(prev => {
+      const currentArray = prev[category]
+      const isAllSelected = allOptions.every(option => currentArray.includes(option))
+      
+      if (isAllSelected) {
+        // If all are selected, deselect all (but keep at least one)
+        return {
+          ...prev,
+          [category]: [allOptions[0]] // Keep the first option
+        }
+      } else {
+        // If not all are selected, select all
+        return {
+          ...prev,
+          [category]: [...allOptions]
+        }
+      }
+    })
+  }
+
   const normalizeAnswer = (answer) => {
     return answer.toLowerCase()
       .trim()
@@ -681,13 +702,19 @@ const VerbConjugationGame = ({ onBack }) => {
             <div className="control-group">
               <label className="control-label" style={{ color: '#FF6B6B' }}>⏰ TIME</label>
               <div className="button-group">
+                <button
+                  className={`setting-button all-button ${['present', 'past', 'future'].every(time => settings.time.includes(time)) ? 'active' : ''}`}
+                  onClick={() => toggleAll('time', ['present', 'past', 'future'])}
+                >
+                  ✓ All Times
+                </button>
                 {['present', 'past', 'future'].map(time => (
                   <button
                     key={time}
                     className={`setting-button ${settings.time.includes(time) ? 'active' : ''}`}
                     onClick={() => toggleSetting('time', time)}
                   >
-                    {time}
+                    {settings.time.includes(time) && '✓ '}{time}
                   </button>
                 ))}
               </div>
@@ -696,13 +723,19 @@ const VerbConjugationGame = ({ onBack }) => {
             <div className="control-group">
               <label className="control-label" style={{ color: '#4ECDC4' }}>📚 TENSE</label>
               <div className="button-group">
+                <button
+                  className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
+                  onClick={() => toggleAll('tense', ['simple', 'continuous', 'perfect', 'perfect continuous'])}
+                >
+                  ✓ All Tenses
+                </button>
                 {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
                   <button
                     key={tense}
                     className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
                     onClick={() => toggleSetting('tense', tense)}
                   >
-                    {tense}
+                    {settings.tense.includes(tense) && '✓ '}{tense}
                   </button>
                 ))}
               </div>
@@ -713,13 +746,19 @@ const VerbConjugationGame = ({ onBack }) => {
             <div className="control-group">
               <label className="control-label" style={{ color: '#45B7D1' }}>📝 FORM</label>
               <div className="button-group">
+                <button
+                  className={`setting-button all-button ${['affirmative', 'negative', 'question'].every(form => settings.form.includes(form)) ? 'active' : ''}`}
+                  onClick={() => toggleAll('form', ['affirmative', 'negative', 'question'])}
+                >
+                  ✓ All Forms
+                </button>
                 {['affirmative', 'negative', 'question'].map(form => (
                   <button
                     key={form}
                     className={`setting-button ${settings.form.includes(form) ? 'active' : ''}`}
                     onClick={() => toggleSetting('form', form)}
                   >
-                    {form}
+                    {settings.form.includes(form) && '✓ '}{form}
                   </button>
                 ))}
               </div>
@@ -728,13 +767,19 @@ const VerbConjugationGame = ({ onBack }) => {
             <div className="control-group">
               <label className="control-label" style={{ color: '#96CEB4' }}>🔤 VERB TYPE</label>
               <div className="button-group">
+                <button
+                  className={`setting-button all-button ${['regular', 'irregular'].every(type => settings.verbType.includes(type)) ? 'active' : ''}`}
+                  onClick={() => toggleAll('verbType', ['regular', 'irregular'])}
+                >
+                  ✓ All Types
+                </button>
                 {['regular', 'irregular'].map(type => (
                   <button
                     key={type}
                     className={`setting-button ${settings.verbType.includes(type) ? 'active' : ''}`}
                     onClick={() => toggleSetting('verbType', type)}
                   >
-                    {type}
+                    {settings.verbType.includes(type) && '✓ '}{type}
                   </button>
                 ))}
               </div>
