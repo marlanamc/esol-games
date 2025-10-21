@@ -702,11 +702,20 @@ const VerbConjugationGame = ({ onBack }) => {
         <div className="game-instructions">
           <h3>How to Play</h3>
           <ol>
-            <li>Select the options from the dropdown menus or challenge yourself to any time, tense, or form!</li>
+            <li>Click the buttons below to select which times, tenses, forms, and verb types you want to practice!</li>
             <li><strong>Time:</strong> Present, Past, or Future</li>
             <li><strong>Verb Tense:</strong> Simple, Continuous, Perfect, or Perfect Continuous</li>
             <li><strong>Form:</strong> Affirmative, Negative, or Question</li>
+            <li><strong>Verb Type:</strong> Regular or Irregular verbs</li>
           </ol>
+          
+          <h4>Game Settings:</h4>
+          <ul>
+            <li>Click any button to select/deselect that option</li>
+            <li>You can choose multiple options in each category</li>
+            <li>Use "✓ All" buttons to quickly select everything</li>
+            <li>At least one option must be selected in each category</li>
+          </ul>
           
           <h4>Examples:</h4>
           <ul>
@@ -919,11 +928,20 @@ const VerbConjugationGame = ({ onBack }) => {
         <div className="game-instructions">
           <h3>How to Play</h3>
           <ol>
-            <li>Select the options from the dropdown menus or challenge yourself to any time, tense, or form!</li>
+            <li>Click the buttons below to select which times, tenses, forms, and verb types you want to practice!</li>
             <li><strong>Time:</strong> Present, Past, or Future</li>
             <li><strong>Verb Tense:</strong> Simple, Continuous, Perfect, or Perfect Continuous</li>
             <li><strong>Form:</strong> Affirmative, Negative, or Question</li>
+            <li><strong>Verb Type:</strong> Regular or Irregular verbs</li>
           </ol>
+          
+          <h4>Game Settings:</h4>
+          <ul>
+            <li>Click any button to select/deselect that option</li>
+            <li>You can choose multiple options in each category</li>
+            <li>Use "✓ All" buttons to quickly select everything</li>
+            <li>At least one option must be selected in each category</li>
+          </ul>
           
           <h4>Examples:</h4>
           <ul>
