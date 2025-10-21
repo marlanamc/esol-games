@@ -598,8 +598,6 @@ const VerbConjugationGame = ({ onBack }) => {
       } else {
         checkAnswer()
       }
-    } else if (e.key === 'ArrowRight') {
-      nextQuestion()
     }
   }
 
@@ -706,8 +704,7 @@ const VerbConjugationGame = ({ onBack }) => {
             <li>Both full forms (will not, is not) and contractions (won't, isn't) are accepted</li>
             <li>Don't forget the question mark (?) for questions</li>
             <li>Answers are not case sensitive</li>
-            <li>Use Enter/Return to check your answer</li>
-            <li>Use right arrow (→) for a new question</li>
+            <li>Use Enter/Return to check your answer or go to next question</li>
           </ul>
         </div>
       )}
@@ -868,8 +865,7 @@ const VerbConjugationGame = ({ onBack }) => {
             <li>Both full forms (will not, is not) and contractions (won't, isn't) are accepted</li>
             <li>Don't forget the question mark (?) for questions</li>
             <li>Answers are not case sensitive</li>
-            <li>Use Enter/Return to check your answer</li>
-            <li>Use right arrow (→) for a new question</li>
+            <li>Use Enter/Return to check your answer or go to next question</li>
           </ul>
         </div>
       )}
