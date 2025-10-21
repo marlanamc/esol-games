@@ -781,7 +781,7 @@ const VerbConjugationGame = ({ onBack }) => {
         <h1 className="nav-title">Verb Conjugation Challenge</h1>
         <button className="btn btn-secondary" onClick={resetGame}>
           <RotateCcw size={20} />
-          Reset Game
+          Change Game Settings
         </button>
       </nav>
 
@@ -855,7 +855,7 @@ const VerbConjugationGame = ({ onBack }) => {
         <div className="question-container">
           <div className="question-header">
             <h2 className="question-text" style={{ fontSize: '24px' }}>
-              Conjugate: <strong>{currentGame.currentVerb.infinitive}</strong>
+              Conjugate: <strong style={{ textDecoration: 'underline', textDecorationColor: '#6366f1', textDecorationThickness: '3px' }}>{currentGame.currentVerb.infinitive}</strong>
             </h2>
             <div className="question-details">
               <div className="concept-group" style={{ 

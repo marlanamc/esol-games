@@ -467,7 +467,7 @@ const VerbFormsGame = ({ onBack }) => {
         <h1 className="nav-title">All Verb Form Master</h1>
         <button className="btn btn-secondary" onClick={resetGame}>
           <RotateCcw size={20} />
-          Reset Game
+          Change Game Settings
         </button>
       </nav>
 

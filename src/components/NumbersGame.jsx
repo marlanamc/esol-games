@@ -402,7 +402,7 @@ const NumbersGame = ({ onBack }) => {
         <h1 className="nav-title">Numbers to English Words</h1>
         <button className="btn btn-secondary" onClick={resetGame}>
           <RotateCcw size={20} />
-          Reset Game
+          Change Game Settings
         </button>
       </nav>
 
