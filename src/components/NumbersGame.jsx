@@ -476,8 +476,7 @@ const NumbersGame = ({ onBack }) => {
         )}
 
       {showFeedback && (
-        <div className={`feedback ${feedback.includes('Correct') ? 'correct' : 'incorrect'}`} style={{ fontSize: '18px', padding: '16px 24px', margin: '16px auto', maxWidth: '600px', borderRadius: '8px' }}>
-          {feedback}
+        <div className={`feedback ${feedback.includes('Correct') ? 'correct' : 'incorrect'}`} style={{ fontSize: '18px', padding: '16px 24px', margin: '16px auto', maxWidth: '600px', borderRadius: '8px' }} dangerouslySetInnerHTML={{ __html: feedback }}>
         </div>
       )}
 
