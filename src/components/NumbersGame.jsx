@@ -261,7 +261,7 @@ const NumbersGame = ({ onBack }) => {
         streak: prev.streak + 1,
         questionCount: prev.questionCount + 1
       }))
-      setFeedback(`Correct! Well done! **Answer:** ${formatAnswerForDisplay(userAnswer)}. +${currentGame.streak + 1} points`)
+      setFeedback(`Correct! Well done! <strong>Answer:</strong> ${formatAnswerForDisplay(userAnswer)}. +${currentGame.streak + 1} points`)
     } else {
       setCurrentGame(prev => ({
         ...prev,
