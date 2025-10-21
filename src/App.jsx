@@ -672,33 +672,6 @@ const HomePage = () => {
         position: 'relative',
         overflow: 'hidden'
       }}>
-        <Link 
-          to="/teaching" 
-          style={{
-            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-            color: 'white',
-            textDecoration: 'none',
-            borderRadius: '8px',
-            padding: '8px 16px',
-            fontSize: '14px',
-            fontWeight: '600',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.transform = 'translateY(-2px)'
-            e.target.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.4)'
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.transform = 'translateY(0)'
-            e.target.style.boxShadow = 'none'
-          }}
-        >
-          <GraduationCap size={16} />
-          Learn Verb Forms
-        </Link>
         <h1 className="nav-title" style={{
           fontSize: 'clamp(18px, 4vw, 28px)',
           fontWeight: '800',
@@ -748,6 +721,35 @@ const HomePage = () => {
           maxWidth: '600px',
           margin: '0 auto 24px auto'
         }}>Interactive grammar games for ESOL students</p>
+        
+        <Link 
+          to="/teaching" 
+          style={{
+            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            fontSize: '14px',
+            fontWeight: '600',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'all 0.3s ease',
+            marginBottom: '32px'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-2px)'
+            e.target.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.4)'
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)'
+            e.target.style.boxShadow = 'none'
+          }}
+        >
+          <GraduationCap size={16} />
+          Learn Verb Forms
+        </Link>
       </div>
 
       <div className="games-grid" style={{
