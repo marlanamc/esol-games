@@ -530,7 +530,7 @@ const VerbFormsGame = ({ onBack }) => {
         )}
 
       {showFeedback && (
-        <div className={`feedback ${feedback.includes('Correct') ? 'correct' : 'incorrect'}`} style={{ fontSize: '18px', padding: '16px 24px', margin: '16px auto', maxWidth: '600px', borderRadius: '8px' }}>
+        <div className={`feedback ${feedback.startsWith('Correct') ? 'correct' : 'incorrect'}`} style={{ fontSize: '18px', padding: '16px 24px', margin: '16px auto', maxWidth: '600px', borderRadius: '8px' }}>
           {feedback}
         </div>
       )}
@@ -560,7 +560,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V1"
-                  disabled={showFeedback && feedback.includes('Correct')}
+                  disabled={showFeedback && feedback.startsWith('Correct')}
                 />
               )}
             </div>
@@ -583,7 +583,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V1-3rd"
-                  disabled={showFeedback && feedback.includes('Correct')}
+                  disabled={showFeedback && feedback.startsWith('Correct')}
                 />
               )}
             </div>
@@ -604,7 +604,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V1-ing"
-                  disabled={showFeedback && feedback.includes('Correct')}
+                  disabled={showFeedback && feedback.startsWith('Correct')}
                 />
               )}
             </div>
@@ -625,7 +625,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V2"
-                  disabled={showFeedback && feedback.includes('Correct')}
+                  disabled={showFeedback && feedback.startsWith('Correct')}
                 />
               )}
             </div>
@@ -646,7 +646,7 @@ const VerbFormsGame = ({ onBack }) => {
                   }))}
                   onKeyPress={handleKeyPress}
                   placeholder="V3"
-                  disabled={showFeedback && feedback.includes('Correct')}
+                  disabled={showFeedback && feedback.startsWith('Correct')}
                 />
               )}
             </div>
@@ -657,7 +657,7 @@ const VerbFormsGame = ({ onBack }) => {
               className="btn btn-primary" 
               style={{ fontSize: '16px', padding: '12px 24px' }}
               onClick={checkAnswer}
-              disabled={showFeedback && feedback.includes('Correct')}
+              disabled={showFeedback && feedback.startsWith('Correct')}
             >
               Check Answer
             </button>
