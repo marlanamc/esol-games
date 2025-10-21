@@ -66,6 +66,15 @@ const VerbFormsGame = ({ onBack }) => {
 
   // Verbs now come exclusively from Google Sheets
 
+  // Field name mapping for feedback
+  const fieldNameMap = {
+    base: 'V1',
+    third: 'V1-3rd', 
+    gerund: 'V1-ing',
+    past: 'V2',
+    participle: 'V3'
+  }
+
   const questionTypes = {
     base: { display: 'Base Form (V1)', field: 'base', description: 'The basic form of the verb' },
     past: { display: 'Past Simple (V2)', field: 'past', description: 'Used for completed actions in the past' },
@@ -198,7 +207,7 @@ const VerbFormsGame = ({ onBack }) => {
     console.log('Empty fields:', emptyFields)
     
     if (emptyFields.length > 0) {
-      setFeedback(`Please fill in all the missing forms! Missing: ${emptyFields.join(', ')}`)
+      setFeedback(`Please fill in all the missing forms! Missing: ${emptyFields.map(field => fieldNameMap[field]).join(', ')}`)
       setShowFeedback(true)
       return
     }
@@ -215,7 +224,7 @@ const VerbFormsGame = ({ onBack }) => {
       if (userAnswer === correctAnswer) {
         correctCount++
       } else {
-        incorrectAnswers.push(`${field}: "${correctAnswers[field]}"`)
+        incorrectAnswers.push(`${fieldNameMap[field]}: "${correctAnswers[field]}"`)
       }
     })
     
