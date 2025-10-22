@@ -750,38 +750,11 @@ const VerbConjugationGame = ({ onBack }) => {
             <p className="controls-instructions">Click buttons to select/deselect options. You can choose multiple options in each category.</p>
           </div>
 
-          {/* Tense Selection - First */}
-          <div className="controls-row" style={{ marginBottom: '24px' }}>
-            <div className="control-group" style={{ width: '100%' }}>
-              <label className="control-label">📚 SELECT TENSE(S) FOR CHALLENGE</label>
-              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
-                You can select one or multiple tenses for your challenge rounds.
-              </p>
-              <div className="button-group">
-                <button
-                  className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
-                  onClick={() => toggleAll('tense', ['simple', 'continuous', 'perfect', 'perfect continuous'])}
-                >
-                  ✓ All Tenses
-                </button>
-                {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
-                  <button
-                    key={tense}
-                    className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
-                    onClick={() => toggleSetting('tense', tense)}
-                  >
-                    {settings.tense.includes(tense) && '✓ '}{tense}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Challenge Rounds */}
+          {/* Tense Selection for Challenge Mode */}
           <div className="controls-row" style={{ marginBottom: '24px' }}>
             <div className="control-group" style={{ width: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-                <label className="control-label" style={{ marginBottom: 0 }}>🎯 CHALLENGE ROUNDS (⏱️ 1 min each)</label>
+                <label className="control-label" style={{ marginBottom: 0 }}>🎯 CHALLENGE MODE</label>
                 <div style={{ position: 'relative', display: 'inline-block' }}>
                   <button
                     style={{
@@ -820,7 +793,7 @@ const VerbConjugationGame = ({ onBack }) => {
                       border: '1px solid rgba(71, 85, 105, 0.5)',
                       borderRadius: '8px',
                       padding: '12px 16px',
-                      width: '300px',
+                      width: '400px',
                       fontSize: '13px',
                       color: '#cbd5e1',
                       boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
@@ -829,60 +802,38 @@ const VerbConjugationGame = ({ onBack }) => {
                       lineHeight: '1.5'
                     }}
                   >
-                    Choose a round below. Each round uses your selected tense(s) above.
+                    <strong>Challenge Rounds:</strong><br />
+                    Select tense(s) below, then use advanced settings to configure:<br />
+                    Round 1: Present + Selected Tense(s) + All Forms<br />
+                    Round 2: Past + Selected Tense(s) + All Forms<br />
+                    Round 3: Future + Selected Tense(s) + All Forms<br />
+                    Round 4: All Times + Selected Tense(s) + Affirmative Only<br />
+                    Round 5: All Times + Selected Tense(s) + Negative Only<br />
+                    Round 6: All Times + Selected Tense(s) + Question Only<br />
+                    Round 7: All Times + Selected Tense(s) + All Forms<br />
+                    Each round is 1 minute timed mode.
                   </div>
                 </div>
               </div>
-              <div className="button-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '8px' }}>
+              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
+                Select one or multiple tenses for your challenge.
+              </p>
+              <div className="button-group">
                 <button
-                  className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
-                  style={{ fontSize: '14px', padding: '12px' }}
+                  className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
+                  onClick={() => toggleAll('tense', ['simple', 'continuous', 'perfect', 'perfect continuous'])}
                 >
-                  Round 1<br />Present + Selected Tense(s)<br />All Forms
+                  ✓ All Tenses
                 </button>
-                <button
-                  className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['past'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
-                  style={{ fontSize: '14px', padding: '12px' }}
-                >
-                  Round 2<br />Past + Selected Tense(s)<br />All Forms
-                </button>
-                <button
-                  className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['future'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
-                  style={{ fontSize: '14px', padding: '12px' }}
-                >
-                  Round 3<br />Future + Selected Tense(s)<br />All Forms
-                </button>
-                <button
-                  className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], form: ['affirmative'], gameMode: 'timed' }))}
-                  style={{ fontSize: '14px', padding: '12px' }}
-                >
-                  Round 4<br />All Times + Selected Tense(s)<br />Affirmative Only
-                </button>
-                <button
-                  className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], form: ['negative'], gameMode: 'timed' }))}
-                  style={{ fontSize: '14px', padding: '12px' }}
-                >
-                  Round 5<br />All Times + Selected Tense(s)<br />Negative Only
-                </button>
-                <button
-                  className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], form: ['question'], gameMode: 'timed' }))}
-                  style={{ fontSize: '14px', padding: '12px' }}
-                >
-                  Round 6<br />All Times + Selected Tense(s)<br />Question Only
-                </button>
-                <button
-                  className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
-                  style={{ fontSize: '14px', padding: '12px' }}
-                >
-                  Round 7<br />All Times + Selected Tense(s)<br />All Forms
-                </button>
+                {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
+                  <button
+                    key={tense}
+                    className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
+                    onClick={() => toggleSetting('tense', tense)}
+                  >
+                    {settings.tense.includes(tense) && '✓ '}{tense}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
