@@ -631,8 +631,8 @@ const VerbConjugationGame = ({ onBack }) => {
       }))
       setFeedback(`Correct! Well done! +${currentGame.streak + 1} points`)
 
-      // Auto-advance to next question in timed mode
-      if (settings.gameMode === 'timed') {
+      // Auto-advance to next question in timed and challenge modes
+      if (settings.gameMode === 'timed' || settings.gameMode === 'challenge') {
         setTimeout(() => {
           nextQuestion()
         }, 2000)
