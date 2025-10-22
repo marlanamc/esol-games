@@ -780,10 +780,59 @@ const VerbConjugationGame = ({ onBack }) => {
           {/* Challenge Rounds */}
           <div className="controls-row" style={{ marginBottom: '24px' }}>
             <div className="control-group" style={{ width: '100%' }}>
-              <label className="control-label">🎯 CHALLENGE ROUNDS (⏱️ 1 min each)</label>
-              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
-                Choose a round below. Each round uses your selected tense(s) above.
-              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <label className="control-label" style={{ marginBottom: 0 }}>🎯 CHALLENGE ROUNDS (⏱️ 1 min each)</label>
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <button
+                    style={{
+                      background: 'rgba(71, 85, 105, 0.3)',
+                      border: '1px solid rgba(71, 85, 105, 0.5)',
+                      borderRadius: '50%',
+                      width: '24px',
+                      height: '24px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                      color: '#cbd5e1',
+                      padding: 0
+                    }}
+                    onMouseEnter={(e) => {
+                      const tooltip = e.target.nextSibling
+                      if (tooltip) tooltip.style.display = 'block'
+                    }}
+                    onMouseLeave={(e) => {
+                      const tooltip = e.target.nextSibling
+                      if (tooltip) tooltip.style.display = 'none'
+                    }}
+                  >
+                    i
+                  </button>
+                  <div
+                    style={{
+                      display: 'none',
+                      position: 'absolute',
+                      top: '30px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'rgba(30, 41, 59, 0.98)',
+                      border: '1px solid rgba(71, 85, 105, 0.5)',
+                      borderRadius: '8px',
+                      padding: '12px 16px',
+                      width: '300px',
+                      fontSize: '13px',
+                      color: '#cbd5e1',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                      zIndex: 1000,
+                      whiteSpace: 'normal',
+                      lineHeight: '1.5'
+                    }}
+                  >
+                    Choose a round below. Each round uses your selected tense(s) above.
+                  </div>
+                </div>
+              </div>
               <div className="button-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '8px' }}>
                 <button
                   className="setting-button"
