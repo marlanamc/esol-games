@@ -11,7 +11,8 @@ import {
   FileText,
   Type,
   PartyPopper,
-  AlarmClock
+  AlarmClock,
+  Lock
 } from 'lucide-react'
 
 const VerbConjugationGame = ({ onBack }) => {
@@ -37,6 +38,98 @@ const VerbConjugationGame = ({ onBack }) => {
     verbType: ['regular', 'irregular'],
     gameMode: 'practice' // 'practice', 'timed', or 'challenge'
   })
+  // UI settings model for redesigned Game Settings
+  const makeDefaultUISettings = () => ({
+    mode: 'practice',
+    timedSeconds: 60,
+    time: { all: true, items: [] },
+    tense: { all: true, items: [] },
+    form: { all: true, items: [] },
+    verbType: { all: true, items: [] },
+    challengePresetId: null
+  })
+  const [uiSettings, setUiSettings] = useState(makeDefaultUISettings())
+
+  // Persist/restore per-mode custom settings
+  const storageKeyForMode = (mode) => `vcg_settings_${mode}`
+  const saveModeState = (mode, state) => {
+    try {
+      const payload = JSON.stringify({
+        timedSeconds: state.timedSeconds,
+        time: state.time,
+        tense: state.tense,
+        form: state.form,
+        verbType: state.verbType
+      })
+      localStorage.setItem(storageKeyForMode(mode), payload)
+    } catch {}
+  }
+  const loadModeState = (mode) => {
+    try {
+      const raw = localStorage.getItem(storageKeyForMode(mode))
+      if (!raw) return null
+      const parsed = JSON.parse(raw)
+      return parsed
+    } catch { return null }
+  }
+
+  useEffect(() => {
+    // On mount, attempt restore for practice
+    const restored = loadModeState('practice')
+    if (restored) setUiSettings((s) => ({ ...s, ...restored }))
+  }, [])
+
+  // Helper to update a group with All vs specific logic
+  const updateGroupAll = (group) => {
+    setUiSettings((s) => {
+      const next = { ...s, [group]: { all: true, items: [] }, challengePresetId: s.mode === 'challenge' ? s.challengePresetId : s.challengePresetId }
+      if (s.mode !== 'challenge') saveModeState(s.mode, next)
+      return next
+    })
+  }
+  const updateGroupItem = (group, item) => {
+    setUiSettings((s) => {
+      const current = s[group]
+      if (current.all) {
+        const nextSet = { all: false, items: [item] }
+        const next = { ...s, [group]: nextSet }
+        if (s.mode !== 'challenge') saveModeState(s.mode, next)
+        return next
+      }
+      const exists = current.items.includes(item)
+      let items = exists ? current.items.filter((i) => i !== item) : [...current.items, item]
+      if (items.length === 0) {
+        items = []
+        const next = { ...s, [group]: { all: true, items } }
+        if (s.mode !== 'challenge') saveModeState(s.mode, next)
+        return next
+      }
+      const next = { ...s, [group]: { all: false, items } }
+      if (s.mode !== 'challenge') saveModeState(s.mode, next)
+      return next
+    })
+  }
+
+  const applyPreset = (preset) => {
+    setUiSettings((s) => ({
+      ...s,
+      mode: 'challenge',
+      challengePresetId: preset.id,
+      time: preset.time,
+      tense: preset.tense,
+      form: preset.form,
+      verbType: preset.verbType
+    }))
+  }
+
+  const summarizeSelection = (state) => {
+    const part = (ms, allLabel, labels) => ms.all ? allLabel : (ms.items.length ? ms.items.map((k) => labels[k] || k).join(', ') : allLabel)
+    const timeStr = part(state.time, 'All Times', { present: 'Present', past: 'Past', future: 'Future' })
+    const tenseStr = part(state.tense, 'All Tenses', { simple: 'Simple', continuous: 'Continuous', perfect: 'Perfect', perfectContinuous: 'Perfect Continuous' })
+    const formStr = part(state.form, 'All Forms', { affirmative: 'Affirmative', negative: 'Negative', question: 'Question' })
+    const typeStr = part(state.verbType, 'All Types', { regular: 'Regular', irregular: 'Irregular' })
+    return `${timeStr} • ${tenseStr} • ${formStr} • ${typeStr}`
+  }
   const [googleVerbs, setGoogleVerbs] = useState([])
   const [isLoadingVerbs, setIsLoadingVerbs] = useState(true)
   const [timeRemaining, setTimeRemaining] = useState(60)
@@ -194,6 +287,7 @@ const VerbConjugationGame = ({ onBack }) => {
     return settings.form[Math.floor(Math.random() * settings.form.length)]
   }
 
+  // Legacy controls: keep for any remaining UI, but new flow uses uiSettings above
   const toggleSetting = (category, value) => {
     setSettings(prev => {
       const currentArray = prev[category]
@@ -235,6 +329,64 @@ const VerbConjugationGame = ({ onBack }) => {
       }
     })
   }
+
+  // Challenge presets definition (UI state model)
+  const challengePresets = [
+    {
+      id: 'simple_all',
+      title: 'Simple, All Times, All Forms',
+      desc: 'Focus on Simple tense across all times and forms.',
+      time: { all: true, items: [] },
+      tense: { all: false, items: ['simple'] },
+      form: { all: true, items: [] },
+      verbType: { all: true, items: [] }
+    },
+    {
+      id: 'continuous_all',
+      title: 'Continuous, All Times, All Forms',
+      desc: 'Train Continuous tense with every time and form.',
+      time: { all: true, items: [] },
+      tense: { all: false, items: ['continuous'] },
+      form: { all: true, items: [] },
+      verbType: { all: true, items: [] }
+    },
+    {
+      id: 'perfect_all',
+      title: 'Perfect, All Times, All Forms',
+      desc: 'Practice Perfect across times and forms.',
+      time: { all: true, items: [] },
+      tense: { all: false, items: ['perfect'] },
+      form: { all: true, items: [] },
+      verbType: { all: true, items: [] }
+    },
+    {
+      id: 'mixed_all',
+      title: 'Mixed Tenses, All Times, All Forms',
+      desc: 'Simple, Continuous, and Perfect included.',
+      time: { all: true, items: [] },
+      tense: { all: false, items: ['simple', 'continuous', 'perfect'] },
+      form: { all: true, items: [] },
+      verbType: { all: true, items: [] }
+    },
+    {
+      id: 'questions_focus',
+      title: 'Question Forms Focus',
+      desc: 'Question form only with Simple tense.',
+      time: { all: true, items: [] },
+      tense: { all: false, items: ['simple'] },
+      form: { all: false, items: ['question'] },
+      verbType: { all: true, items: [] }
+    },
+    {
+      id: 'irregular_only',
+      title: 'Irregular Only Sampler',
+      desc: 'Irregular verbs only, Simple tense.',
+      time: { all: true, items: [] },
+      tense: { all: false, items: ['simple'] },
+      form: { all: true, items: [] },
+      verbType: { all: false, items: ['irregular'] }
+    }
+  ]
 
   const resetSettingsToDefaults = () => {
     setSettings(prev => ({
@@ -507,19 +659,35 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const startGame = () => {
+    // Map uiSettings to engine settings
+    const toArray = (ms, allArray) => (ms.all || !ms.items || ms.items.length === 0 ? allArray : ms.items)
+    const timeArr = toArray(uiSettings.time, ['present', 'past', 'future'])
+    const tenseArr = toArray(uiSettings.tense, ['simple', 'continuous', 'perfect', 'perfectContinuous']).map(t => t === 'perfectContinuous' ? 'perfect continuous' : t)
+    const formArr = toArray(uiSettings.form, ['affirmative', 'negative', 'question'])
+    const typeArr = toArray(uiSettings.verbType, ['regular', 'irregular'])
+
+    setSettings(prev => ({
+      ...prev,
+      gameMode: uiSettings.mode,
+      time: timeArr,
+      tense: tenseArr,
+      form: formArr,
+      verbType: typeArr
+    }))
+
     setGameStarted(true)
     setGameOver(false)
     setChallengeRound(1)
     setRoundScores({})
     setReadyForNextRound(false)
     
-    if (settings.gameMode === 'timed' || settings.gameMode === 'challenge') {
-      setTimeRemaining(60)
+    if (uiSettings.mode === 'timed' || uiSettings.mode === 'challenge') {
+      setTimeRemaining(uiSettings.timedSeconds || 60)
       setTimerActive(true)
     }
     
     // Apply challenge round config if in challenge mode
-    if (settings.gameMode === 'challenge') {
+    if (uiSettings.mode === 'challenge') {
       const roundConfig = getChallengeRoundConfig(1)
       setSettings(prev => ({
         ...prev,
@@ -916,7 +1084,175 @@ const VerbConjugationGame = ({ onBack }) => {
         </div>
       )}
 
+        {/* Redesigned Game Settings */}
         <div className="game-controls">
+          <div className="controls-header">
+            <h2 className="controls-title">Game Settings</h2>
+            <p className="controls-subtitle">Pick a mode, choose what to practice, then start.</p>
+          </div>
+
+          {/* Mode select */}
+          <div className="controls-row">
+            <div className="control-group" style={{ width: '100%' }}>
+              <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <Gamepad2 size={18} /> GAME MODE
+              </label>
+              <div role="radiogroup" aria-label="Game mode" className="game-mode-buttons" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                {[
+                  { id: 'practice', title: 'Practice', desc: 'Take your time. Get feedback after each answer.' },
+                  { id: 'timed', title: 'Timed (60s)', desc: 'Race the clock. Auto-advance on correct answers.' },
+                  { id: 'challenge', title: 'Challenge', desc: 'Preset rounds that follow our curriculum.' }
+                ].map((m) => (
+                  <button
+                    key={m.id}
+                    role="radio"
+                    aria-checked={uiSettings.mode === m.id}
+                    className={`setting-button ${uiSettings.mode === m.id ? 'active' : ''}`}
+                    style={{ flex: '1 1 260px', minWidth: '220px', textAlign: 'left' }}
+                    onClick={() => {
+                      setUiSettings((s) => {
+                        const base = { ...s, mode: m.id, challengePresetId: m.id === 'challenge' ? s.challengePresetId : null }
+                        const restored = loadModeState(m.id)
+                        const next = restored ? { ...base, ...restored, mode: m.id } : base
+                        if (m.id !== 'challenge') saveModeState(m.id, next)
+                        return next
+                      })
+                    }}
+                  >
+                    <div style={{ fontWeight: 700, marginBottom: 4 }}>{m.title}</div>
+                    <div style={{ fontSize: 12, opacity: 0.85 }}>{m.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Timed options */}
+          {uiSettings.mode === 'timed' && (
+            <div className="controls-row">
+              <div className="control-group" style={{ width: '100%' }}>
+                <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <Timer size={16}/> Round length
+                </label>
+                <div className="button-group">
+                  {[30, 60, 90].map((sec) => (
+                    <button
+                      key={sec}
+                      className={`setting-button ${uiSettings.timedSeconds === sec ? 'active' : ''}`}
+                      onClick={() => {
+                        setUiSettings((s) => { const next = { ...s, timedSeconds: sec }; saveModeState('timed', next); return next })
+                      }}
+                    >
+                      {sec}s
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Challenge presets */}
+          {uiSettings.mode === 'challenge' && (
+            <div className="controls-row">
+              <div className="control-group" style={{ width: '100%' }}>
+                <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <Target size={16}/> Challenge Presets
+                </label>
+                <div className="button-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+                  {challengePresets.map((p) => (
+                    <button
+                      key={p.id}
+                      className={`setting-button ${uiSettings.challengePresetId === p.id ? 'active' : ''}`}
+                      onClick={() => { applyPreset(p) }}
+                      aria-pressed={uiSettings.challengePresetId === p.id}
+                    >
+                      <div style={{ fontWeight: 700, marginBottom: 4 }}>{p.title}</div>
+                      <div style={{ fontSize: 12, opacity: 0.85 }}>{p.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Setting groups */}
+          {[
+            { key: 'time', icon: <Clock size={16}/>, title: 'TIME', allLabel: 'All Times', items: [
+              { id: 'present', label: 'present' }, { id: 'past', label: 'past' }, { id: 'future', label: 'future' }
+            ]},
+            { key: 'tense', icon: <BookOpen size={16}/>, title: 'TENSE', allLabel: 'All Tenses', items: [
+              { id: 'simple', label: 'simple' }, { id: 'continuous', label: 'continuous' }, { id: 'perfect', label: 'perfect' }, { id: 'perfectContinuous', label: 'perfect continuous' }
+            ]},
+            { key: 'form', icon: <FileText size={16}/>, title: 'FORM', allLabel: 'All Forms', items: [
+              { id: 'affirmative', label: 'affirmative' }, { id: 'negative', label: 'negative' }, { id: 'question', label: 'question' }
+            ]},
+            { key: 'verbType', icon: <Type size={16}/>, title: 'VERB TYPE', allLabel: 'All Types', items: [
+              { id: 'regular', label: 'regular' }, { id: 'irregular', label: 'irregular' }
+            ]}
+          ].map((group) => {
+            const locked = uiSettings.mode === 'challenge' && uiSettings.challengePresetId
+            const state = uiSettings[group.key]
+            return (
+              <div key={group.key} className="controls-row">
+                <div className="control-group">
+                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    {group.icon} {group.title} {locked && (<Lock size={14} style={{ opacity: 0.7 }} />)}
+                  </label>
+                  <div className="button-group">
+                    <button
+                      className={`setting-button all-button ${state.all ? 'active' : ''}`}
+                      aria-pressed={state.all}
+                      onClick={() => !locked && updateGroupAll(group.key)}
+                    >
+                      ✓ {group.allLabel}
+                    </button>
+                    {group.items.map((opt) => (
+                      <button
+                        key={opt.id}
+                        className={`setting-button ${!state.all && state.items.includes(opt.id) ? 'active' : ''}`}
+                        aria-pressed={!state.all && state.items.includes(opt.id)}
+                        onClick={() => !locked && updateGroupItem(group.key, opt.id)}
+                      >
+                        {!state.all && state.items.includes(opt.id) && '✓ '}{opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+
+          {/* Summary */}
+          <div className="controls-row" style={{ marginTop: '8px' }}>
+            <div className="control-group" style={{ width: '100%' }}>
+              <label className="control-label">Your Round</label>
+              <div aria-live="polite" style={{
+                background: 'rgba(99,102,241,0.12)',
+                border: '1px solid rgba(99,102,241,0.4)',
+                borderRadius: 8,
+                padding: '12px 16px',
+                color: '#e5e7eb'
+              }}>
+                {summarizeSelection(uiSettings)}
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="controls-row" style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 16 }}>
+            <button className="btn btn-secondary" onClick={() => {
+              const def = makeDefaultUISettings(); setUiSettings(def); saveModeState('practice', def)
+            }}>
+              Reset to Defaults
+            </button>
+            <button className="btn btn-primary" onClick={startGame}>
+              {uiSettings.mode === 'practice' ? 'Start Practice' : uiSettings.mode === 'timed' ? 'Start Timed Round' : 'Start Challenge'}
+            </button>
+          </div>
+        </div>
+
+        {/* Hide legacy controls below (kept for reference) */}
+        <div className="game-controls" style={{ display: 'none' }}>
           <div className="controls-header">
             <h2 className="controls-title">Game Settings</h2>
             <p className="controls-subtitle">Customize your practice session</p>
