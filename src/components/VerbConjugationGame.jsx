@@ -153,6 +153,12 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const getRandomTime = () => {
+    // In challenge mode, time is constrained by the current round
+    if (settings.gameMode === 'challenge') {
+      const roundConfig = getChallengeRoundConfig(challengeRound)
+      const options = roundConfig.time
+      return options[Math.floor(Math.random() * options.length)]
+    }
     return settings.time[Math.floor(Math.random() * settings.time.length)]
   }
 
@@ -166,6 +172,12 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const getRandomForm = () => {
+    // In challenge mode, form is constrained by the current round
+    if (settings.gameMode === 'challenge') {
+      const roundConfig = getChallengeRoundConfig(challengeRound)
+      const options = roundConfig.form
+      return options[Math.floor(Math.random() * options.length)]
+    }
     return settings.form[Math.floor(Math.random() * settings.form.length)]
   }
 
@@ -450,6 +462,27 @@ const VerbConjugationGame = ({ onBack }) => {
     }
   }
 
+  const getRoundName = (round) => {
+    switch (round) {
+      case 1:
+        return 'Present Only'
+      case 2:
+        return 'Past Only'
+      case 3:
+        return 'Future Only'
+      case 4:
+        return 'Affirmative Only'
+      case 5:
+        return 'Negative Only'
+      case 6:
+        return 'Question Only'
+      case 7:
+        return 'All Times/All Forms'
+      default:
+        return `Round ${round}`
+    }
+  }
+
   const startGame = () => {
     setGameStarted(true)
     setGameOver(false)
@@ -706,16 +739,23 @@ const VerbConjugationGame = ({ onBack }) => {
       // Start timer for next round
       setTimeRemaining(60)
       setTimerActive(true)
-      
-      // Generate first question
-      setTimeout(() => {
-        generateQuestion()
-      }, 100)
     } else {
       // All rounds complete
       setGameOver(true)
     }
   }
+
+  // Ensure the first question of each challenge round uses the new round config
+  useEffect(() => {
+    if (
+      gameStarted &&
+      settings.gameMode === 'challenge' &&
+      !readyForNextRound &&
+      currentGame.currentVerb === null
+    ) {
+      generateQuestion()
+    }
+  }, [challengeRound])
 
   const resetGame = () => {
     setCurrentGame({
@@ -931,13 +971,13 @@ const VerbConjugationGame = ({ onBack }) => {
                     >
                       <strong>Challenge Rounds:</strong><br />
                       Select tense(s) below, then configure:<br />
-                      Round 1: Present + Tense(s) + All Forms<br />
-                      Round 2: Past + Tense(s) + All Forms<br />
-                      Round 3: Future + Tense(s) + All Forms<br />
-                      Round 4: All Times + Tense(s) + Affirmative<br />
-                      Round 5: All Times + Tense(s) + Negative<br />
-                      Round 6: All Times + Tense(s) + Question<br />
-                      Round 7: All Times + Tense(s) + All Forms<br />
+                      1: Present Only<br />
+                      2: Past Only<br />
+                      3: Future Only<br />
+                      4: Affirmative Only<br />
+                      5: Negative Only<br />
+                      6: Question Only<br />
+                      7: All Times/All Forms<br />
                       ⏱️ 1 minute timed
                     </div>
                   </div>
@@ -1113,17 +1153,29 @@ const VerbConjugationGame = ({ onBack }) => {
             </button>
           </div>
         </div>
+        {settings.gameMode === 'challenge' && (
+          <div
+            className="round-banner"
+            style={{
+              maxWidth: '900px',
+              margin: '12px auto 0 auto',
+              padding: '16px 20px',
+              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(139, 92, 246, 0.18))',
+              border: '2px solid rgba(99, 102, 241, 0.5)',
+              borderRadius: '16px',
+              textAlign: 'left'
+            }}
+          >
+            <div style={{ fontSize: 'clamp(20px, 3.2vw, 28px)', fontWeight: 800, color: '#c7d2fe', lineHeight: 1.2 }}>
+              Round {challengeRound}: {getRoundName(challengeRound)}
+            </div>
+            <div style={{ fontSize: '12px', letterSpacing: '0.12em', color: '#cbd5e1', opacity: 0.9, marginTop: '4px' }}>
+              CHALLENGE
+            </div>
+          </div>
+        )}
         
         <div className="game-stats">
-          {settings.gameMode === 'challenge' && (
-            <div className="stat-item" style={{ 
-              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2))',
-              border: '2px solid rgba(99, 102, 241, 0.5)'
-            }}>
-              <span className="stat-number" style={{ color: '#c7d2fe' }}>Round {challengeRound}/7</span>
-              <span className="stat-label">Challenge</span>
-            </div>
-          )}
           <div className="stat-item">
             <span className="stat-number">{currentGame.score}</span>
             <span className="stat-label">Score</span>
@@ -1154,6 +1206,39 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>
           )}
         </div>
+
+        {settings.gameMode === 'challenge' && (
+          (() => {
+            const rounds = Object.values(roundScores || {})
+            const prevCorrect = rounds.reduce((sum, r) => sum + (r?.score || 0), 0)
+            const prevQuestions = rounds.reduce((sum, r) => sum + (r?.questions || 0), 0)
+            const includeCurrent = !readyForNextRound && !gameOver
+            const totalCorrect = prevCorrect + (includeCurrent ? currentGame.score : 0)
+            const totalQuestions = prevQuestions + (includeCurrent ? currentGame.questionCount : 0)
+            const overallAccuracy = Math.round((totalCorrect / Math.max(totalQuestions || 1, 1)) * 100)
+            return (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: '12px',
+                marginTop: '12px'
+              }}>
+                <div className="stat-item" style={{ background: 'rgba(71, 85, 105, 0.25)' }}>
+                  <span className="stat-number">{totalCorrect}</span>
+                  <span className="stat-label">All Rounds Correct</span>
+                </div>
+                <div className="stat-item" style={{ background: 'rgba(71, 85, 105, 0.25)' }}>
+                  <span className="stat-number">{totalQuestions}</span>
+                  <span className="stat-label">All Rounds Questions</span>
+                </div>
+                <div className="stat-item" style={{ background: 'rgba(71, 85, 105, 0.25)' }}>
+                  <span className="stat-number">{overallAccuracy}%</span>
+                  <span className="stat-label">All Rounds Accuracy</span>
+                </div>
+              </div>
+            )
+          })()
+        )}
       </div>
 
       {showInstructions && (
@@ -1220,7 +1305,7 @@ const VerbConjugationGame = ({ onBack }) => {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             animation: 'slideDown 0.6s ease-out'
-          }}>Round {challengeRound} Complete!</h2>
+          }}>Round {challengeRound}: {getRoundName(challengeRound)} Complete!</h2>
           <div style={{ fontSize: '24px', marginBottom: '32px' }}>
             <div style={{ marginBottom: '16px', animation: 'fadeInUp 0.7s ease-out' }}>
               <span style={{ 
@@ -1254,7 +1339,7 @@ const VerbConjugationGame = ({ onBack }) => {
               boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)'
             }}
           >
-            Ready for Round {challengeRound + 1} →
+            Ready for Round {challengeRound + 1}: {getRoundName(challengeRound + 1)} →
           </button>
         </div>
       )}
@@ -1282,6 +1367,34 @@ const VerbConjugationGame = ({ onBack }) => {
             backgroundClip: 'text',
             animation: 'slideDown 0.6s ease-out'
           }}>🎉 Challenge Complete!</h2>
+          {(() => {
+            const rounds = Object.values(roundScores || {})
+            const totalCorrect = rounds.reduce((sum, r) => sum + (r?.score || 0), 0)
+            const totalQuestions = rounds.reduce((sum, r) => sum + (r?.questions || 0), 0)
+            const overallAccuracy = Math.round((totalCorrect / Math.max(totalQuestions || 1, 1)) * 100)
+            return (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                gap: '12px',
+                marginBottom: '28px'
+              }}>
+                <div style={{ background: 'rgba(71, 85, 105, 0.3)', border: '1px solid rgba(71, 85, 105, 0.5)', borderRadius: '8px', padding: '16px' }}>
+                  <div style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '6px' }}>Total Correct</div>
+                  <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#10b981' }}>{totalCorrect}</div>
+                </div>
+                <div style={{ background: 'rgba(71, 85, 105, 0.3)', border: '1px solid rgba(71, 85, 105, 0.5)', borderRadius: '8px', padding: '16px' }}>
+                  <div style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '6px' }}>Total Questions</div>
+                  <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#f1f5f9' }}>{totalQuestions}</div>
+                </div>
+                <div style={{ background: 'rgba(71, 85, 105, 0.3)', border: '1px solid rgba(71, 85, 105, 0.5)', borderRadius: '8px', padding: '16px' }}>
+                  <div style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '6px' }}>Overall Accuracy</div>
+                  <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#10b981' }}>{overallAccuracy}%</div>
+                </div>
+              </div>
+            )
+          })()}
+
           <div style={{ marginBottom: '32px' }}>
             <div style={{ fontSize: '20px', color: '#cbd5e1', marginBottom: '24px' }}>
               Round Scores Summary
@@ -1456,6 +1569,17 @@ const VerbConjugationGame = ({ onBack }) => {
             onChange={(e) => setUserAnswer(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Enter your answer..."
+            autoComplete="off"
+            name="verb-answer"
+            id="verb-answer"
+            inputMode="text"
+            autoCorrect="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            data-lpignore="true"
+            data-1p-ignore
+            data-bwignore
+            data-form-type="other"
             disabled={showFeedback && feedback.includes('Correct')}
           />
           
