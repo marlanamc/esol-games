@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Hash, ArrowLeft, RotateCcw } from 'lucide-react'
 
 const NumbersGame = ({ onBack }) => {
@@ -20,6 +20,8 @@ const NumbersGame = ({ onBack }) => {
   const [settings, setSettings] = useState({
     category: 'Basic Numbers (0-99)'
   })
+  
+  const inputRef = useRef(null)
 
   const numberWords = {
     0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five',
@@ -218,6 +220,13 @@ const NumbersGame = ({ onBack }) => {
     setUserAnswer('')
     setShowFeedback(false)
     setFeedback('')
+    
+    // Auto-focus the input after a brief delay to ensure DOM is updated
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
+    }, 100)
   }
 
   const normalizeAnswer = (answer) => {
@@ -495,6 +504,7 @@ const NumbersGame = ({ onBack }) => {
           </div>
           
           <input
+            ref={inputRef}
             type="text"
             className="answer-input"
             style={{ fontSize: '18px', padding: '12px' }}

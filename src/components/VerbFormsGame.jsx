@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { BookOpen, ArrowLeft, RotateCcw } from 'lucide-react'
 
 const VerbFormsGame = ({ onBack }) => {
@@ -22,6 +22,12 @@ const VerbFormsGame = ({ onBack }) => {
   })
   const [verbsData, setVerbsData] = useState(null)
   const [loading, setLoading] = useState(true)
+  
+  const baseInputRef = useRef(null)
+  const thirdInputRef = useRef(null)
+  const gerundInputRef = useRef(null)
+  const pastInputRef = useRef(null)
+  const participleInputRef = useRef(null)
 
   // Load verbs from Google Sheets
   useEffect(() => {
@@ -186,6 +192,19 @@ const VerbFormsGame = ({ onBack }) => {
     setUserAnswer('')
     setShowFeedback(false)
     setFeedback('')
+    
+    // Auto-focus the first input field after a brief delay
+    setTimeout(() => {
+      const fieldOrder = ['base', 'third', 'gerund', 'past', 'participle']
+      const refs = [baseInputRef, thirdInputRef, gerundInputRef, pastInputRef, participleInputRef]
+      
+      for (let i = 0; i < fieldOrder.length; i++) {
+        if (formsToHide.includes(fieldOrder[i]) && refs[i].current) {
+          refs[i].current.focus()
+          break
+        }
+      }
+    }, 100)
   }
 
   const startGame = () => {
@@ -543,6 +562,7 @@ const VerbFormsGame = ({ onBack }) => {
                 <div style={{ fontSize: '18px', color: '#000000' }}>{currentGame.currentVerb.base}</div>
               ) : (
                 <input
+                  ref={baseInputRef}
                   type="text"
                   style={{ fontSize: '16px', padding: '8px', width: '100%', textAlign: 'center', backgroundColor: '#ffffff', border: '1px solid #ccc', borderRadius: '4px', color: '#000000' }}
                   value={currentGame.userAnswers?.base || ''}
@@ -566,6 +586,7 @@ const VerbFormsGame = ({ onBack }) => {
                 </div>
               ) : (
                 <input
+                  ref={thirdInputRef}
                   type="text"
                   style={{ fontSize: '16px', padding: '8px', width: '100%', textAlign: 'center', backgroundColor: '#ffffff', border: '1px solid #ccc', borderRadius: '4px', color: '#000000' }}
                   value={currentGame.userAnswers?.third || ''}
@@ -587,6 +608,7 @@ const VerbFormsGame = ({ onBack }) => {
                 <div style={{ fontSize: '18px', color: '#000000' }}>{currentGame.currentVerb.gerund}</div>
               ) : (
                 <input
+                  ref={gerundInputRef}
                   type="text"
                   style={{ fontSize: '16px', padding: '8px', width: '100%', textAlign: 'center', backgroundColor: '#ffffff', border: '1px solid #ccc', borderRadius: '4px', color: '#000000' }}
                   value={currentGame.userAnswers?.gerund || ''}
@@ -608,6 +630,7 @@ const VerbFormsGame = ({ onBack }) => {
                 <div style={{ fontSize: '18px', color: '#000000' }}>{currentGame.currentVerb.past}</div>
               ) : (
                 <input
+                  ref={pastInputRef}
                   type="text"
                   style={{ fontSize: '16px', padding: '8px', width: '100%', textAlign: 'center', backgroundColor: '#ffffff', border: '1px solid #ccc', borderRadius: '4px', color: '#000000' }}
                   value={currentGame.userAnswers?.past || ''}
@@ -629,6 +652,7 @@ const VerbFormsGame = ({ onBack }) => {
                 <div style={{ fontSize: '18px', color: '#000000' }}>{currentGame.currentVerb.participle}</div>
               ) : (
                 <input
+                  ref={participleInputRef}
                   type="text"
                   style={{ fontSize: '16px', padding: '8px', width: '100%', textAlign: 'center', backgroundColor: '#ffffff', border: '1px solid #ccc', borderRadius: '4px', color: '#000000' }}
                   value={currentGame.userAnswers?.participle || ''}

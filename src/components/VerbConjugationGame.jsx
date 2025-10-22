@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Target, ArrowLeft, RotateCcw } from 'lucide-react'
 
 const VerbConjugationGame = ({ onBack }) => {
@@ -29,6 +29,8 @@ const VerbConjugationGame = ({ onBack }) => {
   const [timeRemaining, setTimeRemaining] = useState(60)
   const [timerActive, setTimerActive] = useState(false)
   const [gameOver, setGameOver] = useState(false)
+  
+  const inputRef = useRef(null)
 
   // Load verbs from Google Sheets
   useEffect(() => {
@@ -402,6 +404,13 @@ const VerbConjugationGame = ({ onBack }) => {
     setUserAnswer('')
     setShowFeedback(false)
     setFeedback('')
+    
+    // Auto-focus the input after a brief delay to ensure DOM is updated
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
+    }, 100)
   }
 
   const startGame = () => {
@@ -1073,6 +1082,7 @@ const VerbConjugationGame = ({ onBack }) => {
           </div>
           
           <input
+            ref={inputRef}
             type="text"
             className="answer-input"
             style={{ fontSize: '18px', padding: '12px' }}
