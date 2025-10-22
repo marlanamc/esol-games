@@ -22,13 +22,16 @@ const VerbConjugationGame = ({ onBack }) => {
     tense: ['simple', 'continuous', 'perfect', 'perfect continuous'],
     form: ['affirmative', 'negative', 'question'],
     verbType: ['regular', 'irregular'],
-    gameMode: 'practice' // 'practice' or 'timed'
+    gameMode: 'practice' // 'practice', 'timed', or 'challenge'
   })
   const [googleVerbs, setGoogleVerbs] = useState([])
   const [isLoadingVerbs, setIsLoadingVerbs] = useState(true)
   const [timeRemaining, setTimeRemaining] = useState(60)
   const [timerActive, setTimerActive] = useState(false)
   const [gameOver, setGameOver] = useState(false)
+  const [challengeRound, setChallengeRound] = useState(1)
+  const [roundScores, setRoundScores] = useState({})
+  const [readyForNextRound, setReadyForNextRound] = useState(false)
   
   const inputRef = useRef(null)
 
@@ -76,7 +79,7 @@ const VerbConjugationGame = ({ onBack }) => {
     loadVerbsFromGoogleSheets()
   }, [])
 
-  // Timer effect for timed mode
+  // Timer effect for timed and challenge modes
   useEffect(() => {
     if (timerActive && timeRemaining > 0) {
       const timer = setTimeout(() => {
@@ -85,10 +88,22 @@ const VerbConjugationGame = ({ onBack }) => {
       return () => clearTimeout(timer)
     } else if (timerActive && timeRemaining === 0) {
       setTimerActive(false)
-      setGameOver(true)
-      setShowFeedback(false)
+      if (settings.gameMode === 'challenge') {
+        // Save round score
+        setRoundScores(prev => ({
+          ...prev,
+          [challengeRound]: {
+            score: currentGame.score,
+            questions: currentGame.questionCount
+          }
+        }))
+        setReadyForNextRound(true)
+      } else {
+        setGameOver(true)
+        setShowFeedback(false)
+      }
     }
-  }, [timerActive, timeRemaining])
+  }, [timerActive, timeRemaining, settings.gameMode, challengeRound, currentGame.score, currentGame.questionCount])
 
   // Verbs now come exclusively from Google Sheets
 
@@ -413,13 +428,50 @@ const VerbConjugationGame = ({ onBack }) => {
     }
   }, [currentGame.currentVerb, showFeedback])
 
+  const getChallengeRoundConfig = (round) => {
+    const selectedTenses = settings.tense
+    switch(round) {
+      case 1:
+        return { time: ['present'], form: ['affirmative', 'negative', 'question'] }
+      case 2:
+        return { time: ['past'], form: ['affirmative', 'negative', 'question'] }
+      case 3:
+        return { time: ['future'], form: ['affirmative', 'negative', 'question'] }
+      case 4:
+        return { time: ['present', 'past', 'future'], form: ['affirmative'] }
+      case 5:
+        return { time: ['present', 'past', 'future'], form: ['negative'] }
+      case 6:
+        return { time: ['present', 'past', 'future'], form: ['question'] }
+      case 7:
+        return { time: ['present', 'past', 'future'], form: ['affirmative', 'negative', 'question'] }
+      default:
+        return { time: ['present', 'past', 'future'], form: ['affirmative', 'negative', 'question'] }
+    }
+  }
+
   const startGame = () => {
     setGameStarted(true)
     setGameOver(false)
-    if (settings.gameMode === 'timed') {
+    setChallengeRound(1)
+    setRoundScores({})
+    setReadyForNextRound(false)
+    
+    if (settings.gameMode === 'timed' || settings.gameMode === 'challenge') {
       setTimeRemaining(60)
       setTimerActive(true)
     }
+    
+    // Apply challenge round config if in challenge mode
+    if (settings.gameMode === 'challenge') {
+      const roundConfig = getChallengeRoundConfig(1)
+      setSettings(prev => ({
+        ...prev,
+        time: roundConfig.time,
+        form: roundConfig.form
+      }))
+    }
+    
     generateQuestion()
   }
 
@@ -623,6 +675,48 @@ const VerbConjugationGame = ({ onBack }) => {
     }
   }
 
+  const nextChallengeRound = () => {
+    if (challengeRound < 7) {
+      const nextRound = challengeRound + 1
+      setChallengeRound(nextRound)
+      setReadyForNextRound(false)
+      
+      // Reset game state but keep round scores
+      setCurrentGame({
+        score: 0,
+        streak: 0,
+        questionCount: 0,
+        totalQuestions: 10,
+        currentVerb: null,
+        currentTense: 'present',
+        currentPronoun: 'I'
+      })
+      setUserAnswer('')
+      setFeedback('')
+      setShowFeedback(false)
+      
+      // Apply next round config
+      const roundConfig = getChallengeRoundConfig(nextRound)
+      setSettings(prev => ({
+        ...prev,
+        time: roundConfig.time,
+        form: roundConfig.form
+      }))
+      
+      // Start timer for next round
+      setTimeRemaining(60)
+      setTimerActive(true)
+      
+      // Generate first question
+      setTimeout(() => {
+        generateQuestion()
+      }, 100)
+    } else {
+      // All rounds complete
+      setGameOver(true)
+    }
+  }
+
   const resetGame = () => {
     setCurrentGame({
       score: 0,
@@ -640,6 +734,9 @@ const VerbConjugationGame = ({ onBack }) => {
     setTimerActive(false)
     setTimeRemaining(60)
     setGameOver(false)
+    setChallengeRound(1)
+    setRoundScores({})
+    setReadyForNextRound(false)
   }
 
   if (isLoadingVerbs) {
@@ -1012,6 +1109,15 @@ const VerbConjugationGame = ({ onBack }) => {
         </div>
         
         <div className="game-stats">
+          {settings.gameMode === 'challenge' && (
+            <div className="stat-item" style={{ 
+              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2))',
+              border: '2px solid rgba(99, 102, 241, 0.5)'
+            }}>
+              <span className="stat-number" style={{ color: '#c7d2fe' }}>Round {challengeRound}/7</span>
+              <span className="stat-label">Challenge</span>
+            </div>
+          )}
           <div className="stat-item">
             <span className="stat-number">{currentGame.score}</span>
             <span className="stat-label">Score</span>
@@ -1028,7 +1134,7 @@ const VerbConjugationGame = ({ onBack }) => {
             <span className="stat-number">{Math.round((currentGame.score / Math.max(currentGame.questionCount, 1)) * 100)}%</span>
             <span className="stat-label">Accuracy</span>
           </div>
-          {settings.gameMode === 'timed' && (
+          {(settings.gameMode === 'timed' || settings.gameMode === 'challenge') && (
             <div className="stat-item" style={{
               backgroundColor: timeRemaining <= 10 ? '#ff6b6b' : '#6366f1',
               color: 'white',
@@ -1083,6 +1189,125 @@ const VerbConjugationGame = ({ onBack }) => {
       {showFeedback && (
         <div className={`feedback ${feedback.includes('Correct') ? 'correct' : 'incorrect'}`} style={{ fontSize: '18px', padding: '16px 24px', margin: '16px auto', maxWidth: '600px', borderRadius: '8px' }}>
           {feedback}
+        </div>
+      )}
+
+      {/* Ready for Next Round Screen - Challenge Mode */}
+      {readyForNextRound && settings.gameMode === 'challenge' && challengeRound < 7 && (
+        <div style={{
+          textAlign: 'center',
+          padding: '48px 24px',
+          maxWidth: '600px',
+          margin: '0 auto',
+          background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%)',
+          borderRadius: '16px',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+          border: '1px solid rgba(71, 85, 105, 0.3)',
+          animation: 'fadeInScale 0.5s ease-out',
+          backdropFilter: 'blur(20px)'
+        }}>
+          <h2 style={{ 
+            fontSize: '48px', 
+            marginBottom: '16px', 
+            background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            animation: 'slideDown 0.6s ease-out'
+          }}>Round {challengeRound} Complete!</h2>
+          <div style={{ fontSize: '24px', marginBottom: '32px' }}>
+            <div style={{ marginBottom: '16px', animation: 'fadeInUp 0.7s ease-out' }}>
+              <span style={{ 
+                fontSize: '64px', 
+                fontWeight: 'bold', 
+                color: '#10b981',
+                textShadow: '0 4px 8px rgba(16, 185, 129, 0.3)',
+                display: 'inline-block'
+              }}>{currentGame.score}</span>
+              <div style={{ fontSize: '18px', color: '#cbd5e1', marginTop: '8px', fontWeight: '500' }}>Correct Answers</div>
+            </div>
+            <div style={{ display: 'flex', gap: '48px', justifyContent: 'center', marginTop: '24px' }}>
+              <div style={{ animation: 'fadeInLeft 0.8s ease-out' }}>
+                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#f1f5f9' }}>{currentGame.questionCount}</div>
+                <div style={{ fontSize: '14px', color: '#cbd5e1', fontWeight: '500' }}>Total Questions</div>
+              </div>
+              <div style={{ animation: 'fadeInRight 0.8s ease-out' }}>
+                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#f1f5f9' }}>{Math.round((currentGame.score / Math.max(currentGame.questionCount, 1)) * 100)}%</div>
+                <div style={{ fontSize: '14px', color: '#cbd5e1', fontWeight: '500' }}>Accuracy</div>
+              </div>
+            </div>
+          </div>
+          <button 
+            className="btn btn-primary" 
+            onClick={nextChallengeRound} 
+            style={{ 
+              fontSize: '20px', 
+              padding: '16px 32px',
+              animation: 'fadeInUp 1s ease-out',
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)'
+            }}
+          >
+            Ready for Round {challengeRound + 1} →
+          </button>
+        </div>
+      )}
+
+      {/* Final Results - Challenge Mode */}
+      {gameOver && settings.gameMode === 'challenge' && (
+        <div style={{
+          textAlign: 'center',
+          padding: '48px 24px',
+          maxWidth: '800px',
+          margin: '0 auto',
+          background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%)',
+          borderRadius: '16px',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+          border: '1px solid rgba(71, 85, 105, 0.3)',
+          animation: 'fadeInScale 0.5s ease-out',
+          backdropFilter: 'blur(20px)'
+        }}>
+          <h2 style={{ 
+            fontSize: '48px', 
+            marginBottom: '16px', 
+            background: 'linear-gradient(135deg, #ff6b6b 0%, #ec4899 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            animation: 'slideDown 0.6s ease-out'
+          }}>🎉 Challenge Complete!</h2>
+          <div style={{ marginBottom: '32px' }}>
+            <div style={{ fontSize: '20px', color: '#cbd5e1', marginBottom: '24px' }}>
+              Round Scores Summary
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '12px' }}>
+              {Object.keys(roundScores).map(round => (
+                <div key={round} style={{
+                  background: 'rgba(71, 85, 105, 0.3)',
+                  borderRadius: '8px',
+                  padding: '12px',
+                  border: '1px solid rgba(71, 85, 105, 0.5)'
+                }}>
+                  <div style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '4px' }}>Round {round}</div>
+                  <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#10b981' }}>{roundScores[round].score}</div>
+                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>/{roundScores[round].questions}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <button 
+            className="btn btn-primary" 
+            onClick={resetGame} 
+            style={{ 
+              fontSize: '20px', 
+              padding: '16px 32px',
+              animation: 'fadeInUp 1s ease-out',
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)'
+            }}
+          >
+            Play Again
+          </button>
         </div>
       )}
 
@@ -1147,7 +1372,7 @@ const VerbConjugationGame = ({ onBack }) => {
         </div>
       )}
 
-      {currentGame.currentVerb && !gameOver && (
+      {currentGame.currentVerb && !gameOver && !readyForNextRound && (
         <div className="question-container">
           <div className="question-header">
             <h2 className="question-text" style={{ fontSize: '24px' }}>
