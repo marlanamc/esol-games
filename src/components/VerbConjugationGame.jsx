@@ -666,10 +666,10 @@ const VerbConjugationGame = ({ onBack }) => {
     let formArr = toArray(uiSettings.form, ['affirmative', 'negative', 'question'])
     let typeArr = toArray(uiSettings.verbType, ['regular', 'irregular'])
 
-    // In Challenge mode, ignore any prior custom selections and use fully preset options
+    // In Challenge mode, Time/Form/VerbType are preset; Tense is user-selected
     if (uiSettings.mode === 'challenge') {
       timeArr = ['present', 'past', 'future']
-      tenseArr = ['simple', 'continuous', 'perfect', 'perfect continuous']
+      // tenseArr stays as selected in UI (already mapped)
       formArr = ['affirmative', 'negative', 'question']
       typeArr = ['regular', 'irregular']
     }
@@ -1173,29 +1173,62 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>
           )}
 
-          {/* Challenge presets - hidden for now (challenge is fully preset) */}
+          {/* Challenge: show info + Tense selection only */}
           {uiSettings.mode === 'challenge' && (
-            <div className="controls-row">
-              <div className="control-group" style={{ width: '100%' }}>
-                <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <Target size={16}/> Challenge Mode
-                </label>
-                <div style={{
-                  background: 'rgba(71,85,105,0.25)',
-                  border: '1px solid rgba(71,85,105,0.5)',
-                  borderRadius: 8,
-                  padding: '12px 16px',
-                  color: '#e5e7eb'
-                }}>
-                  Rounds are preset. Time and form vary by round. All tenses and types are included.
+            <>
+              <div className="controls-row">
+                <div className="control-group" style={{ width: '100%' }}>
+                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <Target size={16}/> Challenge Mode
+                  </label>
+                  <div style={{
+                    background: 'rgba(71,85,105,0.25)',
+                    border: '1px solid rgba(71,85,105,0.5)',
+                    borderRadius: 8,
+                    padding: '12px 16px',
+                    color: '#e5e7eb'
+                  }}>
+                    Rounds are preset. Time and form vary by round. Choose the tense(s) to include below.
+                  </div>
                 </div>
               </div>
-            </div>
+              <div className="controls-row">
+                <div className="control-group" style={{ width: '100%' }}>
+                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <BookOpen size={16}/> SELECT TENSE(S)
+                  </label>
+                  <div className="button-group">
+                    <button
+                      className={`setting-button all-button ${uiSettings.tense.all ? 'active' : ''}`}
+                      aria-pressed={uiSettings.tense.all}
+                      onClick={() => updateGroupAll('tense')}
+                    >
+                      ✓ All Tenses
+                    </button>
+                    {[
+                      { id: 'simple', label: 'simple' },
+                      { id: 'continuous', label: 'continuous' },
+                      { id: 'perfect', label: 'perfect' },
+                      { id: 'perfectContinuous', label: 'perfect continuous' }
+                    ].map((opt) => (
+                      <button
+                        key={opt.id}
+                        className={`setting-button ${!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id) ? 'active' : ''}`}
+                        aria-pressed={!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id)}
+                        onClick={() => updateGroupItem('tense', opt.id)}
+                      >
+                        {!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id) && '✓ '}{opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </>
           )}
             </div>{/* /.settings-left */}
 
             <div className="settings-right">
-          {/* Setting groups (hidden in Challenge since rounds are preset) */}
+          {/* Setting groups (hidden in Challenge except Tense shown above) */}
           {uiSettings.mode !== 'challenge' && [
             { key: 'time', icon: <Clock size={16}/>, title: 'TIME', allLabel: 'All Times', items: [
               { id: 'present', label: 'present' }, { id: 'past', label: 'past' }, { id: 'future', label: 'future' }
@@ -1253,9 +1286,7 @@ const VerbConjugationGame = ({ onBack }) => {
                 padding: '12px 16px',
                 color: '#e5e7eb'
               }}>
-                {uiSettings.mode === 'challenge' 
-                  ? 'Challenge: preset rounds • Present, Past, Future by round • All Forms • All Types'
-                  : summarizeSelection(uiSettings)}
+                {summarizeSelection(uiSettings)}
               </div>
             </div>
           </div>
