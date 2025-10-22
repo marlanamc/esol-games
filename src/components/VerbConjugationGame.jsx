@@ -989,20 +989,20 @@ const VerbConjugationGame = ({ onBack }) => {
           <div style={{ fontSize: '24px', marginBottom: '32px' }}>
             <div style={{ marginBottom: '16px' }}>
               <span style={{ fontSize: '64px', fontWeight: 'bold', color: '#10b981' }}>{currentGame.score}</span>
-              <div style={{ fontSize: '18px', color: '#666', marginTop: '8px' }}>Correct Answers</div>
+              <div style={{ fontSize: '18px', color: '#475569', marginTop: '8px', fontWeight: '500' }}>Correct Answers</div>
             </div>
             <div style={{ display: 'flex', gap: '32px', justifyContent: 'center', marginTop: '24px' }}>
               <div>
-                <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{currentGame.questionCount}</div>
-                <div style={{ fontSize: '14px', color: '#666' }}>Total Questions</div>
+                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1e293b' }}>{currentGame.questionCount}</div>
+                <div style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>Total Questions</div>
               </div>
               <div>
-                <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{Math.round((currentGame.score / Math.max(currentGame.questionCount, 1)) * 100)}%</div>
-                <div style={{ fontSize: '14px', color: '#666' }}>Accuracy</div>
+                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1e293b' }}>{Math.round((currentGame.score / Math.max(currentGame.questionCount, 1)) * 100)}%</div>
+                <div style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>Accuracy</div>
               </div>
               <div>
-                <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{currentGame.streak}</div>
-                <div style={{ fontSize: '14px', color: '#666' }}>Best Streak</div>
+                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1e293b' }}>{currentGame.streak}</div>
+                <div style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>Best Streak</div>
               </div>
             </div>
           </div>
