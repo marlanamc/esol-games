@@ -11,7 +11,7 @@ const VerbConjugationGame = ({ onBack }) => {
     currentTense: 'present',
     currentPronoun: 'I'
   })
-  
+
   const [userAnswer, setUserAnswer] = useState('')
   const [feedback, setFeedback] = useState('')
   const [showFeedback, setShowFeedback] = useState(false)
@@ -19,12 +19,16 @@ const VerbConjugationGame = ({ onBack }) => {
   const [showInstructions, setShowInstructions] = useState(false)
   const [settings, setSettings] = useState({
     time: ['present', 'past', 'future'],
-    tense: ['simple', 'continuous', 'perfect', 'perfect continuous'], 
+    tense: ['simple', 'continuous', 'perfect', 'perfect continuous'],
     form: ['affirmative', 'negative', 'question'],
-    verbType: ['regular', 'irregular']
+    verbType: ['regular', 'irregular'],
+    gameMode: 'practice' // 'practice' or 'timed'
   })
   const [googleVerbs, setGoogleVerbs] = useState([])
   const [isLoadingVerbs, setIsLoadingVerbs] = useState(true)
+  const [timeRemaining, setTimeRemaining] = useState(60)
+  const [timerActive, setTimerActive] = useState(false)
+  const [gameOver, setGameOver] = useState(false)
 
   // Load verbs from Google Sheets
   useEffect(() => {
@@ -69,6 +73,20 @@ const VerbConjugationGame = ({ onBack }) => {
     
     loadVerbsFromGoogleSheets()
   }, [])
+
+  // Timer effect for timed mode
+  useEffect(() => {
+    if (timerActive && timeRemaining > 0) {
+      const timer = setTimeout(() => {
+        setTimeRemaining(prev => prev - 1)
+      }, 1000)
+      return () => clearTimeout(timer)
+    } else if (timerActive && timeRemaining === 0) {
+      setTimerActive(false)
+      setGameOver(true)
+      setShowFeedback(false)
+    }
+  }, [timerActive, timeRemaining])
 
   // Verbs now come exclusively from Google Sheets
 
@@ -388,6 +406,11 @@ const VerbConjugationGame = ({ onBack }) => {
 
   const startGame = () => {
     setGameStarted(true)
+    setGameOver(false)
+    if (settings.gameMode === 'timed') {
+      setTimeRemaining(60)
+      setTimerActive(true)
+    }
     generateQuestion()
   }
 
@@ -546,27 +569,34 @@ const VerbConjugationGame = ({ onBack }) => {
         questionCount: prev.questionCount + 1
       }))
       setFeedback(`Correct! Well done! +${currentGame.streak + 1} points`)
+
+      // Auto-advance to next question in timed mode
+      if (settings.gameMode === 'timed') {
+        setTimeout(() => {
+          nextQuestion()
+        }, 3000)
+      }
     } else {
       setCurrentGame(prev => ({
         ...prev,
         streak: 0,
         questionCount: prev.questionCount + 1
       }))
-      
+
       // Enhanced feedback with specific guidance
       const enhancedFeedback = getEnhancedFeedback(
-        userAnswer, 
-        currentGame.correctAnswer, 
+        userAnswer,
+        currentGame.correctAnswer,
         {
           currentTime: currentGame.currentTime,
           currentVerbTense: currentGame.currentVerbTense,
           currentForm: currentGame.currentForm
         }
       )
-      
+
       setFeedback(`Incorrect. ${enhancedFeedback}`)
     }
-    
+
     setShowFeedback(true)
   }
 
@@ -598,6 +628,9 @@ const VerbConjugationGame = ({ onBack }) => {
     setFeedback('')
     setShowFeedback(false)
     setGameStarted(false)
+    setTimerActive(false)
+    setTimeRemaining(60)
+    setGameOver(false)
   }
 
   if (isLoadingVerbs) {
@@ -698,7 +731,32 @@ const VerbConjugationGame = ({ onBack }) => {
             <p className="controls-subtitle">Customize your practice session</p>
             <p className="controls-instructions">Click buttons to select/deselect options. You can choose multiple options in each category.</p>
           </div>
-          
+
+          {/* Game Mode Selection */}
+          <div className="controls-row" style={{ marginBottom: '24px' }}>
+            <div className="control-group" style={{ width: '100%' }}>
+              <label className="control-label">🎮 GAME MODE</label>
+              <div className="button-group" style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  className={`setting-button ${settings.gameMode === 'practice' ? 'active' : ''}`}
+                  onClick={() => setSettings(prev => ({ ...prev, gameMode: 'practice' }))}
+                  style={{ flex: 1, fontSize: '18px', padding: '16px' }}
+                >
+                  {settings.gameMode === 'practice' && '✓ '}Practice Mode
+                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '4px' }}>Take your time, get detailed feedback</div>
+                </button>
+                <button
+                  className={`setting-button ${settings.gameMode === 'timed' ? 'active' : ''}`}
+                  onClick={() => setSettings(prev => ({ ...prev, gameMode: 'timed' }))}
+                  style={{ flex: 1, fontSize: '18px', padding: '16px' }}
+                >
+                  {settings.gameMode === 'timed' && '✓ '}⏱️ Timed Mode (60s)
+                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '4px' }}>Race the clock! Auto-advance after correct answers</div>
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className="controls-row">
             <div className="control-group">
               <label className="control-label">⏰ TIME</label>
@@ -841,6 +899,19 @@ const VerbConjugationGame = ({ onBack }) => {
             <span className="stat-number">{Math.round((currentGame.score / Math.max(currentGame.questionCount, 1)) * 100)}%</span>
             <span className="stat-label">Accuracy</span>
           </div>
+          {settings.gameMode === 'timed' && (
+            <div className="stat-item" style={{
+              backgroundColor: timeRemaining <= 10 ? '#ff6b6b' : '#6366f1',
+              color: 'white',
+              transform: timeRemaining <= 10 ? 'scale(1.1)' : 'scale(1)',
+              transition: 'all 0.3s ease'
+            }}>
+              <span className="stat-number" style={{ fontSize: timeRemaining <= 10 ? '36px' : '32px' }}>
+                {timeRemaining}s
+              </span>
+              <span className="stat-label">Time Left</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -877,7 +948,44 @@ const VerbConjugationGame = ({ onBack }) => {
         </div>
       )}
 
-      {currentGame.currentVerb && (
+      {gameOver && settings.gameMode === 'timed' && (
+        <div style={{
+          textAlign: 'center',
+          padding: '48px 24px',
+          maxWidth: '600px',
+          margin: '0 auto',
+          backgroundColor: '#f8fafe',
+          borderRadius: '16px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+        }}>
+          <h2 style={{ fontSize: '48px', marginBottom: '16px', color: '#6366f1' }}>⏰ Time's Up!</h2>
+          <div style={{ fontSize: '24px', marginBottom: '32px' }}>
+            <div style={{ marginBottom: '16px' }}>
+              <span style={{ fontSize: '64px', fontWeight: 'bold', color: '#10b981' }}>{currentGame.score}</span>
+              <div style={{ fontSize: '18px', color: '#666', marginTop: '8px' }}>Correct Answers</div>
+            </div>
+            <div style={{ display: 'flex', gap: '32px', justifyContent: 'center', marginTop: '24px' }}>
+              <div>
+                <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{currentGame.questionCount}</div>
+                <div style={{ fontSize: '14px', color: '#666' }}>Total Questions</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{Math.round((currentGame.score / Math.max(currentGame.questionCount, 1)) * 100)}%</div>
+                <div style={{ fontSize: '14px', color: '#666' }}>Accuracy</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{currentGame.streak}</div>
+                <div style={{ fontSize: '14px', color: '#666' }}>Best Streak</div>
+              </div>
+            </div>
+          </div>
+          <button className="btn btn-primary" onClick={resetGame} style={{ fontSize: '20px', padding: '16px 32px' }}>
+            Play Again
+          </button>
+        </div>
+      )}
+
+      {currentGame.currentVerb && !gameOver && (
         <div className="question-container">
           <div className="question-header">
             <h2 className="question-text" style={{ fontSize: '24px' }}>
@@ -958,15 +1066,25 @@ const VerbConjugationGame = ({ onBack }) => {
           />
           
           <div className="question-actions">
-            <button 
-              className="btn btn-primary" 
+            <button
+              className="btn btn-primary"
               style={{ fontSize: '16px', padding: '12px 24px' }}
               onClick={checkAnswer}
               disabled={showFeedback && feedback.includes('Correct')}
             >
               Check Answer
             </button>
-            {showFeedback && (
+            {showFeedback && settings.gameMode === 'practice' && (
+              <button className="btn btn-secondary" style={{ fontSize: '16px', padding: '12px 24px' }} onClick={nextQuestion}>
+                Next Question →
+              </button>
+            )}
+            {showFeedback && settings.gameMode === 'timed' && feedback.includes('Correct') && (
+              <div style={{ fontSize: '16px', color: '#666', padding: '12px 24px' }}>
+                Next question in 3 seconds...
+              </div>
+            )}
+            {showFeedback && settings.gameMode === 'timed' && !feedback.includes('Correct') && (
               <button className="btn btn-secondary" style={{ fontSize: '16px', padding: '12px 24px' }} onClick={nextQuestion}>
                 Next Question →
               </button>
