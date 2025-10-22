@@ -1153,25 +1153,21 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>
           )}
 
-          {/* Challenge presets */}
+          {/* Challenge presets - hidden for now (challenge is fully preset) */}
           {uiSettings.mode === 'challenge' && (
             <div className="controls-row">
               <div className="control-group" style={{ width: '100%' }}>
                 <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <Target size={16}/> Challenge Presets
+                  <Target size={16}/> Challenge Mode
                 </label>
-                <div className="button-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
-                  {challengePresets.map((p) => (
-                    <button
-                      key={p.id}
-                      className={`setting-button ${uiSettings.challengePresetId === p.id ? 'active' : ''}`}
-                      onClick={() => { applyPreset(p) }}
-                      aria-pressed={uiSettings.challengePresetId === p.id}
-                    >
-                      <div style={{ fontWeight: 700, marginBottom: 4 }}>{p.title}</div>
-                      <div style={{ fontSize: 12, opacity: 0.85 }}>{p.desc}</div>
-                    </button>
-                  ))}
+                <div style={{
+                  background: 'rgba(71,85,105,0.25)',
+                  border: '1px solid rgba(71,85,105,0.5)',
+                  borderRadius: 8,
+                  padding: '12px 16px',
+                  color: '#e5e7eb'
+                }}>
+                  Rounds are preset. Time and form vary by round. All tenses and types are included.
                 </div>
               </div>
             </div>
@@ -1179,8 +1175,8 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>{/* /.settings-left */}
 
             <div className="settings-right">
-          {/* Setting groups */}
-          {[
+          {/* Setting groups (hidden in Challenge since rounds are preset) */}
+          {uiSettings.mode !== 'challenge' && [
             { key: 'time', icon: <Clock size={16}/>, title: 'TIME', allLabel: 'All Times', items: [
               { id: 'present', label: 'present' }, { id: 'past', label: 'past' }, { id: 'future', label: 'future' }
             ]},
@@ -1237,7 +1233,9 @@ const VerbConjugationGame = ({ onBack }) => {
                 padding: '12px 16px',
                 color: '#e5e7eb'
               }}>
-                {summarizeSelection(uiSettings)}
+                {uiSettings.mode === 'challenge' 
+                  ? 'Challenge: preset rounds • Present, Past, Future by round • All Forms • All Types'
+                  : summarizeSelection(uiSettings)}
               </div>
             </div>
           </div>
@@ -1245,7 +1243,7 @@ const VerbConjugationGame = ({ onBack }) => {
           </div>{/* /.settings-grid */}
 
           {/* Footer */}
-          <div className="controls-row" style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 16 }}>
+          <div className="controls-row settings-footer">
             <button className="btn btn-secondary" onClick={() => {
               const def = makeDefaultUISettings(); setUiSettings(def); saveModeState('practice', def)
             }}>
