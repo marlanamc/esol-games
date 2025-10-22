@@ -750,59 +750,89 @@ const VerbConjugationGame = ({ onBack }) => {
             <p className="controls-instructions">Click buttons to select/deselect options. You can choose multiple options in each category.</p>
           </div>
 
-          {/* Challenge Presets */}
+          {/* Tense Selection - First */}
           <div className="controls-row" style={{ marginBottom: '24px' }}>
             <div className="control-group" style={{ width: '100%' }}>
-              <label className="control-label">🎯 CHALLENGE PRESETS</label>
-              <div className="button-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
+              <label className="control-label">📚 SELECT TENSE(S) FOR CHALLENGE</label>
+              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
+                You can select one or multiple tenses for your challenge rounds.
+              </p>
+              <div className="button-group">
+                <button
+                  className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
+                  onClick={() => toggleAll('tense', ['simple', 'continuous', 'perfect', 'perfect continuous'])}
+                >
+                  ✓ All Tenses
+                </button>
+                {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
+                  <button
+                    key={tense}
+                    className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
+                    onClick={() => toggleSetting('tense', tense)}
+                  >
+                    {settings.tense.includes(tense) && '✓ '}{tense}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Challenge Rounds */}
+          <div className="controls-row" style={{ marginBottom: '24px' }}>
+            <div className="control-group" style={{ width: '100%' }}>
+              <label className="control-label">🎯 CHALLENGE ROUNDS (⏱️ 1 min each)</label>
+              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
+                Choose a round below. Each round uses your selected tense(s) above.
+              </p>
+              <div className="button-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '8px' }}>
                 <button
                   className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present'], tense: ['simple'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
                   style={{ fontSize: '14px', padding: '12px' }}
                 >
-                  Round 1: Present Simple<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                  Round 1<br />Present + Selected Tense(s)<br />All Forms
                 </button>
                 <button
                   className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['past'], tense: ['simple'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['past'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
                   style={{ fontSize: '14px', padding: '12px' }}
                 >
-                  Round 2: Past Simple<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                  Round 2<br />Past + Selected Tense(s)<br />All Forms
                 </button>
                 <button
                   className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['future'], tense: ['simple'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['future'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
                   style={{ fontSize: '14px', padding: '12px' }}
                 >
-                  Round 3: Future Simple<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                  Round 3<br />Future + Selected Tense(s)<br />All Forms
                 </button>
                 <button
                   className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], tense: ['simple'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], form: ['affirmative'], gameMode: 'timed' }))}
                   style={{ fontSize: '14px', padding: '12px' }}
                 >
-                  Round 4: All Simple<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                  Round 4<br />All Times + Selected Tense(s)<br />Affirmative Only
                 </button>
                 <button
                   className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], tense: ['continuous'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], form: ['negative'], gameMode: 'timed' }))}
                   style={{ fontSize: '14px', padding: '12px' }}
                 >
-                  Round 5: All Continuous<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                  Round 5<br />All Times + Selected Tense(s)<br />Negative Only
                 </button>
                 <button
                   className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], tense: ['perfect'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], form: ['question'], gameMode: 'timed' }))}
                   style={{ fontSize: '14px', padding: '12px' }}
                 >
-                  Round 6: All Perfect<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                  Round 6<br />All Times + Selected Tense(s)<br />Question Only
                 </button>
                 <button
                   className="setting-button"
-                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], tense: ['simple', 'continuous', 'perfect', 'perfect continuous'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
                   style={{ fontSize: '14px', padding: '12px' }}
                 >
-                  Round 7: Master Challenge<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                  Round 7<br />All Times + Selected Tense(s)<br />All Forms
                 </button>
               </div>
             </div>
@@ -833,6 +863,16 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>
           </div>
 
+          {/* Manual Advanced Settings */}
+          <div className="controls-row" style={{ marginTop: '32px', borderTop: '1px solid rgba(71, 85, 105, 0.3)', paddingTop: '24px' }}>
+            <div className="control-group" style={{ width: '100%' }}>
+              <label className="control-label">⚙️ ADVANCED CUSTOMIZATION</label>
+              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
+                Want more control? Customize individual settings below (or use Challenge Rounds above).
+              </p>
+            </div>
+          </div>
+
           <div className="controls-row">
             <div className="control-group">
               <label className="control-label">⏰ TIME</label>
@@ -856,29 +896,6 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>
             
             <div className="control-group">
-              <label className="control-label">📚 TENSE</label>
-              <div className="button-group">
-                <button
-                  className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
-                  onClick={() => toggleAll('tense', ['simple', 'continuous', 'perfect', 'perfect continuous'])}
-                >
-                  ✓ All Tenses
-                </button>
-                {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
-                  <button
-                    key={tense}
-                    className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
-                    onClick={() => toggleSetting('tense', tense)}
-                  >
-                    {settings.tense.includes(tense) && '✓ '}{tense}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          <div className="controls-row">
-            <div className="control-group">
               <label className="control-label">📝 FORM</label>
               <div className="button-group">
                 <button
@@ -898,7 +915,9 @@ const VerbConjugationGame = ({ onBack }) => {
                 ))}
               </div>
             </div>
-            
+          </div>
+          
+          <div className="controls-row">
             <div className="control-group">
               <label className="control-label">🔤 VERB TYPE</label>
               <div className="button-group">
