@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verb Conjugation Challenge - ESOL Game Arcade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .game-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .game-subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .game-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .game-controls {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .esol-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 1em;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .esol-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .esol-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .esol-button.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .esol-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .esol-button.secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e1e5e9;
+        }
+
+        .esol-button.secondary:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .question-area {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .question-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .verb-display {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .tense-indicator {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin: 10px;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 16px;
+            border: 3px solid #e1e5e9;
+            border-radius: 15px;
+            font-size: 1.2em;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .answer-input.correct {
+            border-color: #28a745;
+            background: #f8fff8;
+        }
+
+        .answer-input.incorrect {
+            border-color: #dc3545;
+            background: #fff8f8;
+        }
+
+        .feedback-area {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .feedback-message {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .feedback-correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback-incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .conjugation-table {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .conjugation-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .conjugation-table th,
+        .conjugation-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .conjugation-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .conjugation-table .correct-answer {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .navigation {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .nav-button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .nav-button.back {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-button.back:hover {
+            background: #5a6268;
+        }
+
+        .nav-button.next {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-button.next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: 2em;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .game-stats {
+                gap: 20px;
+            }
+
+            .verb-display {
+                font-size: 2em;
+            }
+        }
+    </style>
+        .conjugation-game {
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .conjugation-game * {
+            box-sizing: inherit;
+        }
+
+        .conjugation-game .game-container {
+            background-color: rgba(38, 38, 38, 0.6);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 700px;
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+        }
+
+        .conjugation-game .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .conjugation-game .header h1 {
+            color: #6366f1;
+            font-size: 1.875rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .conjugation-game .header p {
+            color: #e2e8f0;
+        }
+
+        .conjugation-game .filters-container {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .conjugation-game select {
+            flex: 1;
+            min-width: 140px;
+            padding: 0.5rem;
+            background-color: rgba(38, 38, 38, 0.8);
+            border: 1px solid #4b5563;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.875rem;
+        }
+
+        .conjugation-game select option {
+            background-color: #262626;
+            color: #ffffff;
+        }
+
+        .conjugation-game .game-controls {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-direction: column;
+        }
+
+        .conjugation-game button {
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #6366f1;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .conjugation-game button:hover {
+            background-color: #818cf8;
+        }
+
+        .conjugation-game input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 2px solid #4b5563;
+            border-radius: 4px;
+            color: #000000;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .conjugation-game input[type="text"]:focus {
+            outline: none;
+            border-color: #6366f1;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+        }
+
+        .conjugation-game table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 2px;
+            margin: 1.25rem 0;
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            border-radius: 8px;
+        }
+
+        .conjugation-game th, 
+        .conjugation-game td {
+            padding: 0.75rem;
+            text-align: left;
+            border: none;
+        }
+
+        .conjugation-game th {
+            background-color: rgba(99, 102, 241, 0.8);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .conjugation-game td {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: #ffffff;
+        }
+
+        .conjugation-game .stats-container {
+            text-align: center;
+            padding: 1rem;
+            background-color: rgba(51, 51, 51, 0.4);
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            color: #ffffff;
+        }
+
+        .conjugation-game .score-container {
+            margin-bottom: 0.5rem;
+        }
+
+        .conjugation-game #feedback .correct {
+            color: #22c55e;
+        }
+
+        .conjugation-game #feedback .incorrect {
+            color: #ef4444;
+        }
+
+        .conjugation-game #instructions {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background-color: rgba(51, 51, 51, 0.4);
+            border-radius: 4px;
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            color: #e2e8f0;
+        }
+
+        .conjugation-game #instructions h2,
+        .conjugation-game #instructions h3 {
+            color: #6366f1;
+            margin-top: 0;
+        }
+
+        .conjugation-game #instructions strong {
+            color: #818cf8;
+        }
+
+        .conjugation-game .keyboard-shortcuts {
+            text-align: center;
+            margin-top: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .conjugation-game .keyboard-shortcuts strong {
+            color: #6366f1;
+        }
+
+        @media (max-width: 480px) {
+            .conjugation-game .game-container {
+                padding: 1rem;
+            }
+
+            .conjugation-game .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .conjugation-game select {
+                width: 100%;
+            }
+
+            .conjugation-game th,
+            .conjugation-game td {
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+  </style>
+</head>
+<body>
+    <div class="conjugation-game">
+      <div class="game-container">
+          <div class="header">
+              <h1>Verb Conjugation Practice</h1>
+              <p>Test your knowledge of English verb tenses</p>
+          </div>
+    
+    <div class="filters-container">
+        <select id="timeFilter">
+            <option value="all">All Times</option>
+            <option value="present">Present</option>
+            <option value="past">Past</option>
+            <option value="future">Future</option>
+        </select>
+        <select id="verbTenseFilter">
+            <option value="all">All Tenses</option>
+            <option value="simple">Simple</option>
+            <option value="continuous">Continuous</option>
+            <option value="perfect">Perfect</option>
+            <option value="perfect continuous">Perfect Continuous</option>
+        </select>
+        <select id="formFilter">
+            <option value="all">All Forms</option>
+            <option value="affirmative">Affirmative</option>
+            <option value="negative">Negative</option>
+            <option value="question">Question</option>
+        </select>
+    </div>
+
+    <div class="stats-container">
+        <div class="score-container">
+            Score: <span id="correct">0</span>/<span id="total">0</span> (<span id="percentage">0%</span>)
+        </div>
+        <div id="feedback"></div>
+    </div>
+
+   <div class="game-controls">
+        <button id="generateBtn">Generate Next Question</button>
+        <input id="userInput" type="text" placeholder="Type your answer here..." />
+        <button id="checkBtn">Check Answer</button>
+    </div>
+    
+    <div id="result"></div>
+    
+    <div class="keyboard-shortcuts" style="text-align: center; margin-top: 12px; color: var(--text-secondary);">
+        Keyboard shortcuts: <strong>Enter/Return</strong> to check answer, <strong>→</strong> (right arrow) for next question
+    </div>
+
+        
+
+      	</div> <!-- closing game-container -->
+      	<div id="instructions">
+            <h2>How to Play</h2>
+            <p>1. Select the options from the dropdown menus or challenge yourself to any time, tense, or form!:</p>
+            <ul>
+                <li><strong>Time:</strong> Present, Past, or Future</li>
+                <li><strong>Verb Tense:</strong> Simple, Continuous, Perfect, or Perfect Continuous</li>
+                <li><strong>Form:</strong> Affirmative, Negative, or Question</li>
+            </ul>
+
+            <h3>Examples:</h3>
+            <ul>
+                <li><strong>Present Simple Affirmative:</strong> "he plays"</li>
+                <li><strong>Past Continuous Negative:</strong> "they weren't playing" or "they were not playing"</li>
+                <li><strong>Future Perfect Question:</strong> "Will she have played?"</li>
+            </ul>
+
+            <h3>Tips:</h3>
+            <ul>
+                <li>Both full forms (will not, is not) and contractions (won't, isn't) are accepted</li>
+             	<li>Don't forget the question mark (?) for questions</li>
+                <li>Answers are not case sensitive</li>
+                <li>Use Enter/Return to check your answer</li>
+                <li>Use right arrow (→) for a new question</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Constants and state variables
+        const pronouns = ["he", "she", "it", "they", "we", "I", "you"];
+        const times = ["present", "past", "future"];
+        const verbTenses = ["simple", "continuous", "perfect", "perfect continuous"];
+        const forms = ["affirmative", "negative", "question"];
+        let verbData = {};
+        let currentPronoun, currentVerb, currentTime, currentVerbTense, currentForm;
+        let score = { correct: 0, total: 0 };
+
+        // DOM Elements
+        const userInput = document.getElementById('userInput');
+        const resultDiv = document.getElementById('result');
+        const feedbackDiv = document.getElementById('feedback');
+        const correctSpan = document.getElementById('correct');
+        const totalSpan = document.getElementById('total');
+        const percentageSpan = document.getElementById('percentage');
+        const generateBtn = document.getElementById('generateBtn');
+        const checkBtn = document.getElementById('checkBtn');
+        const timeFilter = document.getElementById('timeFilter');
+        const verbTenseFilter = document.getElementById('verbTenseFilter');
+        const formFilter = document.getElementById('formFilter');
+
+        // Fetch and initialize verbs
+        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS00jGWq5Xx7IOU9CNxZQ0AB7MV_DPbdre346fHSHidzzdD-yCuZP2Lklq1RvQdF5HdjM3woNPufJOH/pub?gid=0&single=true&output=csv';
+
+        async function fetchVerbs() {
+            try {
+                const response = await fetch(googleSheetUrl);
+                const data = await response.text();
+                parseCSV(data);
+                generateElements(); // Generate first question after loading
+            } catch (error) {
+                console.error('Error fetching verbs:', error);
+                resultDiv.textContent = 'Error loading verbs. Please try again later.';
+            }
+        }
+
+        function parseCSV(data) {
+            const rows = data.split('\n');
+            rows.forEach((row, index) => {
+                if (index === 0) return;
+                const [verb, V1, V1_3rd, V1_ing, V2, V3] = row.split(',');
+                if (verb) {
+                    verbData[verb.trim()] = {
+                        V1: V1.trim(),
+                        V1_3rd: V1_3rd.trim(),
+                        V1_ing: V1_ing.trim(),
+                        V2: V2.trim(),
+                        V3: V3.trim()
+                    };
+                }
+            });
+        }
+
+        function generateElements() {
+            const selectedTime = timeFilter.value;
+            const selectedVerbTense = verbTenseFilter.value;
+            const selectedForm = formFilter.value;
+
+            let filteredTimes = selectedTime === "all" ? times : [selectedTime];
+            let filteredVerbTenses = selectedVerbTense === "all" ? verbTenses : [selectedVerbTense];
+            let filteredForms = selectedForm === "all" ? forms : [selectedForm];
+
+            currentPronoun = pronouns[Math.floor(Math.random() * pronouns.length)];
+            const verbKeys = Object.keys(verbData);
+            currentVerb = verbKeys[Math.floor(Math.random() * verbKeys.length)];
+            currentTime = filteredTimes[Math.floor(Math.random() * filteredTimes.length)];
+            currentVerbTense = filteredVerbTenses[Math.floor(Math.random() * filteredVerbTenses.length)];
+            currentForm = filteredForms[Math.floor(Math.random() * filteredForms.length)];
+
+            const resultTable = `
+                <table>
+                    <tr><th>Element</th><th>Value</th></tr>
+                    <tr><td>Verb (Infinitive Form)</td><td>to ${currentVerb}</td></tr>
+                    <tr><td>Pronoun</td><td>${currentPronoun}</td></tr>
+                    <tr><td>Time</td><td>${currentTime}</td></tr>
+                    <tr><td>Verb Tense</td><td>${currentVerbTense}</td></tr>
+                    <tr><td>Form</td><td>${currentForm}</td></tr>
+                </table>`;
+
+            resultDiv.innerHTML = resultTable;
+            feedbackDiv.innerHTML = "";
+            userInput.value = "";
+            userInput.focus();
+        }
+
+          function generatePossibleAnswers(baseAnswer) {
+              const answers = [baseAnswer];
+
+              // Common contractions map
+              const contractions = {
+                  'will not': "won't",
+                  'am not': "ain't",  // Note: ain't is non-standard
+                  'is not': "isn't",
+                  'are not': "aren't",
+                  'was not': "wasn't",
+                  'were not': "weren't",
+                  'has not': "hasn't",
+                  'have not': "haven't",
+                  'had not': "hadn't",
+                  'do not': "don't",
+                  'does not': "doesn't",
+                  'did not': "didn't",
+                  'will have': "'ll have",
+                  'I will': "I'll",
+                  'you will': "you'll",
+                  'he will': "he'll",
+                  'she will': "she'll",
+                  'it will': "it'll",
+                  'we will': "we'll",
+                  'they will': "they'll",
+                  'I am': "I'm",
+                  'you are': "you're",
+                  'he is': "he's",
+                  'she is': "she's",
+                  'it is': "it's",
+                  'we are': "we're",
+                  'they are': "they're"
+              };
+
+              // Generate all possible contractions
+              for (const [full, contracted] of Object.entries(contractions)) {
+                  if (baseAnswer.toLowerCase().includes(full.toLowerCase())) {
+                      // Replace only full matches to avoid partial word matches
+                      const regex = new RegExp(`\\b${full}\\b`, 'gi');
+                      const contractedAnswer = baseAnswer.replace(regex, contracted);
+                      answers.push(contractedAnswer);
+
+                      // Also add version with spaces around contractions
+                      if (contracted.includes("'")) {
+                          answers.push(contractedAnswer.replace("'", " '"));
+                      }
+                  }
+              }
+
+              return [...new Set(answers)]; // Remove any duplicates
+          }
+
+          function checkAnswer() {
+              const userAnswer = userInput.value.trim();
+              if (!userAnswer) return;
+
+              const correctAnswer = conjugateVerb(currentPronoun, currentVerb, currentTime, currentVerbTense, currentForm);
+              const possibleAnswers = generatePossibleAnswers(correctAnswer);
+
+              // Normalize answers for comparison (remove extra spaces, standardize apostrophes)
+              const normalizeAnswer = (answer) => {
+                  return answer.toLowerCase()
+                      .replace(/\s+/g, ' ')
+                      .replace(/['']/g, "'")
+                      .trim();
+              };
+
+              const normalizedUserAnswer = normalizeAnswer(userAnswer);
+              const isCorrect = possibleAnswers.some(answer => 
+                  normalizeAnswer(answer) === normalizedUserAnswer
+              );
+
+              score.total++;
+              if (isCorrect) {
+                  score.correct++;
+                  feedbackDiv.innerHTML = '<span class="correct">Correct!</span>';
+              } else {
+                  feedbackDiv.innerHTML = `<span class="incorrect">Incorrect. The correct answer is: ${correctAnswer}</span>
+                      <br><small>(Contractions like "${generatePossibleAnswers(correctAnswer)[1] || ''}" are also accepted)</small>`;
+              }
+
+              updateScore();
+              userInput.value = "";
+          }
+
+        function conjugateVerb(pronoun, verb, time, verbTense, form) {
+            const verbForms = verbData[verb];
+
+            // Helper function to get the base verb for negatives and questions
+            const getBaseVerb = () => verbForms.V1;
+
+            // Affirmative sentences
+            if (form === "affirmative") {
+                switch(verbTense) {
+                    case "simple":
+                        if (time === "present") {
+                            return `${pronoun} ${(pronoun === "he" || pronoun === "she" || pronoun === "it") ? verbForms.V1_3rd : verbForms.V1}`;
+                        } else if (time === "past") {
+                            return `${pronoun} ${verbForms.V2}`;
+                        } else { // future
+                            return `${pronoun} will ${getBaseVerb()}`;
+                        }
+
+                    case "continuous":
+                        if (time === "present") {
+                            return `${pronoun} ${getBeForm(pronoun, "present")} ${verbForms.V1_ing}`;
+                        } else if (time === "past") {
+                            return `${pronoun} ${getBeForm(pronoun, "past")} ${verbForms.V1_ing}`;
+                        } else { // future
+                            return `${pronoun} will be ${verbForms.V1_ing}`;
+                        }
+
+                    case "perfect":
+                        if (time === "present") {
+                            return `${pronoun} ${getHaveHas(pronoun)} ${verbForms.V3}`;
+                        } else if (time === "past") {
+                            return `${pronoun} had ${verbForms.V3}`;
+                        } else { // future
+                            return `${pronoun} will have ${verbForms.V3}`;
+                        }
+
+                    case "perfect continuous":
+                        if (time === "present") {
+                            return `${pronoun} ${getHaveHas(pronoun)} been ${verbForms.V1_ing}`;
+                        } else if (time === "past") {
+                            return `${pronoun} had been ${verbForms.V1_ing}`;
+                        } else { // future
+                            return `${pronoun} will have been ${verbForms.V1_ing}`;
+                        }
+                }
+            }
+
+            // Negative sentences
+            else if (form === "negative") {
+                switch(verbTense) {
+                    case "simple":
+                        if (time === "present") {
+                            return `${pronoun} ${getDoDoes(pronoun)} not ${getBaseVerb()}`;
+                        } else if (time === "past") {
+                            return `${pronoun} did not ${getBaseVerb()}`;
+                        } else { // future
+                            return `${pronoun} will not ${getBaseVerb()}`;
+                        }
+
+                    case "continuous":
+                        if (time === "present") {
+                            return `${pronoun} ${getBeForm(pronoun, "present")} not ${verbForms.V1_ing}`;
+                        } else if (time === "past") {
+                            return `${pronoun} ${getBeForm(pronoun, "past")} not ${verbForms.V1_ing}`;
+                        } else { // future
+                            return `${pronoun} will not be ${verbForms.V1_ing}`;
+                        }
+
+                    case "perfect":
+                        if (time === "present") {
+                            return `${pronoun} ${getHaveHas(pronoun)} not ${verbForms.V3}`;
+                        } else if (time === "past") {
+                            return `${pronoun} had not ${verbForms.V3}`;
+                        } else { // future
+                            return `${pronoun} will not have ${verbForms.V3}`;
+                        }
+
+                    case "perfect continuous":
+                        if (time === "present") {
+                            return `${pronoun} ${getHaveHas(pronoun)} not been ${verbForms.V1_ing}`;
+                        } else if (time === "past") {
+                            return `${pronoun} had not been ${verbForms.V1_ing}`;
+                        } else { // future
+                            return `${pronoun} will not have been ${verbForms.V1_ing}`;
+                        }
+                }
+            }
+
+            // Questions
+            else if (form === "question") {
+                switch(verbTense) {
+                    case "simple":
+                        if (time === "present") {
+                            return `${getDoDoes(pronoun)} ${pronoun} ${getBaseVerb()}?`;
+                        } else if (time === "past") {
+                            return `Did ${pronoun} ${getBaseVerb()}?`;
+                        } else { // future
+                            return `Will ${pronoun} ${getBaseVerb()}?`;
+                        }
+
+                    case "continuous":
+                        if (time === "present") {
+                            return `${getBeForm(pronoun, "present").charAt(0).toUpperCase() + getBeForm(pronoun, "present").slice(1)} ${pronoun} ${verbForms.V1_ing}?`;
+                        } else if (time === "past") {
+                            return `${getBeForm(pronoun, "past").charAt(0).toUpperCase() + getBeForm(pronoun, "past").slice(1)} ${pronoun} ${verbForms.V1_ing}?`;
+                        } else { // future
+                            return `Will ${pronoun} be ${verbForms.V1_ing}?`;
+                        }
+
+                    case "perfect":
+                        if (time === "present") {
+                            return `${getHaveHas(pronoun).charAt(0).toUpperCase() + getHaveHas(pronoun).slice(1)} ${pronoun} ${verbForms.V3}?`;
+                        } else if (time === "past") {
+                            return `Had ${pronoun} ${verbForms.V3}?`;
+                        } else { // future
+                            return `Will ${pronoun} have ${verbForms.V3}?`;
+                        }
+
+                    case "perfect continuous":
+                        if (time === "present") {
+                            return `${getHaveHas(pronoun).charAt(0).toUpperCase() + getHaveHas(pronoun).slice(1)} ${pronoun} been ${verbForms.V1_ing}?`;
+                        } else if (time === "past") {
+                            return `Had ${pronoun} been ${verbForms.V1_ing}?`;
+                        } else { // future
+                            return `Will ${pronoun} have been ${verbForms.V1_ing}?`;
+                        }
+                }
+            }
+        }
+
+        // Helper functions
+        function getHaveHas(pronoun) {
+            return (pronoun === "he" || pronoun === "she" || pronoun === "it") ? "has" : "have";
+        }
+
+        function getDoDoes(pronoun) {
+            return (pronoun === "he" || pronoun === "she" || pronoun === "it") ? "does" : "do";
+        }
+
+        function getBeForm(pronoun, time) {
+            if (time === "present") {
+                if (pronoun === "I") return "am";
+                if (pronoun === "he" || pronoun === "she" || pronoun === "it") return "is";
+                return "are";
+            } else { // past
+                if (pronoun === "I" || pronoun === "he" || pronoun === "she" || pronoun === "it") return "was";
+                return "were";
+            }
+        }
+
+        function updateScore() {
+            correctSpan.textContent = score.correct;
+            totalSpan.textContent = score.total;
+            const percentage = Math.round((score.correct / score.total) * 100);
+            percentageSpan.textContent = `${percentage}%`;
+            percentageSpan.style.color = percentage >= 70 ? 'var(--success)' : 'var(--error)';
+        }
+
+        // Event listeners
+        generateBtn.addEventListener('click', generateElements);
+        checkBtn.addEventListener('click', checkAnswer);
+        userInput.addEventListener('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                checkAnswer();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "ArrowRight") {
+                event.preventDefault();
+                generateElements();
+            }
+        });
+
+
+
+        // Initialize game
+        fetchVerbs();
+    </script>
+</body>
+</html>

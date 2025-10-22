@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESOL Learning Platform - Professional English Grammar Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a202c;
+        }
+
+        .header .subtitle {
+            font-size: 1em;
+            color: #4a5568;
+            margin-bottom: 0;
+        }
+
+        .value-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .value-section h2 {
+            margin-bottom: 16px;
+            color: #1a202c;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .value-section p {
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .game-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .game-icon {
+            font-size: 2.5em;
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .icon-svg {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            display: block;
+            fill: #3182ce;
+        }
+
+        .game-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            color: #1a202c;
+            font-weight: 600;
+        }
+
+        .game-card p {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .game-features {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .feature-tag {
+            background: #f7fafc;
+            color: #4a5568;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.8em;
+            border: 1px solid #e2e8f0;
+            font-weight: 500;
+        }
+
+        .play-button {
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .play-button:hover {
+            background: #2c5aa0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(49, 130, 206, 0.3);
+        }
+
+        .benefits-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .benefits-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1a202c;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 16px;
+        }
+
+        .benefit-icon {
+            font-size: 2em;
+            margin-bottom: 12px;
+        }
+
+        .benefit-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a202c;
+            font-size: 1em;
+        }
+
+        .benefit-text {
+            font-size: 0.9em;
+            color: #4a5568;
+        }
+
+        .features-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .features-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1a202c;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 3px solid #3182ce;
+        }
+
+        .feature-item .feature-icon {
+            font-size: 1.5em;
+            margin-bottom: 12px;
+            color: #3182ce;
+        }
+
+        .feature-item h3 {
+            margin-bottom: 8px;
+            color: #1a202c;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .feature-item p {
+            font-size: 0.9em;
+            color: #4a5568;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .cta-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .cta-title {
+            font-size: 1.5em;
+            margin-bottom: 12px;
+            color: #1a202c;
+            font-weight: 600;
+        }
+
+        .cta-text {
+            margin-bottom: 20px;
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:first-child {
+            background: #3182ce;
+            color: white;
+        }
+
+        .cta-button:first-child:hover {
+            background: #2c5aa0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(49, 130, 206, 0.3);
+        }
+
+        .cta-button:nth-child(2) {
+            background: #48bb78;
+            color: white;
+        }
+
+        .cta-button:nth-child(2):hover {
+            background: #38a169;
+        }
+
+        .cta-button:nth-child(3) {
+            background: #4a5568;
+            color: white;
+        }
+
+        .cta-button:nth-child(3):hover {
+            background: #2d3748;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 20px 16px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .benefits-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .cta-button {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon-svg">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+            </div>
+            <h1>ESOL Learning Platform</h1>
+            <p class="subtitle">Advanced Grammar Learning Solutions for Adult Education</p>
+        </div>
+
+        <div class="value-section">
+            <div class="icon-svg" style="width: 32px; height: 32px; margin-bottom: 20px;">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h2>Designed for Real Adult Learners</h2>
+            <p><strong>Professional English learning games</strong> that focus on the grammar points adult ESOL students actually struggle with. No childish themes or generic educational content.</p>
+            <p><strong>Built specifically for adult learners</strong> who need practical, professional English practice that fits their busy lives and serious learning goals.</p>
+        </div>
+
+        <div class="games-grid">
+            <div class="game-card">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </div>
+                <h3>Verb Conjugation Challenge</h3>
+                <p>Master verb conjugations through interactive practice. Perfect for building confidence with regular and irregular verbs.</p>
+                <div class="game-features">
+                    <span class="feature-tag">All Tenses</span>
+                    <span class="feature-tag">Progress Tracking</span>
+                    <span class="feature-tag">Hints Available</span>
+                </div>
+                <a href="random_verb_conjugation_game_improved.html" class="play-button">Start Learning</a>
+            </div>
+
+            <div class="game-card">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                        <path d="M12 14l-6.16-3.422a12.083 12.083 0 01-.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 006.824-2.998 12.078 12.078 0 00-.665-6.479L12 14z"/>
+                    </svg>
+                </div>
+                <h3>Verb Forms Master</h3>
+                <p>Practice all verb forms - base, past, participle, gerund, and infinitive. The ultimate verb morphology challenge!</p>
+                <div class="game-features">
+                    <span class="feature-tag">5 Verb Forms</span>
+                    <span class="feature-tag">Timed Mode</span>
+                    <span class="feature-tag">Score System</span>
+                </div>
+                <a href="all_verb_form_game_professional.html" class="play-button">Start Learning</a>
+            </div>
+
+            <div class="game-card">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+                    </svg>
+                </div>
+                <h3>Numbers to English</h3>
+                <p>Master number pronunciation and spelling. Essential for everyday communication and business English.</p>
+                <div class="game-features">
+                    <span class="feature-tag">Numbers 1-1000</span>
+                    <span class="feature-tag">Ordinal Numbers</span>
+                    <span class="feature-tag">Real-life Context</span>
+                </div>
+                <a href="numbers_to_english_game_professional.html" class="play-button">Start Learning</a>
+            </div>
+
+            <div class="game-card">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
+                    </svg>
+                </div>
+                <h3>Gerund vs Infinitive</h3>
+                <p>Master the tricky difference between gerunds and infinitives. The most challenging grammar point for English learners!</p>
+                <div class="game-features">
+                    <span class="feature-tag">Practice Mode</span>
+                    <span class="feature-tag">Timed Challenge</span>
+                    <span class="feature-tag">Explanations</span>
+                </div>
+                <a href="gerund_infinitive_game_professional.html" class="play-button">Start Learning</a>
+            </div>
+        </div>
+
+        <div class="benefits-section">
+            <h2>Why Choose These Games</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="icon-svg" style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <div class="benefit-title">Interactive Learning</div>
+                    <div class="benefit-text">Engaging games that make grammar fun</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-svg" style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="benefit-title">Works Anywhere</div>
+                    <div class="benefit-text">Mobile responsive, no installation needed</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-svg" style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <div class="benefit-title">Progress Tracking</div>
+                    <div class="benefit-text">Monitor student improvement</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-svg" style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <div class="benefit-title">Adult Focus</div>
+                    <div class="benefit-text">Professional content for grown learners</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2>Game Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="icon-svg" style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3>Targeted Grammar</h3>
+                    <p>Focuses on the specific grammar points that cause problems for adult learners</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon-svg" style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3>Quick Practice</h3>
+                    <p>Short, focused exercises perfect for busy adult students</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon-svg" style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </div>
+                    <h3>Progressive Learning</h3>
+                    <p>Builds from basic concepts to advanced grammar structures</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon-svg" style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3>Track Progress</h3>
+                    <p>See improvement over time with built-in progress tracking</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="icon-svg" style="width: 32px; height: 32px; margin-bottom: 20px;">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+            </div>
+            <h2 class="cta-title">Try the Games Free</h2>
+            <p class="cta-text">Experience how these games can transform your adult ESOL classroom</p>
+            <div class="cta-buttons">
+                <button class="cta-button">Try Games Now</button>
+                <button class="cta-button">Get Resources</button>
+                <button class="cta-button">Connect</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verb Forms Master - ESOL Game Arcade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d3748;
+            --accent-color: #3182ce;
+            --success-color: #38a169;
+            --warning-color: #d69e2e;
+            --error-color: #e53e3e;
+            --background-primary: #f7fafc;
+            --background-secondary: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-feature-settings: 'kern' 1, 'liga' 1;
+        }
+
+        .game-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header Section */
+        .game-header {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+        }
+
+        .game-header-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        .game-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+
+        .game-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Section */
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: block;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Controls Section */
+        .game-controls {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .controls-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .controls-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .controls-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .control-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .esol-select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            background: var(--background-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .esol-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+        }
+
+        .esol-select:hover {
+            border-color: var(--accent-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .esol-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: none;
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .esol-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .esol-button:hover::before {
+            left: 100%;
+        }
+
+        .esol-button.primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .esol-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .esol-button.secondary {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .esol-button.secondary:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Question Area */
+        .question-area {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .question-instruction {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .verb-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 32px 0;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, rgba(49, 130, 206, 0.05), rgba(26, 54, 93, 0.05));
+            border-radius: var(--border-radius-lg);
+            border: 2px solid rgba(49, 130, 206, 0.1);
+            position: relative;
+        }
+
+        .verb-display::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 2px;
+        }
+
+        .tense-indicator {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius-xl);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 16px;
+            box-shadow: var(--shadow-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-section {
+            margin: 32px 0;
+        }
+
+        .input-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: block;
+            text-align: center;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 24px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            font-size: 1.25rem;
+            font-weight: 500;
+            text-align: center;
+            margin: 16px 0;
+            transition: all 0.3s ease;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .answer-input.correct {
+            border-color: var(--success-color);
+            background: rgba(56, 161, 105, 0.05);
+            animation: pulse-success 0.6s ease;
+        }
+
+        .answer-input.incorrect {
+            border-color: var(--error-color);
+            background: rgba(229, 62, 62, 0.05);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes pulse-success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Feedback Area */
+        .feedback-area {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .feedback-message {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 20px 32px;
+            border-radius: var(--border-radius-xl);
+            display: inline-block;
+            margin: 16px;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.4s ease;
+        }
+
+        .feedback-correct {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            border: 2px solid rgba(56, 161, 105, 0.2);
+        }
+
+        .feedback-incorrect {
+            background: linear-gradient(135deg, rgba(229, 62, 62, 0.1), rgba(229, 62, 62, 0.05));
+            color: var(--error-color);
+            border: 2px solid rgba(229, 62, 62, 0.2);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Container */
+        .progress-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .progress-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            margin: 16px 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--accent-color));
+            border-radius: var(--border-radius-lg);
+            transition: width 0.4s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Verb Forms Table */
+        .esol-table-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .table-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .esol-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            min-width: 600px;
+        }
+
+        .esol-table th,
+        .esol-table td {
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+        }
+
+        .esol-table th {
+            background: linear-gradient(135deg, var(--background-primary), rgba(102, 126, 234, 0.05));
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .esol-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .esol-table .correct-answer {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .nav-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-xl);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button.back {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .nav-button.back:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.next {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-button.next:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: 2em;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .game-stats {
+                gap: 20px;
+            }
+
+            .verb-display {
+                font-size: 2em;
+            }
+
+            .esol-table {
+                min-width: 400px;
+            }
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="game-header-content">
+                <span class="game-icon">📝</span>
+                <h1 class="game-title">Verb Forms Master</h1>
+                <p class="game-subtitle">Master all verb forms - base, past, participle, gerund, and infinitive</p>
+
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="score">0</span>
+                        <span class="stat-label">Score</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="streak">0</span>
+                        <span class="stat-label">Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="questions">0/10</span>
+                        <span class="stat-label">Progress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <div class="controls-header">
+                <h2 class="controls-title">Game Settings</h2>
+                <p class="controls-subtitle">Customize your verb forms practice</p>
+            </div>
+
+            <div class="controls-row">
+                <div class="control-group">
+                    <label class="control-label">Verb Difficulty</label>
+                    <select id="verbType" class="esol-select">
+                        <option value="regular">Regular Verbs</option>
+                        <option value="irregular">Irregular Verbs</option>
+                        <option value="mixed">Mixed Practice</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Question Type</label>
+                    <select id="questionType" class="esol-select">
+                        <option value="base">Base Form</option>
+                        <option value="past">Past Simple</option>
+                        <option value="participle">Past Participle</option>
+                        <option value="gerund">Gerund (-ing)</option>
+                        <option value="infinitive">Infinitive (to +)</option>
+                        <option value="mixed">Mixed Forms</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="startGame" class="esol-button primary">🎯 Start Challenge</button>
+                <button id="newVerb" class="esol-button secondary" style="display: none;">🔄 New Question</button>
+                <button id="showAnswer" class="esol-button secondary" style="display: none;">💡 Show Hint</button>
+            </div>
+        </div>
+
+        <div class="question-area" id="questionArea" style="display: none;">
+            <div class="question-header">
+                <div class="question-text">Complete the verb form:</div>
+                <p class="question-instruction">Fill in the correct form of the verb shown</p>
+            </div>
+
+            <div class="verb-display" id="verbDisplay">Loading verb...</div>
+            <span class="tense-indicator" id="formIndicator">Base Form</span>
+
+            <div class="input-section">
+                <label class="input-label">Your Answer</label>
+                <input type="text" id="answerInput" class="answer-input" placeholder="Type the verb form here...">
+            </div>
+
+            <div class="feedback-area">
+                <div id="feedbackMessage"></div>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-header">
+                <h3 class="progress-title">Learning Progress</h3>
+                <p class="progress-subtitle">Track your verb forms mastery</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" class="progress-text">Question 1 of 10</p>
+        </div>
+
+        <div class="esol-table-container" id="verbFormsTable" style="display: none;">
+            <div class="table-header">
+                <h3 class="table-title">Complete Verb Forms</h3>
+                <p class="table-subtitle">All forms of the current verb</p>
+            </div>
+
+            <table class="esol-table">
+                <thead>
+                    <tr>
+                        <th>Form</th>
+                        <th>Spelling</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Table content will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button back" onclick="location.href='esol_game_arcade.html'">
+                ← Return to Arcade
+            </button>
+            <button class="nav-button next" id="nextButton" style="display: none;">
+                Continue Learning →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Game data with comprehensive verb forms
+        const verbs = {
+            regular: [
+                { base: 'play', past: 'played', participle: 'played', gerund: 'playing', infinitive: 'to play' },
+                { base: 'work', past: 'worked', participle: 'worked', gerund: 'working', infinitive: 'to work' },
+                { base: 'study', past: 'studied', participle: 'studied', gerund: 'studying', infinitive: 'to study' },
+                { base: 'help', past: 'helped', participle: 'helped', gerund: 'helping', infinitive: 'to help' },
+                { base: 'talk', past: 'talked', participle: 'talked', gerund: 'talking', infinitive: 'to talk' },
+                { base: 'watch', past: 'watched', participle: 'watched', gerund: 'watching', infinitive: 'to watch' },
+                { base: 'listen', past: 'listened', participle: 'listened', gerund: 'listening', infinitive: 'to listen' },
+                { base: 'learn', past: 'learned', participle: 'learned', gerund: 'learning', infinitive: 'to learn' }
+            ],
+            irregular: [
+                { base: 'go', past: 'went', participle: 'gone', gerund: 'going', infinitive: 'to go' },
+                { base: 'be', past: 'was/were', participle: 'been', gerund: 'being', infinitive: 'to be' },
+                { base: 'have', past: 'had', participle: 'had', gerund: 'having', infinitive: 'to have' },
+                { base: 'do', past: 'did', participle: 'done', gerund: 'doing', infinitive: 'to do' },
+                { base: 'see', past: 'saw', participle: 'seen', gerund: 'seeing', infinitive: 'to see' },
+                { base: 'eat', past: 'ate', participle: 'eaten', gerund: 'eating', infinitive: 'to eat' },
+                { base: 'drink', past: 'drank', participle: 'drunk', gerund: 'drinking', infinitive: 'to drink' },
+                { base: 'sleep', past: 'slept', participle: 'slept', gerund: 'sleeping', infinitive: 'to sleep' },
+                { base: 'write', past: 'wrote', participle: 'written', gerund: 'writing', infinitive: 'to write' },
+                { base: 'drive', past: 'drove', participle: 'driven', gerund: 'driving', infinitive: 'to drive' },
+                { base: 'take', past: 'took', participle: 'taken', gerund: 'taking', infinitive: 'to take' },
+                { base: 'give', past: 'gave', participle: 'given', gerund: 'giving', infinitive: 'to give' },
+                { base: 'make', past: 'made', participle: 'made', gerund: 'making', infinitive: 'to make' },
+                { base: 'know', past: 'knew', participle: 'known', gerund: 'knowing', infinitive: 'to know' },
+                { base: 'think', past: 'thought', participle: 'thought', gerund: 'thinking', infinitive: 'to think' }
+            ]
+        };
+
+        let currentGame = {
+            score: 0,
+            streak: 0,
+            questionCount: 0,
+            totalQuestions: 10,
+            currentVerb: null,
+            currentQuestionType: 'base'
+        };
+
+        // Question type mappings
+        const questionTypes = {
+            base: { display: 'Base Form', field: 'base' },
+            past: { display: 'Past Simple', field: 'past' },
+            participle: { display: 'Past Participle', field: 'participle' },
+            gerund: { display: 'Gerund (-ing)', field: 'gerund' },
+            infinitive: { display: 'Infinitive (to +)', field: 'infinitive' }
+        };
+
+        // DOM elements
+        const elements = {
+            startGame: document.getElementById('startGame'),
+            newVerb: document.getElementById('newVerb'),
+            showAnswer: document.getElementById('showAnswer'),
+            questionArea: document.getElementById('questionArea'),
+            verbDisplay: document.getElementById('verbDisplay'),
+            formIndicator: document.getElementById('formIndicator'),
+            answerInput: document.getElementById('answerInput'),
+            feedbackMessage: document.getElementById('feedbackMessage'),
+            progressContainer: document.getElementById('progressContainer'),
+            progressFill: document.getElementById('progressFill'),
+            progressText: document.getElementById('progressText'),
+            verbFormsTable: document.getElementById('verbFormsTable'),
+            tableBody: document.getElementById('tableBody'),
+            nextButton: document.getElementById('nextButton'),
+            score: document.getElementById('score'),
+            streak: document.getElementById('streak'),
+            questions: document.getElementById('questions')
+        };
+
+        // Initialize game
+        function initGame() {
+            if (elements.startGame) {
+                elements.startGame.addEventListener('click', startGame);
+            }
+            if (elements.newVerb) {
+                elements.newVerb.addEventListener('click', loadNewQuestion);
+            }
+            if (elements.showAnswer) {
+                elements.showAnswer.addEventListener('click', showAnswer);
+            }
+            if (elements.answerInput) {
+                elements.answerInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkAnswer();
+                    }
+                });
+            }
+            if (elements.nextButton) {
+                elements.nextButton.addEventListener('click', loadNewQuestion);
+            }
+        }
+
+        // Start game
+        function startGame() {
+            currentGame.score = 0;
+            currentGame.streak = 0;
+            currentGame.questionCount = 0;
+            updateStats();
+            if (elements.startGame) elements.startGame.style.display = 'none';
+            if (elements.questionArea) elements.questionArea.style.display = 'block';
+            if (elements.progressContainer) elements.progressContainer.style.display = 'block';
+            loadNewQuestion();
+        }
+
+        // Load new question
+        function loadNewQuestion() {
+            if (currentGame.questionCount >= currentGame.totalQuestions) {
+                endGame();
+                return;
+            }
+
+            const verbTypeSelect = document.getElementById('verbType');
+            const questionTypeSelect = document.getElementById('questionType');
+
+            if (verbTypeSelect && questionTypeSelect) {
+                const verbType = verbTypeSelect.value;
+                currentGame.currentQuestionType = questionTypeSelect.value;
+
+                let verbList = [];
+                if (verbType === 'mixed') {
+                    verbList = [...verbs.regular, ...verbs.irregular];
+                } else {
+                    verbList = verbs[verbType];
+                }
+
+                currentGame.currentVerb = verbList[Math.floor(Math.random() * verbList.length)];
+
+                // Determine which form to ask for
+                let questionType = currentGame.currentQuestionType;
+                if (questionType === 'mixed') {
+                    const types = ['base', 'past', 'participle', 'gerund', 'infinitive'];
+                    questionType = types[Math.floor(Math.random() * types.length)];
+                }
+
+                currentGame.currentQuestionType = questionType;
+
+                // Display the question
+                const questionDisplay = questionTypes[questionType];
+                const givenForm = questionType === 'base' ? 'infinitive' : 'base';
+                const givenValue = currentGame.currentVerb[givenForm];
+
+                if (elements.verbDisplay) elements.verbDisplay.textContent = givenValue;
+                if (elements.formIndicator) elements.formIndicator.textContent = questionDisplay.display;
+
+                if (elements.answerInput) {
+                    elements.answerInput.value = '';
+                    elements.answerInput.classList.remove('correct', 'incorrect');
+                }
+                if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = '';
+                if (elements.newVerb) elements.newVerb.style.display = 'inline-block';
+                if (elements.showAnswer) elements.showAnswer.style.display = 'inline-block';
+                if (elements.nextButton) elements.nextButton.style.display = 'none';
+                if (elements.verbFormsTable) elements.verbFormsTable.style.display = 'none';
+
+                if (elements.answerInput) elements.answerInput.focus();
+                currentGame.questionCount++;
+                updateProgress();
+            }
+        }
+
+        // Check answer
+        function checkAnswer() {
+            if (!elements.answerInput) return;
+
+            const userAnswer = elements.answerInput.value.trim().toLowerCase();
+            const correctAnswer = getCorrectAnswer().toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer(correctAnswer);
+            }
+        }
+
+        // Get correct answer
+        function getCorrectAnswer() {
+            const verb = currentGame.currentVerb;
+            return verb[currentGame.currentQuestionType];
+        }
+
+        // Handle correct answer
+        function handleCorrectAnswer() {
+            currentGame.score += 10;
+            currentGame.streak += 1;
+            if (elements.answerInput) elements.answerInput.classList.add('correct');
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = '<div class="feedback-message feedback-correct">🎉 Excellent! That\'s correct!</div>';
+            if (elements.newVerb) elements.newVerb.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            updateStats();
+        }
+
+        // Handle incorrect answer
+        function handleIncorrectAnswer(correctAnswer) {
+            currentGame.streak = 0;
+            if (elements.answerInput) elements.answerInput.classList.add('incorrect');
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = `<div class="feedback-message feedback-incorrect">❌ Sorry! The correct answer is: <strong>${correctAnswer}</strong></div>`;
+            if (elements.newVerb) elements.newVerb.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            showVerbFormsTable();
+            updateStats();
+        }
+
+        // Show verb forms table
+        function showVerbFormsTable() {
+            if (!elements.tableBody || !elements.verbFormsTable) return;
+
+            const verb = currentGame.currentVerb;
+            elements.tableBody.innerHTML = '';
+
+            const forms = [
+                { label: 'Base Form', value: verb.base },
+                { label: 'Past Simple', value: verb.past },
+                { label: 'Past Participle', value: verb.participle },
+                { label: 'Gerund (-ing)', value: verb.gerund },
+                { label: 'Infinitive (to +)', value: verb.infinitive }
+            ];
+
+            forms.forEach(form => {
+                const row = document.createElement('tr');
+                const isCorrect = form.value === getCorrectAnswer();
+                row.innerHTML = `
+                    <td>${form.label}</td>
+                    <td class="${isCorrect ? 'correct-answer' : ''}">${form.value}</td>
+                `;
+                elements.tableBody.appendChild(row);
+            });
+
+            elements.verbFormsTable.style.display = 'block';
+        }
+
+        // Show answer
+        function showAnswer() {
+            const correctAnswer = getCorrectAnswer();
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = `<div class="feedback-message feedback-incorrect">The correct answer is: <strong>${correctAnswer}</strong></div>`;
+            if (elements.newVerb) elements.newVerb.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            showVerbFormsTable();
+        }
+
+        // Update stats
+        function updateStats() {
+            if (elements.score) elements.score.textContent = currentGame.score;
+            if (elements.streak) elements.streak.textContent = currentGame.streak;
+            if (elements.questions) elements.questions.textContent = `${currentGame.questionCount}/${currentGame.totalQuestions}`;
+        }
+
+        // Update progress
+        function updateProgress() {
+            if (elements.progressFill && elements.progressText) {
+                const progress = (currentGame.questionCount / currentGame.totalQuestions) * 100;
+                elements.progressFill.style.width = progress + '%';
+                elements.progressText.textContent = `Question ${currentGame.questionCount} of ${currentGame.totalQuestions}`;
+            }
+        }
+
+        // End game
+        function endGame() {
+            if (elements.questionArea) elements.questionArea.style.display = 'none';
+            if (elements.progressContainer) elements.progressContainer.style.display = 'none';
+            if (elements.verbFormsTable) elements.verbFormsTable.style.display = 'none';
+
+            const finalScore = currentGame.score;
+            let message = '';
+
+            if (finalScore >= 80) {
+                message = '🏆 Excellent work! You\'re a verb forms master!';
+            } else if (finalScore >= 60) {
+                message = '👍 Good job! Keep practicing to improve!';
+            } else if (finalScore >= 40) {
+                message = '📚 Nice effort! Review the verb forms and try again!';
+            } else {
+                message = '💪 Don\'t give up! Practice makes perfect!';
+            }
+
+            if (elements.questionArea) {
+                elements.questionArea.innerHTML = `
+                    <div style="text-align: center;">
+                        <h2>Game Complete!</h2>
+                        <div style="font-size: 3em; margin: 20px 0;">${finalScore}/100</div>
+                        <p style="font-size: 1.2em; margin: 20px 0;">${message}</p>
+                        <button onclick="location.reload()" class="esol-button primary" style="margin: 20px;">Play Again</button>
+                        <button onclick="location.href='esol_game_arcade.html'" class="esol-button secondary" style="margin: 20px;">Back to Arcade</button>
+                    </div>
+                `;
+                elements.questionArea.style.display = 'block';
+            }
+        }
+
+        // Initialize the game when page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

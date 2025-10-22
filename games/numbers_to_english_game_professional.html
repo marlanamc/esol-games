@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numbers to English - ESOL Game Arcade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d3748;
+            --accent-color: #3182ce;
+            --success-color: #38a169;
+            --warning-color: #d69e2e;
+            --error-color: #e53e3e;
+            --background-primary: #f7fafc;
+            --background-secondary: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-feature-settings: 'kern' 1, 'liga' 1;
+        }
+
+        .game-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header Section */
+        .game-header {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+        }
+
+        .game-header-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        .game-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+
+        .game-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Section */
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: block;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Controls Section */
+        .game-controls {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .controls-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .controls-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .controls-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .control-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .esol-select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            background: var(--background-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .esol-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+        }
+
+        .esol-select:hover {
+            border-color: var(--accent-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .esol-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: none;
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .esol-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .esol-button:hover::before {
+            left: 100%;
+        }
+
+        .esol-button.primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .esol-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .esol-button.secondary {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .esol-button.secondary:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Question Area */
+        .question-area {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .question-instruction {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .number-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 32px 0;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, rgba(49, 130, 206, 0.05), rgba(26, 54, 93, 0.05));
+            border-radius: var(--border-radius-lg);
+            border: 2px solid rgba(49, 130, 206, 0.1);
+            position: relative;
+        }
+
+        .number-display::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 2px;
+        }
+
+        .level-indicator {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius-xl);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 16px;
+            box-shadow: var(--shadow-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-section {
+            margin: 32px 0;
+        }
+
+        .input-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: block;
+            text-align: center;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 24px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            font-size: 1.25rem;
+            font-weight: 500;
+            text-align: center;
+            margin: 16px 0;
+            transition: all 0.3s ease;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .answer-input.correct {
+            border-color: var(--success-color);
+            background: rgba(56, 161, 105, 0.05);
+            animation: pulse-success 0.6s ease;
+        }
+
+        .answer-input.incorrect {
+            border-color: var(--error-color);
+            background: rgba(229, 62, 62, 0.05);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes pulse-success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Feedback Area */
+        .feedback-area {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .feedback-message {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 20px 32px;
+            border-radius: var(--border-radius-xl);
+            display: inline-block;
+            margin: 16px;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.4s ease;
+        }
+
+        .feedback-correct {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            border: 2px solid rgba(56, 161, 105, 0.2);
+        }
+
+        .feedback-incorrect {
+            background: linear-gradient(135deg, rgba(229, 62, 62, 0.1), rgba(229, 62, 62, 0.05));
+            color: var(--error-color);
+            border: 2px solid rgba(229, 62, 62, 0.2);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Container */
+        .progress-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .progress-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            margin: 16px 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--accent-color));
+            border-radius: var(--border-radius-lg);
+            transition: width 0.4s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Results Table */
+        .results-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .table-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            min-width: 600px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+        }
+
+        .results-table th {
+            background: linear-gradient(135deg, var(--background-primary), rgba(102, 126, 234, 0.05));
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .results-table .correct-answer {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .nav-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-xl);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button.back {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .nav-button.back:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.next {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-button.next:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: 2em;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .game-stats {
+                gap: 20px;
+            }
+
+            .number-display {
+                font-size: 3em;
+            }
+
+            .results-table {
+                min-width: 400px;
+            }
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="game-header-content">
+                <span class="game-icon">🔢</span>
+                <h1 class="game-title">Numbers to English</h1>
+                <p class="game-subtitle">Master number pronunciation and spelling for everyday communication</p>
+
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="score">0</span>
+                        <span class="stat-label">Score</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="streak">0</span>
+                        <span class="stat-label">Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="questions">0/10</span>
+                        <span class="stat-label">Progress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <div class="controls-header">
+                <h2 class="controls-title">Game Settings</h2>
+                <p class="controls-subtitle">Choose your difficulty level</p>
+            </div>
+
+            <div class="controls-row">
+                <div class="control-group">
+                    <label class="control-label">Number Range</label>
+                    <select id="numberRange" class="esol-select">
+                        <option value="basic">1-20 (Basic)</option>
+                        <option value="easy">1-50 (Easy)</option>
+                        <option value="medium">1-100 (Medium)</option>
+                        <option value="hard">1-1000 (Advanced)</option>
+                        <option value="expert">Mixed (Expert)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Question Type</label>
+                    <select id="questionType" class="esol-select">
+                        <option value="write">Write the Number</option>
+                        <option value="spell">Spell the Number</option>
+                        <option value="both">Both (Mixed)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="startGame" class="esol-button primary">🔢 Start Challenge</button>
+                <button id="newNumber" class="esol-button secondary" style="display: none;">🔄 New Number</button>
+                <button id="showAnswer" class="esol-button secondary" style="display: none;">💡 Show Answer</button>
+            </div>
+        </div>
+
+        <div class="question-area" id="questionArea" style="display: none;">
+            <div class="question-header">
+                <div class="question-text">How do you write this number in English?</div>
+                <p class="question-instruction">Type the complete English spelling of the number shown</p>
+            </div>
+
+            <div class="number-display" id="numberDisplay">42</div>
+            <span class="level-indicator" id="levelIndicator">Medium Level</span>
+
+            <div class="input-section">
+                <label class="input-label">Your Answer</label>
+                <textarea id="answerInput" class="answer-input" rows="2" placeholder="Type the English spelling here..."></textarea>
+            </div>
+
+            <div class="feedback-area">
+                <div id="feedbackMessage"></div>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-header">
+                <h3 class="progress-title">Learning Progress</h3>
+                <p class="progress-subtitle">Track your number skills improvement</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" class="progress-text">Question 1 of 10</p>
+        </div>
+
+        <div class="results-container" id="resultsContainer" style="display: none;">
+            <div class="table-header">
+                <h3 class="table-title">Your Results</h3>
+                <p class="table-subtitle">Review your answers and learn from mistakes</p>
+            </div>
+
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Your Answer</th>
+                        <th>Correct Answer</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                    <!-- Results will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button back" onclick="location.href='esol_game_arcade.html'">
+                ← Return to Arcade
+            </button>
+            <button class="nav-button next" id="nextButton" style="display: none;">
+                Continue Learning →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Number to English word mappings
+        const numberWords = {
+            0: 'zero',
+            1: 'one',
+            2: 'two',
+            3: 'three',
+            4: 'four',
+            5: 'five',
+            6: 'six',
+            7: 'seven',
+            8: 'eight',
+            9: 'nine',
+            10: 'ten',
+            11: 'eleven',
+            12: 'twelve',
+            13: 'thirteen',
+            14: 'fourteen',
+            15: 'fifteen',
+            16: 'sixteen',
+            17: 'seventeen',
+            18: 'eighteen',
+            19: 'nineteen',
+            20: 'twenty',
+            21: 'twenty-one',
+            22: 'twenty-two',
+            23: 'twenty-three',
+            24: 'twenty-four',
+            25: 'twenty-five',
+            26: 'twenty-six',
+            27: 'twenty-seven',
+            28: 'twenty-eight',
+            29: 'twenty-nine',
+            30: 'thirty',
+            31: 'thirty-one',
+            32: 'thirty-two',
+            33: 'thirty-three',
+            34: 'thirty-four',
+            35: 'thirty-five',
+            36: 'thirty-six',
+            37: 'thirty-seven',
+            38: 'thirty-eight',
+            39: 'thirty-nine',
+            40: 'forty',
+            41: 'forty-one',
+            42: 'forty-two',
+            43: 'forty-three',
+            44: 'forty-four',
+            45: 'forty-five',
+            46: 'forty-six',
+            47: 'forty-seven',
+            48: 'forty-eight',
+            49: 'forty-nine',
+            50: 'fifty',
+            60: 'sixty',
+            70: 'seventy',
+            80: 'eighty',
+            90: 'ninety',
+            100: 'one hundred',
+            200: 'two hundred',
+            300: 'three hundred',
+            400: 'four hundred',
+            500: 'five hundred',
+            600: 'six hundred',
+            700: 'seven hundred',
+            800: 'eight hundred',
+            900: 'nine hundred',
+            1000: 'one thousand'
+        };
+
+        let currentGame = {
+            score: 0,
+            streak: 0,
+            questionCount: 0,
+            totalQuestions: 10,
+            currentNumber: null,
+            currentAnswer: null,
+            results: []
+        };
+
+        // DOM elements
+        const elements = {
+            startGame: document.getElementById('startGame'),
+            newNumber: document.getElementById('newNumber'),
+            showAnswer: document.getElementById('showAnswer'),
+            questionArea: document.getElementById('questionArea'),
+            numberDisplay: document.getElementById('numberDisplay'),
+            levelIndicator: document.getElementById('levelIndicator'),
+            answerInput: document.getElementById('answerInput'),
+            feedbackMessage: document.getElementById('feedbackMessage'),
+            progressContainer: document.getElementById('progressContainer'),
+            progressFill: document.getElementById('progressFill'),
+            progressText: document.getElementById('progressText'),
+            resultsContainer: document.getElementById('resultsContainer'),
+            resultsTableBody: document.getElementById('resultsTableBody'),
+            nextButton: document.getElementById('nextButton'),
+            score: document.getElementById('score'),
+            streak: document.getElementById('streak'),
+            questions: document.getElementById('questions')
+        };
+
+        // Initialize game
+        function initGame() {
+            if (elements.startGame) {
+                elements.startGame.addEventListener('click', startGame);
+            }
+            if (elements.newNumber) {
+                elements.newNumber.addEventListener('click', loadNewQuestion);
+            }
+            if (elements.showAnswer) {
+                elements.showAnswer.addEventListener('click', showAnswer);
+            }
+            if (elements.answerInput) {
+                elements.answerInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkAnswer();
+                    }
+                });
+            }
+            if (elements.nextButton) {
+                elements.nextButton.addEventListener('click', loadNewQuestion);
+            }
+        }
+
+        // Start game
+        function startGame() {
+            currentGame.score = 0;
+            currentGame.streak = 0;
+            currentGame.questionCount = 0;
+            currentGame.results = [];
+            updateStats();
+            if (elements.startGame) elements.startGame.style.display = 'none';
+            if (elements.questionArea) elements.questionArea.style.display = 'block';
+            if (elements.progressContainer) elements.progressContainer.style.display = 'block';
+            if (elements.resultsContainer) elements.resultsContainer.style.display = 'none';
+            loadNewQuestion();
+        }
+
+        // Load new question
+        function loadNewQuestion() {
+            if (currentGame.questionCount >= currentGame.totalQuestions) {
+                endGame();
+                return;
+            }
+
+            const rangeSelect = document.getElementById('numberRange');
+            const typeSelect = document.getElementById('questionType');
+
+            if (rangeSelect && typeSelect) {
+                const numberRange = rangeSelect.value;
+                const questionType = typeSelect.value;
+
+                // Generate number based on range
+                let maxNumber;
+                switch (numberRange) {
+                    case 'basic': maxNumber = 20; break;
+                    case 'easy': maxNumber = 50; break;
+                    case 'medium': maxNumber = 100; break;
+                    case 'hard': maxNumber = 1000; break;
+                    case 'expert': maxNumber = 1000; break;
+                    default: maxNumber = 100;
+                }
+
+                currentGame.currentNumber = Math.floor(Math.random() * maxNumber) + 1;
+                currentGame.currentAnswer = numberWords[currentGame.currentNumber] || numberToWords(currentGame.currentNumber);
+
+                if (elements.numberDisplay) elements.numberDisplay.textContent = currentGame.currentNumber;
+                if (elements.levelIndicator) elements.levelIndicator.textContent = getLevelName(numberRange);
+                if (elements.answerInput) {
+                    elements.answerInput.value = '';
+                    elements.answerInput.classList.remove('correct', 'incorrect');
+                }
+                if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = '';
+                if (elements.newNumber) elements.newNumber.style.display = 'inline-block';
+                if (elements.showAnswer) elements.showAnswer.style.display = 'inline-block';
+                if (elements.nextButton) elements.nextButton.style.display = 'none';
+
+                if (elements.answerInput) elements.answerInput.focus();
+                currentGame.questionCount++;
+                updateProgress();
+            }
+        }
+
+        // Convert number to words (for numbers not in our predefined list)
+        function numberToWords(num) {
+            if (num in numberWords) return numberWords[num];
+
+            if (num < 100) {
+                const tens = Math.floor(num / 10) * 10;
+                const ones = num % 10;
+                if (ones === 0) return numberWords[tens];
+                return numberWords[tens] + '-' + numberWords[ones];
+            }
+
+            if (num < 1000) {
+                const hundreds = Math.floor(num / 100) * 100;
+                const remainder = num % 100;
+                let result = numberWords[hundreds];
+                if (remainder > 0) {
+                    result += ' and ' + numberToWords(remainder);
+                }
+                return result;
+            }
+
+            return num.toString(); // Fallback
+        }
+
+        // Get level name
+        function getLevelName(range) {
+            const names = {
+                basic: 'Basic Level',
+                easy: 'Easy Level',
+                medium: 'Medium Level',
+                hard: 'Advanced Level',
+                expert: 'Expert Level'
+            };
+            return names[range] || 'Medium Level';
+        }
+
+        // Check answer
+        function checkAnswer() {
+            if (!elements.answerInput) return;
+
+            const userAnswer = elements.answerInput.value.trim().toLowerCase().replace(/\s+/g, ' ');
+            const correctAnswer = currentGame.currentAnswer.toLowerCase();
+
+            // Store result for later display
+            currentGame.results.push({
+                number: currentGame.currentNumber,
+                userAnswer: userAnswer,
+                correctAnswer: correctAnswer,
+                isCorrect: userAnswer === correctAnswer
+            });
+
+            if (userAnswer === correctAnswer) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer(correctAnswer);
+            }
+        }
+
+        // Handle correct answer
+        function handleCorrectAnswer() {
+            currentGame.score += 10;
+            currentGame.streak += 1;
+            if (elements.answerInput) elements.answerInput.classList.add('correct');
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = '<div class="feedback-message feedback-correct">🎉 Excellent! That\'s correct!</div>';
+            if (elements.newNumber) elements.newNumber.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            updateStats();
+        }
+
+        // Handle incorrect answer
+        function handleIncorrectAnswer(correctAnswer) {
+            currentGame.streak = 0;
+            if (elements.answerInput) elements.answerInput.classList.add('incorrect');
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = `<div class="feedback-message feedback-incorrect">❌ Sorry! The correct answer is: <strong>${correctAnswer}</strong></div>`;
+            if (elements.newNumber) elements.newNumber.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            updateStats();
+        }
+
+        // Show answer
+        function showAnswer() {
+            const correctAnswer = currentGame.currentAnswer;
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = `<div class="feedback-message feedback-incorrect">The correct answer is: <strong>${correctAnswer}</strong></div>`;
+            if (elements.newNumber) elements.newNumber.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+        }
+
+        // Update stats
+        function updateStats() {
+            if (elements.score) elements.score.textContent = currentGame.score;
+            if (elements.streak) elements.streak.textContent = currentGame.streak;
+            if (elements.questions) elements.questions.textContent = `${currentGame.questionCount}/${currentGame.totalQuestions}`;
+        }
+
+        // Update progress
+        function updateProgress() {
+            if (elements.progressFill && elements.progressText) {
+                const progress = (currentGame.questionCount / currentGame.totalQuestions) * 100;
+                elements.progressFill.style.width = progress + '%';
+                elements.progressText.textContent = `Question ${currentGame.questionCount} of ${currentGame.totalQuestions}`;
+            }
+        }
+
+        // End game
+        function endGame() {
+            if (elements.questionArea) elements.questionArea.style.display = 'none';
+            if (elements.progressContainer) elements.progressContainer.style.display = 'none';
+
+            // Display results table
+            if (elements.resultsTableBody && elements.resultsContainer) {
+                elements.resultsTableBody.innerHTML = '';
+                currentGame.results.forEach(result => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${result.number}</td>
+                        <td>${result.userAnswer}</td>
+                        <td class="${result.isCorrect ? 'correct-answer' : ''}">${result.correctAnswer}</td>
+                        <td>${result.isCorrect ? '✅ Correct' : '❌ Incorrect'}</td>
+                    `;
+                    elements.resultsTableBody.appendChild(row);
+                });
+                elements.resultsContainer.style.display = 'block';
+            }
+
+            const finalScore = currentGame.score;
+            let message = '';
+
+            if (finalScore >= 80) {
+                message = '🏆 Excellent work! You\'re a numbers master!';
+            } else if (finalScore >= 60) {
+                message = '👍 Good job! Keep practicing to improve!';
+            } else if (finalScore >= 40) {
+                message = '📚 Nice effort! Review the numbers and try again!';
+            } else {
+                message = '💪 Don\'t give up! Practice makes perfect!';
+            }
+
+            if (elements.questionArea) {
+                elements.questionArea.innerHTML = `
+                    <div style="text-align: center;">
+                        <h2>Game Complete!</h2>
+                        <div style="font-size: 3em; margin: 20px 0;">${finalScore}/100</div>
+                        <p style="font-size: 1.2em; margin: 20px 0;">${message}</p>
+                        <button onclick="location.reload()" class="esol-button primary" style="margin: 20px;">Play Again</button>
+                        <button onclick="location.href='esol_game_arcade.html'" class="esol-button secondary" style="margin: 20px;">Back to Arcade</button>
+                    </div>
+                `;
+                elements.questionArea.style.display = 'block';
+            }
+        }
+
+        // Initialize the game when page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

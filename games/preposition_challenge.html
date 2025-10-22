@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preposition Challenge - Master English Prepositions | ESOL Learning Center</title>
+    <link rel="stylesheet" href="../css/esol-games.css">
+    <style>
+        .game-board {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+        
+        .visual-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-radius: 12px;
+            margin: 2rem 0;
+            padding: 2rem;
+        }
+        
+        .scenario-image {
+            font-size: 5rem;
+            text-align: center;
+        }
+        
+        .sentence-area {
+            font-size: 1.4rem;
+            line-height: 2;
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        
+        .preposition-blank {
+            display: inline-block;
+            min-width: 100px;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border: 2px dashed var(--primary-color);
+            border-radius: 6px;
+            background: white;
+            font-weight: 600;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .preposition-blank.filled {
+            background: var(--primary-color);
+            color: white;
+            border-style: solid;
+        }
+        
+        .preposition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .prep-option {
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .prep-option:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .prep-option.selected {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .prep-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .category-tab.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .result-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .result-modal.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .modal-overlay.show {
+            display: block;
+        }
+        
+        .preposition-reference {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+        
+        .reference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .reference-item {
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        
+        .reference-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timer-bar {
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--warning-color), var(--error-color));
+            transition: width 1s linear;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">🔗 Preposition Challenge</h1>
+            <p class="page-subtitle">Master Prepositions of Time, Place, and Movement</p>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number" id="score">0</div>
+                <div class="stat-label">Score</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="level">1</div>
+                <div class="stat-label">Level</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="streak">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="accuracy">100%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+        
+        <div class="game-board">
+            <div class="category-tabs">
+                <button class="category-tab active" onclick="selectCategory('all')">All Prepositions</button>
+                <button class="category-tab" onclick="selectCategory('time')">Time</button>
+                <button class="category-tab" onclick="selectCategory('place')">Place</button>
+                <button class="category-tab" onclick="selectCategory('movement')">Movement</button>
+            </div>
+            
+            <div class="timer-bar">
+                <div class="timer-fill" id="timerFill"></div>
+            </div>
+            
+            <div class="visual-container">
+                <div class="scenario-image" id="scenarioImage">🎯</div>
+            </div>
+            
+            <div class="sentence-area" id="sentenceArea">
+                Click "Start Game" to begin practicing prepositions!
+            </div>
+            
+            <div class="preposition-grid" id="prepositionGrid"></div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="startGame()">Start Game</button>
+                <button class="btn btn-secondary" onclick="checkAnswer()">Check Answer</button>
+                <button class="btn btn-outline" onclick="skipQuestion()">Skip →</button>
+            </div>
+        </div>
+        
+        <div class="preposition-reference">
+            <h3 style="text-align: center; margin-bottom: 1rem;">Quick Reference Guide</h3>
+            <div class="reference-grid">
+                <div class="reference-item">
+                    <div class="reference-title">⏰ Time</div>
+                    <div>at (specific times), on (days/dates), in (months/years), during, before, after, since, for, until</div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-title">📍 Place</div>
+                    <div>at (specific location), on (surface), in (enclosed), under, over, behind, in front of, next to, between</div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-title">➡️ Movement</div>
+                    <div>to, from, into, out of, through, across, along, up, down, toward, away from</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="result-modal" id="resultModal">
+        <h2 id="resultTitle">Excellent!</h2>
+        <p id="resultMessage">Great job!</p>
+        <div id="resultExplanation" style="margin: 1rem 0; padding: 1rem; background: #f8fafc; border-radius: 8px;"></div>
+        <button class="btn btn-primary" onclick="nextQuestion()">Next Question</button>
+    </div>
+    
+    <script>
+        let currentQuestion = null;
+        let selectedAnswer = '';
+        let score = 0;
+        let level = 1;
+        let streak = 0;
+        let totalQuestions = 0;
+        let correctAnswers = 0;
+        let currentCategory = 'all';
+        let timerInterval = null;
+        
+        const questions = {
+            time: [
+                {sentence: "I wake up ___ 7 o'clock every morning.", answer: "at", emoji: "⏰", options: ["at", "on", "in", "by"], explanation: "Use 'at' for specific times of day."},
+                {sentence: "My birthday is ___ September.", answer: "in", emoji: "🎂", options: ["at", "on", "in", "during"], explanation: "Use 'in' for months and years."},
+                {sentence: "The meeting is ___ Monday.", answer: "on", emoji: "📅", options: ["at", "on", "in", "by"], explanation: "Use 'on' for days of the week."},
+                {sentence: "I've been waiting ___ two hours.", answer: "for", emoji: "⏳", options: ["for", "since", "during", "in"], explanation: "Use 'for' to indicate duration of time."},
+                {sentence: "She's been working here ___ 2019.", answer: "since", emoji: "📆", options: ["for", "since", "from", "in"], explanation: "Use 'since' for a starting point in time."},
+                {sentence: "Let's meet ___ noon.", answer: "at", emoji: "🕐", options: ["at", "on", "in", "by"], explanation: "Use 'at' for specific times like noon, midnight."},
+                {sentence: "I'll finish this ___ Friday.", answer: "by", emoji: "✅", options: ["at", "on", "by", "until"], explanation: "Use 'by' to indicate a deadline."},
+                {sentence: "The store is open ___ 9 PM.", answer: "until", emoji: "🏪", options: ["at", "by", "until", "to"], explanation: "Use 'until' to show when something stops."},
+                {sentence: "We go skiing ___ winter.", answer: "in", emoji: "⛷️", options: ["at", "on", "in", "during"], explanation: "Use 'in' for seasons."},
+                {sentence: "The accident happened ___ the night.", answer: "during", emoji: "🌙", options: ["at", "in", "during", "through"], explanation: "Use 'during' for something happening within a period."}
+            ],
+            place: [
+                {sentence: "The book is ___ the table.", answer: "on", emoji: "📚", options: ["at", "on", "in", "over"], explanation: "Use 'on' for surfaces."},
+                {sentence: "She lives ___ New York.", answer: "in", emoji: "🏙️", options: ["at", "on", "in", "by"], explanation: "Use 'in' for cities and countries."},
+                {sentence: "Meet me ___ the entrance.", answer: "at", emoji: "🚪", options: ["at", "on", "in", "by"], explanation: "Use 'at' for specific points or locations."},
+                {sentence: "The cat is hiding ___ the bed.", answer: "under", emoji: "🐱", options: ["under", "below", "beneath", "down"], explanation: "Use 'under' for something directly below."},
+                {sentence: "The plane flew ___ the clouds.", answer: "above", emoji: "✈️", options: ["over", "above", "on", "up"], explanation: "Use 'above' for higher position without contact."},
+                {sentence: "The shop is ___ the bank and the pharmacy.", answer: "between", emoji: "🏪", options: ["between", "among", "beside", "along"], explanation: "Use 'between' for position in the middle of two things."},
+                {sentence: "There's a garden ___ the house.", answer: "behind", emoji: "🏡", options: ["behind", "back", "after", "beyond"], explanation: "Use 'behind' for position at the back of something."},
+                {sentence: "The painting hangs ___ the fireplace.", answer: "above", emoji: "🖼️", options: ["above", "over", "on", "up"], explanation: "Use 'above' for higher position on a wall."},
+                {sentence: "She sat ___ me in class.", answer: "next to", emoji: "👥", options: ["next to", "beside", "near", "by"], explanation: "Use 'next to' or 'beside' for adjacent position."},
+                {sentence: "The keys are ___ my pocket.", answer: "in", emoji: "🔑", options: ["in", "into", "inside", "within"], explanation: "Use 'in' for enclosed spaces."}
+            ],
+            movement: [
+                {sentence: "We're driving ___ Paris tomorrow.", answer: "to", emoji: "🚗", options: ["to", "at", "in", "toward"], explanation: "Use 'to' for destination of movement."},
+                {sentence: "She jumped ___ the pool.", answer: "into", emoji: "🏊", options: ["in", "into", "to", "inside"], explanation: "Use 'into' for movement to inside something."},
+                {sentence: "The bird flew ___ the window.", answer: "through", emoji: "🐦", options: ["through", "across", "over", "by"], explanation: "Use 'through' for movement from one side to another."},
+                {sentence: "Walk ___ the bridge carefully.", answer: "across", emoji: "🌉", options: ["across", "through", "over", "along"], explanation: "Use 'across' for movement from one side to another on a surface."},
+                {sentence: "The cat climbed ___ the tree.", answer: "up", emoji: "🌳", options: ["up", "on", "over", "above"], explanation: "Use 'up' for upward movement."},
+                {sentence: "He ran ___ the building quickly.", answer: "out of", emoji: "🏃", options: ["out of", "from", "outside", "off"], explanation: "Use 'out of' for movement from inside to outside."},
+                {sentence: "The train goes ___ the tunnel.", answer: "through", emoji: "🚂", options: ["through", "in", "into", "across"], explanation: "Use 'through' for movement in one side and out the other."},
+                {sentence: "She walked ___ the street.", answer: "along", emoji: "🚶", options: ["along", "through", "by", "on"], explanation: "Use 'along' for movement following a line or path."},
+                {sentence: "The ball rolled ___ the hill.", answer: "down", emoji: "⚽", options: ["down", "under", "below", "off"], explanation: "Use 'down' for downward movement."},
+                {sentence: "He's coming ___ London.", answer: "from", emoji: "✈️", options: ["from", "of", "out", "away"], explanation: "Use 'from' to indicate origin of movement."}
+            ]
+        };
+        
+        function selectCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            startGame();
+        }
+        
+        function getQuestions() {
+            if (currentCategory === 'all') {
+                return [...questions.time, ...questions.place, ...questions.movement];
+            }
+            return questions[currentCategory];
+        }
+        
+        function startGame() {
+            loadNewQuestion();
+            startTimer();
+        }
+        
+        function loadNewQuestion() {
+            const availableQuestions = getQuestions();
+            currentQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+            selectedAnswer = '';
+            
+            // Display emoji
+            document.getElementById('scenarioImage').textContent = currentQuestion.emoji;
+            
+            // Display sentence with blank
+            const parts = currentQuestion.sentence.split('___');
+            document.getElementById('sentenceArea').innerHTML = 
+                parts[0] + '<span class="preposition-blank" id="answerBlank">?</span>' + parts[1];
+            
+            // Display options
+            const grid = document.getElementById('prepositionGrid');
+            grid.innerHTML = '';
+            currentQuestion.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'prep-option';
+                btn.textContent = option;
+                btn.onclick = () => selectPreposition(option);
+                grid.appendChild(btn);
+            });
+            
+            resetTimer();
+        }
+        
+        function selectPreposition(prep) {
+            selectedAnswer = prep;
+            document.getElementById('answerBlank').textContent = prep;
+            document.getElementById('answerBlank').classList.add('filled');
+            
+            document.querySelectorAll('.prep-option').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.textContent === prep) {
+                    btn.classList.add('selected');
+                }
+            });
+        }
+        
+        function checkAnswer() {
+            if (!selectedAnswer) {
+                alert('Please select a preposition first!');
+                return;
+            }
+            
+            totalQuestions++;
+            stopTimer();
+            
+            const isCorrect = selectedAnswer === currentQuestion.answer;
+            
+            if (isCorrect) {
+                score += 10;
+                streak++;
+                correctAnswers++;
+                showResult(true);
+            } else {
+                streak = 0;
+                showResult(false);
+            }
+            
+            updateStats();
+        }
+        
+        function showResult(isCorrect) {
+            const modal = document.getElementById('resultModal');
+            const overlay = document.getElementById('modalOverlay');
+            const title = document.getElementById('resultTitle');
+            const message = document.getElementById('resultMessage');
+            const explanation = document.getElementById('resultExplanation');
+            
+            if (isCorrect) {
+                title.textContent = '🎉 Excellent!';
+                message.textContent = 'You got it right!';
+                title.style.color = 'var(--success-color)';
+            } else {
+                title.textContent = '💡 Not quite!';
+                message.textContent = `The correct answer is "${currentQuestion.answer}"`;
+                title.style.color = 'var(--error-color)';
+            }
+            
+            explanation.innerHTML = `<strong>Explanation:</strong> ${currentQuestion.explanation}`;
+            
+            modal.classList.add('show');
+            overlay.classList.add('show');
+        }
+        
+        function nextQuestion() {
+            const modal = document.getElementById('resultModal');
+            const overlay = document.getElementById('modalOverlay');
+            modal.classList.remove('show');
+            overlay.classList.remove('show');
+            
+            if (streak > 0 && streak % 5 === 0) {
+                level++;
+                document.getElementById('level').textContent = level;
+            }
+            
+            loadNewQuestion();
+            startTimer();
+        }
+        
+        function skipQuestion() {
+            loadNewQuestion();
+            resetTimer();
+        }
+        
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('streak').textContent = streak;
+            document.getElementById('level').textContent = level;
+            const accuracy = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 100;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+        
+        function startTimer() {
+            const timerFill = document.getElementById('timerFill');
+            let timeLeft = 30;
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const percentage = (timeLeft / 30) * 100;
+                timerFill.style.width = percentage + '%';
+                
+                if (timeLeft <= 0) {
+                    stopTimer();
+                    checkAnswer();
+                }
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+        
+        function resetTimer() {
+            stopTimer();
+            document.getElementById('timerFill').style.width = '100%';
+        }
+        
+        // Initialize
+        document.getElementById('modalOverlay').onclick = () => nextQuestion();
+    </script>
+</body>
+</html>

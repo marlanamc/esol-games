@@ -1,0 +1,22 @@
+Level,Level_Name,Pattern,Formula,Example_Affirmative,Example_Negative,Example_Question,Grammar_Focus,Vocabulary_Focus,Skills_Practiced
+1,Basic_Affirmative,Subject + Verb + Object,subject + V1/V1-3rd + object,She eats pizza,N/A,N/A,V1 vs V1-3rd forms,Basic subjects/verbs/objects,Sentence building
+2,Negatives,Subject + Helper + Not + Verb + Object,subject + do/does + not + V1 + object,N/A,She does not eat pizza,N/A,Auxiliary verbs + negation,Helper verbs (do/does),Negative formation
+3,Yes_No_Questions,Helper + Subject + Verb + Object?,do/does + subject + V1 + object?,N/A,N/A,Does she eat pizza?,Question formation,Question helpers,Question asking
+4,Wh_Questions,Question_Word + Helper + Subject + Verb?,wh-word + do/does + subject + V1?,N/A,N/A,What does she eat?,Wh-question words,Question words,Information questions
+5,Question_Answers,Question + Answer,Q: wh-word + do/does + subject + V1? A: subject + V1/V1-3rd + object,Q: What does she eat? A: She eats pizza,Q: Does she eat pizza? A: No she doesn't,Q: What does she eat? A: She eats pizza,Question-answer pairs,Response vocabulary,Conversational exchange
+6,Articles_Countable,Article + Adjective + Noun,subject + V1/V1-3rd + article + (adjective) + noun,She eats a big pizza,She doesn't eat a big pizza,Does she eat a big pizza?,Articles with countable nouns,Articles (a/an/the),Noun classification
+7,Uncountable_Nouns,Subject + Verb + Uncountable,subject + V1/V1-3rd + uncountable noun,She eats pizza,She doesn't eat pizza,Does she eat pizza?,No articles with uncountable,Uncountable nouns,Countable vs uncountable
+8,Plural_Nouns,Subject + Verb + Plural,subject + V1/V1-3rd + plural noun,She eats pizzas,She doesn't eat pizzas,Does she eat pizzas?,Plural noun usage,Plural forms,Singular vs plural
+9,Adjectives,Subject + Verb + Article + Adjective + Noun,subject + V1/V1-3rd + article + adjective + noun,She eats a delicious pizza,She doesn't eat a delicious pizza,Does she eat a delicious pizza?,Adjective placement,Descriptive adjectives,Description skills
+10,Adverbs_Manner,Subject + Verb + Object + Adverb,subject + V1/V1-3rd + object + adverb,She eats pizza quickly,She doesn't eat pizza quickly,Does she eat pizza quickly?,Adverb placement (manner),Manner adverbs,Action description
+11,Adverbs_Frequency,Subject + Adverb + Verb + Object,subject + frequency adverb + V1/V1-3rd + object,She always eats pizza,She doesn't always eat pizza,Does she always eat pizza?,Frequency adverb placement,Frequency adverbs,Habit description
+12,Prepositions_Place,Subject + Verb + Object + Prep + Place,subject + V1/V1-3rd + object + preposition + place,She eats pizza at school,She doesn't eat pizza at school,Does she eat pizza at school?,Prepositional phrases,Place prepositions,Location description
+13,Prepositions_Time,Subject + Verb + Object + Prep + Time,subject + V1/V1-3rd + object + preposition + time,She eats pizza in the morning,She doesn't eat pizza in the morning,Does she eat pizza in the morning?,Time expressions,Time prepositions,Time description
+14,Complex_Sentences,Clause + Conjunction + Clause,clause + and/but/or + clause,She eats pizza and drinks water,She doesn't eat pizza but drinks water,Does she eat pizza or drink water?,Compound sentences,Conjunctions,Complex ideas
+15,Past_Simple_Affirmative,Subject + Past_Verb + Object,subject + V2 + object,She ate pizza,N/A,N/A,Past tense formation,Past verb forms,Past events
+16,Past_Simple_Negative,Subject + Didn't + Verb + Object,subject + didn't + V1 + object,N/A,She didn't eat pizza,N/A,Past negative formation,Past helpers,Past negation
+17,Past_Simple_Questions,Did + Subject + Verb + Object?,did + subject + V1 + object?,N/A,N/A,Did she eat pizza?,Past question formation,Past question words,Past inquiries
+18,Future_Simple,Subject + Will + Verb + Object,subject + will + V1 + object,She will eat pizza,She won't eat pizza,Will she eat pizza?,Future tense formation,Future expressions,Future plans
+19,Present_Continuous,Subject + Be + Verb-ing + Object,subject + am/is/are + V1-ing + object,She is eating pizza,She isn't eating pizza,Is she eating pizza?,Present continuous formation,Continuous forms,Ongoing actions
+20,Mixed_Tenses,Various patterns,Mixed tense usage,Various examples,Various examples,Various examples,Tense selection,Mixed vocabulary,Tense flexibility
+

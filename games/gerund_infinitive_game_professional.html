@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerund vs Infinitive - ESOL Game Arcade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d3748;
+            --accent-color: #3182ce;
+            --success-color: #38a169;
+            --warning-color: #d69e2e;
+            --error-color: #e53e3e;
+            --background-primary: #f7fafc;
+            --background-secondary: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-feature-settings: 'kern' 1, 'liga' 1;
+        }
+
+        .game-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header Section */
+        .game-header {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+        }
+
+        .game-header-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        .game-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+
+        .game-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Section */
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: block;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Controls Section */
+        .game-controls {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .controls-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .controls-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .controls-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .control-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .esol-select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            background: var(--background-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .esol-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+        }
+
+        .esol-select:hover {
+            border-color: var(--accent-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .esol-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: none;
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .esol-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .esol-button:hover::before {
+            left: 100%;
+        }
+
+        .esol-button.primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .esol-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .esol-button.secondary {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .esol-button.secondary:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Question Area */
+        .question-area {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .question-instruction {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .sentence-display {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 32px 0;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, rgba(49, 130, 206, 0.05), rgba(26, 54, 93, 0.05));
+            border-radius: var(--border-radius-lg);
+            border: 2px solid rgba(49, 130, 206, 0.1);
+            position: relative;
+        }
+
+        .sentence-display::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 2px;
+        }
+
+        .word-highlight {
+            background: linear-gradient(135deg, var(--warning-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-decoration: underline;
+            text-decoration-color: var(--warning-color);
+            text-decoration-thickness: 3px;
+        }
+
+        .choice-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 32px 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .choice-button {
+            padding: 24px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .choice-button:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .choice-button.selected {
+            border-color: var(--accent-color);
+            background: rgba(49, 130, 206, 0.05);
+            transform: scale(1.02);
+        }
+
+        .choice-button.correct {
+            border-color: var(--success-color);
+            background: rgba(56, 161, 105, 0.1);
+            animation: pulse-success 0.6s ease;
+        }
+
+        .choice-button.incorrect {
+            border-color: var(--error-color);
+            background: rgba(229, 62, 62, 0.1);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes pulse-success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Feedback Area */
+        .feedback-area {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .feedback-message {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 20px 32px;
+            border-radius: var(--border-radius-xl);
+            display: inline-block;
+            margin: 16px;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.4s ease;
+        }
+
+        .feedback-correct {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            border: 2px solid rgba(56, 161, 105, 0.2);
+        }
+
+        .feedback-incorrect {
+            background: linear-gradient(135deg, rgba(229, 62, 62, 0.1), rgba(229, 62, 62, 0.05));
+            color: var(--error-color);
+            border: 2px solid rgba(229, 62, 62, 0.2);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Container */
+        .progress-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .progress-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            margin: 16px 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--accent-color));
+            border-radius: var(--border-radius-lg);
+            transition: width 0.4s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Results Table */
+        .results-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .table-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            min-width: 600px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+        }
+
+        .results-table th {
+            background: linear-gradient(135deg, var(--background-primary), rgba(102, 126, 234, 0.05));
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .results-table .correct-answer {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .nav-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-xl);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button.back {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .nav-button.back:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.next {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-button.next:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: 2em;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .game-stats {
+                gap: 20px;
+            }
+
+            .sentence-display {
+                font-size: 1.5em;
+            }
+
+            .choice-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .results-table {
+                min-width: 400px;
+            }
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="game-header-content">
+                <span class="game-icon">⚖️</span>
+                <h1 class="game-title">Gerund vs Infinitive</h1>
+                <p class="game-subtitle">Master the tricky difference between gerunds and infinitives</p>
+
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="score">0</span>
+                        <span class="stat-label">Score</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="streak">0</span>
+                        <span class="stat-label">Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="questions">0/10</span>
+                        <span class="stat-label">Progress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <div class="controls-header">
+                <h2 class="controls-title">Game Settings</h2>
+                <p class="controls-subtitle">Choose your difficulty and focus</p>
+            </div>
+
+            <div class="controls-row">
+                <div class="control-group">
+                    <label class="control-label">Difficulty Level</label>
+                    <select id="difficulty" class="esol-select">
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="mixed">Mixed Practice</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Game Mode</label>
+                    <select id="gameMode" class="esol-select">
+                        <option value="practice">Practice Mode</option>
+                        <option value="timed">Timed Challenge</option>
+                        <option value="survival">Survival Mode</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="startGame" class="esol-button primary">⚖️ Start Challenge</button>
+                <button id="newQuestion" class="esol-button secondary" style="display: none;">🔄 New Question</button>
+                <button id="showAnswer" class="esol-button secondary" style="display: none;">💡 Show Hint</button>
+            </div>
+        </div>
+
+        <div class="question-area" id="questionArea" style="display: none;">
+            <div class="question-header">
+                <div class="question-text">Choose the correct form:</div>
+                <p class="question-instruction">Select whether to use a gerund (-ing) or infinitive (to +) form</p>
+            </div>
+
+            <div class="sentence-display" id="sentenceDisplay">
+                I enjoy <span class="word-highlight" id="targetWord">read</span> books.
+            </div>
+
+            <div class="choice-buttons">
+                <button class="choice-button" data-choice="gerund">
+                    <strong>Gerund (-ing)</strong><br>
+                    <span id="gerundOption">reading</span>
+                </button>
+                <button class="choice-button" data-choice="infinitive">
+                    <strong>Infinitive (to +)</strong><br>
+                    <span id="infinitiveOption">to read</span>
+                </button>
+            </div>
+
+            <div class="feedback-area">
+                <div id="feedbackMessage"></div>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-header">
+                <h3 class="progress-title">Learning Progress</h3>
+                <p class="progress-subtitle">Track your gerund vs infinitive mastery</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" class="progress-text">Question 1 of 10</p>
+        </div>
+
+        <div class="results-container" id="resultsContainer" style="display: none;">
+            <div class="table-header">
+                <h3 class="table-title">Your Results</h3>
+                <p class="table-subtitle">Review your answers and learn from mistakes</p>
+            </div>
+
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Sentence</th>
+                        <th>Your Answer</th>
+                        <th>Correct Answer</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                    <!-- Results will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button back" onclick="location.href='esol_game_arcade.html'">
+                ← Return to Arcade
+            </button>
+            <button class="nav-button next" id="nextButton" style="display: none;">
+                Continue Learning →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Game data - sentences with gerund vs infinitive choices
+        const sentences = {
+            beginner: [
+                {
+                    sentence: "I enjoy [read] books.",
+                    word: "read",
+                    gerund: "reading",
+                    infinitive: "to read",
+                    correct: "gerund",
+                    explanation: "Enjoy + gerund (activity you like doing)"
+                },
+                {
+                    sentence: "She decided [go] to the store.",
+                    word: "go",
+                    gerund: "going",
+                    infinitive: "to go",
+                    correct: "infinitive",
+                    explanation: "Decide + infinitive (choice to do something)"
+                },
+                {
+                    sentence: "He likes [play] soccer.",
+                    word: "play",
+                    gerund: "playing",
+                    infinitive: "to play",
+                    correct: "gerund",
+                    explanation: "Like + gerund (general preference)"
+                },
+                {
+                    sentence: "I hope [see] you soon.",
+                    word: "see",
+                    gerund: "seeing",
+                    infinitive: "to see",
+                    correct: "infinitive",
+                    explanation: "Hope + infinitive (future expectation)"
+                },
+                {
+                    sentence: "They finished [eat] dinner.",
+                    word: "eat",
+                    gerund: "eating",
+                    infinitive: "to eat",
+                    correct: "gerund",
+                    explanation: "Finish + gerund (completed activity)"
+                }
+            ],
+            intermediate: [
+                {
+                    sentence: "I'm afraid of [fly] in airplanes.",
+                    word: "fly",
+                    gerund: "flying",
+                    infinitive: "to fly",
+                    correct: "gerund",
+                    explanation: "Afraid of + gerund (fear of doing something)"
+                },
+                {
+                    sentence: "She promised [help] me with my homework.",
+                    word: "help",
+                    gerund: "helping",
+                    infinitive: "to help",
+                    correct: "infinitive",
+                    explanation: "Promise + infinitive (commitment to do something)"
+                },
+                {
+                    sentence: "He admitted [steal] the money.",
+                    word: "steal",
+                    gerund: "stealing",
+                    infinitive: "to steal",
+                    correct: "gerund",
+                    explanation: "Admit + gerund (confessing a past action)"
+                },
+                {
+                    sentence: "I can't afford [buy] a new car.",
+                    word: "buy",
+                    gerund: "buying",
+                    infinitive: "to buy",
+                    correct: "infinitive",
+                    explanation: "Afford + infinitive (have the money to do something)"
+                },
+                {
+                    sentence: "She avoided [answer] his question.",
+                    word: "answer",
+                    gerund: "answering",
+                    infinitive: "to answer",
+                    correct: "gerund",
+                    explanation: "Avoid + gerund (deliberately not doing something)"
+                }
+            ],
+            advanced: [
+                {
+                    sentence: "The teacher encouraged [study] harder.",
+                    word: "study",
+                    gerund: "studying",
+                    infinitive: "to study",
+                    correct: "gerund",
+                    explanation: "Encourage + gerund (motivate someone to do something)"
+                },
+                {
+                    sentence: "He delayed [make] a decision.",
+                    word: "make",
+                    gerund: "making",
+                    infinitive: "to make",
+                    correct: "gerund",
+                    explanation: "Delay + gerund (postpone doing something)"
+                },
+                {
+                    sentence: "I look forward to [meet] you.",
+                    word: "meet",
+                    gerund: "meeting",
+                    infinitive: "to meet",
+                    correct: "gerund",
+                    explanation: "Look forward to + gerund (anticipate doing something)"
+                },
+                {
+                    sentence: "She succeeded in [pass] the exam.",
+                    word: "pass",
+                    gerund: "passing",
+                    infinitive: "to pass",
+                    correct: "gerund",
+                    explanation: "Succeed in + gerund (achieve something by doing)"
+                },
+                {
+                    sentence: "He insisted on [pay] for dinner.",
+                    word: "pay",
+                    gerund: "paying",
+                    infinitive: "to pay",
+                    correct: "gerund",
+                    explanation: "Insist on + gerund (strongly demand to do something)"
+                }
+            ]
+        };
+
+        let currentGame = {
+            score: 0,
+            streak: 0,
+            questionCount: 0,
+            totalQuestions: 10,
+            currentSentence: null,
+            results: []
+        };
+
+        // DOM elements
+        const elements = {
+            startGame: document.getElementById('startGame'),
+            newQuestion: document.getElementById('newQuestion'),
+            showAnswer: document.getElementById('showAnswer'),
+            questionArea: document.getElementById('questionArea'),
+            sentenceDisplay: document.getElementById('sentenceDisplay'),
+            targetWord: document.getElementById('targetWord'),
+            gerundOption: document.getElementById('gerundOption'),
+            infinitiveOption: document.getElementById('infinitiveOption'),
+            feedbackMessage: document.getElementById('feedbackMessage'),
+            progressContainer: document.getElementById('progressContainer'),
+            progressFill: document.getElementById('progressFill'),
+            progressText: document.getElementById('progressText'),
+            resultsContainer: document.getElementById('resultsContainer'),
+            resultsTableBody: document.getElementById('resultsTableBody'),
+            nextButton: document.getElementById('nextButton'),
+            score: document.getElementById('score'),
+            streak: document.getElementById('streak'),
+            questions: document.getElementById('questions')
+        };
+
+        // Initialize game
+        function initGame() {
+            if (elements.startGame) {
+                elements.startGame.addEventListener('click', startGame);
+            }
+            if (elements.newQuestion) {
+                elements.newQuestion.addEventListener('click', loadNewQuestion);
+            }
+            if (elements.showAnswer) {
+                elements.showAnswer.addEventListener('click', showAnswer);
+            }
+            if (elements.nextButton) {
+                elements.nextButton.addEventListener('click', loadNewQuestion);
+            }
+
+            // Add click handlers for choice buttons
+            document.querySelectorAll('.choice-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const choice = this.dataset.choice;
+                    selectChoice(choice);
+                });
+            });
+        }
+
+        // Start game
+        function startGame() {
+            currentGame.score = 0;
+            currentGame.streak = 0;
+            currentGame.questionCount = 0;
+            currentGame.results = [];
+            updateStats();
+            if (elements.startGame) elements.startGame.style.display = 'none';
+            if (elements.questionArea) elements.questionArea.style.display = 'block';
+            if (elements.progressContainer) elements.progressContainer.style.display = 'block';
+            if (elements.resultsContainer) elements.resultsContainer.style.display = 'none';
+            loadNewQuestion();
+        }
+
+        // Load new question
+        function loadNewQuestion() {
+            if (currentGame.questionCount >= currentGame.totalQuestions) {
+                endGame();
+                return;
+            }
+
+            const difficultySelect = document.getElementById('difficulty');
+            const gameModeSelect = document.getElementById('gameMode');
+
+            if (difficultySelect && gameModeSelect) {
+                const difficulty = difficultySelect.value;
+
+                let sentenceList = [];
+                if (difficulty === 'mixed') {
+                    sentenceList = [
+                        ...sentences.beginner,
+                        ...sentences.intermediate,
+                        ...sentences.advanced
+                    ];
+                } else {
+                    sentenceList = sentences[difficulty];
+                }
+
+                currentGame.currentSentence = sentenceList[Math.floor(Math.random() * sentenceList.length)];
+
+                // Display the sentence
+                const sentence = currentGame.currentSentence.sentence;
+                const word = currentGame.currentSentence.word;
+
+                if (elements.sentenceDisplay && elements.targetWord) {
+                    elements.targetWord.textContent = word;
+                    elements.sentenceDisplay.innerHTML = sentence.replace('[', '<span class="word-highlight">').replace(']', '</span>');
+                }
+
+                if (elements.gerundOption) elements.gerundOption.textContent = currentGame.currentSentence.gerund;
+                if (elements.infinitiveOption) elements.infinitiveOption.textContent = currentGame.currentSentence.infinitive;
+
+                // Reset button states
+                document.querySelectorAll('.choice-button').forEach(button => {
+                    button.classList.remove('selected', 'correct', 'incorrect');
+                });
+
+                if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = '';
+                if (elements.newQuestion) elements.newQuestion.style.display = 'inline-block';
+                if (elements.showAnswer) elements.showAnswer.style.display = 'inline-block';
+                if (elements.nextButton) elements.nextButton.style.display = 'none';
+
+                currentGame.questionCount++;
+                updateProgress();
+            }
+        }
+
+        // Select a choice
+        function selectChoice(choice) {
+            // Remove previous selections
+            document.querySelectorAll('.choice-button').forEach(button => {
+                button.classList.remove('selected');
+            });
+
+            // Add selected class to clicked button
+            const selectedButton = document.querySelector(`[data-choice="${choice}"]`);
+            if (selectedButton) {
+                selectedButton.classList.add('selected');
+            }
+
+            // Check answer after a short delay
+            setTimeout(() => {
+                checkAnswer(choice);
+            }, 300);
+        }
+
+        // Check answer
+        function checkAnswer(userChoice) {
+            const correctChoice = currentGame.currentSentence.correct;
+            const isCorrect = userChoice === correctChoice;
+
+            // Store result for later display
+            currentGame.results.push({
+                sentence: currentGame.currentSentence.sentence,
+                userChoice: userChoice,
+                correctChoice: correctChoice,
+                isCorrect: isCorrect
+            });
+
+            if (isCorrect) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer(userChoice);
+            }
+        }
+
+        // Handle correct answer
+        function handleCorrectAnswer() {
+            currentGame.score += 10;
+            currentGame.streak += 1;
+
+            const correctButton = document.querySelector(`[data-choice="${currentGame.currentSentence.correct}"]`);
+            if (correctButton) correctButton.classList.add('correct');
+
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = '<div class="feedback-message feedback-correct">🎉 Excellent! That\'s correct!</div>';
+            if (elements.newQuestion) elements.newQuestion.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            updateStats();
+        }
+
+        // Handle incorrect answer
+        function handleIncorrectAnswer(userChoice) {
+            currentGame.streak = 0;
+
+            const correctButton = document.querySelector(`[data-choice="${currentGame.currentSentence.correct}"]`);
+            const incorrectButton = document.querySelector(`[data-choice="${userChoice}"]`);
+
+            if (correctButton) correctButton.classList.add('correct');
+            if (incorrectButton) incorrectButton.classList.add('incorrect');
+
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = `<div class="feedback-message feedback-incorrect">❌ Sorry! The correct answer is: <strong>${currentGame.currentSentence.correct === 'gerund' ? 'Gerund (-ing)' : 'Infinitive (to +)'}</strong></div>`;
+            if (elements.newQuestion) elements.newQuestion.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            updateStats();
+        }
+
+        // Show answer
+        function showAnswer() {
+            const correctChoice = currentGame.currentSentence.correct;
+            const explanation = currentGame.currentSentence.explanation;
+
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = `<div class="feedback-message feedback-incorrect">💡 The correct answer is: <strong>${correctChoice === 'gerund' ? 'Gerund (-ing)' : 'Infinitive (to +)'}</strong><br><small>${explanation}</small></div>`;
+            if (elements.newQuestion) elements.newQuestion.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+        }
+
+        // Update stats
+        function updateStats() {
+            if (elements.score) elements.score.textContent = currentGame.score;
+            if (elements.streak) elements.streak.textContent = currentGame.streak;
+            if (elements.questions) elements.questions.textContent = `${currentGame.questionCount}/${currentGame.totalQuestions}`;
+        }
+
+        // Update progress
+        function updateProgress() {
+            if (elements.progressFill && elements.progressText) {
+                const progress = (currentGame.questionCount / currentGame.totalQuestions) * 100;
+                elements.progressFill.style.width = progress + '%';
+                elements.progressText.textContent = `Question ${currentGame.questionCount} of ${currentGame.totalQuestions}`;
+            }
+        }
+
+        // End game
+        function endGame() {
+            if (elements.questionArea) elements.questionArea.style.display = 'none';
+            if (elements.progressContainer) elements.progressContainer.style.display = 'none';
+
+            // Display results table
+            if (elements.resultsTableBody && elements.resultsContainer) {
+                elements.resultsTableBody.innerHTML = '';
+                currentGame.results.forEach(result => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${result.sentence.replace('[', '<strong>').replace(']', '</strong>')}</td>
+                        <td>${result.userChoice === 'gerund' ? 'Gerund (-ing)' : 'Infinitive (to +)'}</td>
+                        <td class="${result.isCorrect ? 'correct-answer' : ''}">${result.correctChoice === 'gerund' ? 'Gerund (-ing)' : 'Infinitive (to +)'}</td>
+                        <td>${result.isCorrect ? '✅ Correct' : '❌ Incorrect'}</td>
+                    `;
+                    elements.resultsTableBody.appendChild(row);
+                });
+                elements.resultsContainer.style.display = 'block';
+            }
+
+            const finalScore = currentGame.score;
+            let message = '';
+
+            if (finalScore >= 80) {
+                message = '🏆 Excellent work! You\'re a gerund vs infinitive master!';
+            } else if (finalScore >= 60) {
+                message = '👍 Good job! Keep practicing to improve!';
+            } else if (finalScore >= 40) {
+                message = '📚 Nice effort! Review the rules and try again!';
+            } else {
+                message = '💪 Don\'t give up! Practice makes perfect!';
+            }
+
+            if (elements.questionArea) {
+                elements.questionArea.innerHTML = `
+                    <div style="text-align: center;">
+                        <h2>Game Complete!</h2>
+                        <div style="font-size: 3em; margin: 20px 0;">${finalScore}/100</div>
+                        <p style="font-size: 1.2em; margin: 20px 0;">${message}</p>
+                        <button onclick="location.reload()" class="esol-button primary" style="margin: 20px;">Play Again</button>
+                        <button onclick="location.href='esol_game_arcade.html'" class="esol-button secondary" style="margin: 20px;">Back to Arcade</button>
+                    </div>
+                `;
+                elements.questionArea.style.display = 'block';
+            }
+        }
+
+        // Initialize the game when page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+Sheet,Category,Item,Type,Level,Grammar_Rule,Example,Notes
+Word_Categories,Pronouns,I,Subject,1,V1 form,I eat pizza,First person singular
+Word_Categories,Pronouns,You,Subject,1,V1 form,You eat pizza,Second person
+Word_Categories,Pronouns,He,Subject,1,V1-3rd form,He eats pizza,Third person singular masculine
+Word_Categories,Pronouns,She,Subject,1,V1-3rd form,She eats pizza,Third person singular feminine
+Word_Categories,Pronouns,It,Subject,1,V1-3rd form,It eats pizza,Third person singular neuter
+Word_Categories,Pronouns,We,Subject,1,V1 form,We eat pizza,First person plural
+Word_Categories,Pronouns,They,Subject,1,V1 form,They eat pizza,Third person plural
+Word_Categories,Nouns,The cat,Subject,1,V1-3rd form,The cat eats pizza,Singular noun - needs V1-3rd
+Word_Categories,Nouns,My sister,Subject,1,V1-3rd form,My sister eats pizza,Singular noun - needs V1-3rd
+Word_Categories,Nouns,The students,Subject,1,V1 form,The students eat pizza,Plural noun - needs V1
+Word_Categories,Nouns,My family,Subject,1,V1-3rd form,My family eats pizza,Collective noun - usually singular
+Word_Categories,Verbs,eat,Action,1,V1/V1-3rd,eat/eats,Regular verb
+Word_Categories,Verbs,play,Action,1,V1/V1-3rd,play/plays,Regular verb
+Word_Categories,Verbs,study,Action,1,V1/V1-3rd,study/studies,Y to IES rule
+Word_Categories,Verbs,watch,Action,1,V1/V1-3rd,watch/watches,ES ending
+Word_Categories,Verbs,have,Action,1,V1/V1-3rd,have/has,Irregular verb
+Word_Categories,Verbs,go,Action,1,V1/V1-3rd,go/goes,ES ending
+Word_Categories,Objects_Countable,pizza,Countable,1,Needs article,a pizza,Can use a/an
+Word_Categories,Objects_Countable,book,Countable,1,Needs article,a book,Can use a/an
+Word_Categories,Objects_Countable,movie,Countable,1,Needs article,a movie,Can use a/an
+Word_Categories,Objects_Countable,friend,Countable,1,Needs article,a friend,Can use a/an
+Word_Categories,Objects_Uncountable,music,Uncountable,1,No article,music,Cannot use a/an
+Word_Categories,Objects_Uncountable,homework,Uncountable,1,No article,homework,Cannot use a/an
+Word_Categories,Objects_Uncountable,English,Uncountable,1,No article,English,Language name
+Word_Categories,Objects_Uncountable,soccer,Uncountable,1,No article,soccer,Sport name
+Word_Categories,Objects_Plural,books,Plural,1,No article,books,Plural form
+Word_Categories,Objects_Plural,movies,Plural,1,No article,movies,Plural form
+Word_Categories,Objects_Plural,friends,Plural,1,No article,friends,Plural form
+Word_Categories,Articles,a,Indefinite,2,Before consonant,a book,Indefinite article
+Word_Categories,Articles,an,Indefinite,2,Before vowel,an apple,Indefinite article
+Word_Categories,Articles,the,Definite,2,Specific reference,the book,Definite article
+Word_Categories,Adjectives,big,Descriptive,3,Before noun,a big pizza,Size adjective
+Word_Categories,Adjectives,small,Descriptive,3,Before noun,a small book,Size adjective
+Word_Categories,Adjectives,red,Descriptive,3,Before noun,a red car,Color adjective
+Word_Categories,Adjectives,happy,Descriptive,3,Before noun,a happy student,Emotion adjective
+Word_Categories,Adjectives,delicious,Descriptive,3,Before noun,delicious pizza,Taste adjective
+Word_Categories,Adverbs,quickly,Manner,4,After verb,eats quickly,How adverb
+Word_Categories,Adverbs,slowly,Manner,4,After verb,walks slowly,How adverb
+Word_Categories,Adverbs,always,Frequency,4,Before verb,always eats,How often adverb
+Word_Categories,Adverbs,never,Frequency,4,Before verb,never eats,How often adverb
+Word_Categories,Adverbs,sometimes,Frequency,4,Before verb,sometimes eats,How often adverb
+Word_Categories,Prepositions,at,Location,5,Before noun,at school,Place preposition
+Word_Categories,Prepositions,in,Location,5,Before noun,in the park,Place preposition
+Word_Categories,Prepositions,on,Location,5,Before noun,on the table,Place preposition
+Word_Categories,Prepositions,with,Accompaniment,5,Before noun,with friends,Manner preposition
+Word_Categories,Helpers,do,Auxiliary,2,With I/you/we/they,Do you eat?,Question/negative helper
+Word_Categories,Helpers,does,Auxiliary,2,With he/she/it,Does she eat?,Question/negative helper
+Word_Categories,Helpers,did,Auxiliary,6,Past tense,Did you eat?,Past question/negative
+Word_Categories,Negatives,not,Negation,2,After auxiliary,do not eat,Negation word
+Word_Categories,Negatives,don't,Contraction,2,With I/you/we/they,don't eat,Contracted negation
+Word_Categories,Negatives,doesn't,Contraction,2,With he/she/it,doesn't eat,Contracted negation
+Word_Categories,Negatives,didn't,Contraction,6,Past tense,didn't eat,Past contracted negation
+Word_Categories,Question_Words,What,Wh-question,3,Asks for thing,What do you eat?,Thing question
+Word_Categories,Question_Words,Who,Wh-question,3,Asks for person,Who eats pizza?,Person question
+Word_Categories,Question_Words,Where,Wh-question,3,Asks for place,Where do you eat?,Place question
+Word_Categories,Question_Words,When,Wh-question,3,Asks for time,When do you eat?,Time question
+Word_Categories,Question_Words,Why,Wh-question,3,Asks for reason,Why do you eat?,Reason question
+Word_Categories,Question_Words,How,Wh-question,3,Asks for manner,How do you eat?,Manner question
+Word_Categories,Question_Words,Which,Wh-question,4,Asks for choice,Which do you like?,Choice question
+

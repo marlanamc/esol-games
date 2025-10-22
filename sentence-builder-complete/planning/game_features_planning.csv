@@ -1,0 +1,48 @@
+Feature_Category,Feature_Name,Description,Priority,Implementation_Status,Level_Required,User_Type,Technical_Notes
+Core_Gameplay,Tile_Selection,Click tiles to build sentences,High,Complete,1,Student,React state management
+Core_Gameplay,Verb_Toggle,Click verbs to toggle V1/V1-3rd,High,Complete,1,Student,Toggle functionality working
+Core_Gameplay,Grammar_Check,Validate sentence grammar,High,Partial,1,Student,Needs expansion for all levels
+Core_Gameplay,Feedback_System,Show correct/incorrect with explanations,High,Partial,1,Student,Basic feedback working
+Core_Gameplay,Sentence_Clear,Clear all tiles from sentence area,High,Complete,1,Student,Reset functionality
+Core_Gameplay,Tile_Remove,Remove individual tiles from sentence,High,Complete,1,Student,Click to remove
+Level_Progression,Level_Selection,Choose between different grammar levels,High,Partial,1,Student,3 levels planned
+Level_Progression,Adaptive_Tiles,Show only relevant tiles for current level,Medium,Partial,1,Student,Basic filtering working
+Level_Progression,Progress_Tracking,Track student progress through levels,Medium,Not_Started,1,Student,Needs database
+Level_Progression,Unlock_System,Unlock levels based on mastery,Low,Not_Started,1,Student,Gamification feature
+Question_Answer,Yes_No_Questions,Build and answer yes/no questions,High,Not_Started,3,Student,Question-answer pairs
+Question_Answer,Wh_Questions,Build and answer wh-questions,High,Not_Started,4,Student,Multiple question types
+Question_Answer,Answer_Validation,Check if answers match questions,High,Not_Started,3,Student,Complex validation needed
+Question_Answer,Question_Toggle,Toggle between different question words,Medium,Not_Started,4,Student,Wh-word selection
+Question_Answer,Response_Types,Practice different response formats,Medium,Not_Started,5,Student,Short/long answers
+Grammar_Features,Parts_of_Speech,Label and categorize word types,High,Partial,2,Student,Visual categorization
+Grammar_Features,Countable_Uncountable,Distinguish countable/uncountable nouns,High,Not_Started,6,Student,Noun classification
+Grammar_Features,Article_Rules,Apply a/an/the rules correctly,High,Not_Started,6,Student,Article selection logic
+Grammar_Features,Plural_Rules,Handle singular/plural noun forms,Medium,Not_Started,8,Student,Plural formation
+Grammar_Features,Adjective_Order,Correct adjective placement,Medium,Not_Started,9,Student,Word order rules
+Grammar_Features,Adverb_Placement,Correct adverb positioning,Medium,Not_Started,10,Student,Position validation
+Grammar_Features,Preposition_Usage,Correct preposition selection,Medium,Not_Started,12,Student,Preposition logic
+Teacher_Tools,Word_Management,Add/remove/edit word tiles,High,Not_Started,1,Teacher,CRUD operations
+Teacher_Tools,Level_Customization,Customize levels and progression,High,Not_Started,1,Teacher,Level configuration
+Teacher_Tools,Student_Progress,View student progress and performance,High,Not_Started,1,Teacher,Analytics dashboard
+Teacher_Tools,Vocabulary_Sets,Create custom vocabulary sets,Medium,Not_Started,1,Teacher,Set management
+Teacher_Tools,Assignment_Creation,Assign specific levels/exercises,Medium,Not_Started,1,Teacher,Assignment system
+Teacher_Tools,Class_Management,Manage multiple classes/students,Medium,Not_Started,1,Teacher,User management
+Teacher_Tools,Export_Data,Export student progress data,Low,Not_Started,1,Teacher,Data export
+UI_UX,Mobile_Responsive,Optimized for mobile devices,High,Complete,1,Both,Mobile-first design
+UI_UX,Visual_Feedback,Color coding and visual cues,High,Partial,1,Both,Green/red feedback
+UI_UX,Accessibility,Screen reader and keyboard navigation,Medium,Not_Started,1,Both,WCAG compliance
+UI_UX,Dark_Mode,Dark theme option,Low,Not_Started,1,Both,Theme switching
+UI_UX,Font_Size,Adjustable text size,Low,Not_Started,1,Both,Accessibility feature
+UI_UX,Sound_Effects,Audio feedback for actions,Low,Not_Started,1,Both,Audio cues
+Gamification,Points_System,Award points for correct answers,Medium,Not_Started,1,Student,Scoring system
+Gamification,Streaks,Track consecutive correct answers,Medium,Not_Started,1,Student,Streak counter
+Gamification,Badges,Achievement badges for milestones,Low,Not_Started,1,Student,Badge system
+Gamification,Leaderboard,Class leaderboards,Low,Not_Started,1,Student,Competition feature
+Gamification,Rewards,Unlock rewards for progress,Low,Not_Started,1,Student,Reward system
+Technical,Data_Storage,Store user data and progress,High,Not_Started,1,Both,Database integration
+Technical,User_Authentication,Login system for students/teachers,High,Not_Started,1,Both,Auth system
+Technical,Offline_Mode,Work without internet connection,Medium,Not_Started,1,Both,PWA features
+Technical,Performance,Fast loading and smooth interactions,High,Partial,1,Both,Optimization needed
+Technical,Error_Handling,Graceful error management,Medium,Partial,1,Both,Basic error handling
+Technical,Backup_Restore,Backup and restore functionality,Low,Not_Started,1,Both,Data protection
+

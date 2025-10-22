@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verb Forms Master - ESOL Game Arcade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d3748;
+            --accent-color: #3182ce;
+            --success-color: #38a169;
+            --warning-color: #d69e2e;
+            --error-color: #e53e3e;
+            --background-primary: #f7fafc;
+            --background-secondary: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-feature-settings: 'kern' 1, 'liga' 1;
+        }
+
+        .game-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header Section */
+        .game-header {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+        }
+
+        .game-header-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        .game-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+
+        .game-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Section */
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: block;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Controls Section */
+        .game-controls {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .controls-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .controls-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .controls-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .control-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .esol-select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            background: var(--background-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .esol-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+        }
+
+        .esol-select:hover {
+            border-color: var(--accent-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .esol-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: none;
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .esol-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .esol-button:hover::before {
+            left: 100%;
+        }
+
+        .esol-button.primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .esol-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .esol-button.secondary {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .esol-button.secondary:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Question Area */
+        .question-area {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .question-instruction {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .verb-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 32px 0;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, rgba(49, 130, 206, 0.05), rgba(26, 54, 93, 0.05));
+            border-radius: var(--border-radius-lg);
+            border: 2px solid rgba(49, 130, 206, 0.1);
+            position: relative;
+        }
+
+        .verb-display::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 2px;
+        }
+
+        .tense-indicator {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius-xl);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 16px;
+            box-shadow: var(--shadow-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-section {
+            margin: 32px 0;
+        }
+
+        .input-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: block;
+            text-align: center;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 24px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            font-size: 1.25rem;
+            font-weight: 500;
+            text-align: center;
+            margin: 16px 0;
+            transition: all 0.3s ease;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .answer-input.correct {
+            border-color: var(--success-color);
+            background: rgba(56, 161, 105, 0.05);
+            animation: pulse-success 0.6s ease;
+        }
+
+        .answer-input.incorrect {
+            border-color: var(--error-color);
+            background: rgba(229, 62, 62, 0.05);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes pulse-success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Feedback Area */
+        .feedback-area {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .feedback-message {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 20px 32px;
+            border-radius: var(--border-radius-xl);
+            display: inline-block;
+            margin: 16px;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.4s ease;
+        }
+
+        .feedback-correct {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            border: 2px solid rgba(56, 161, 105, 0.2);
+        }
+
+        .feedback-incorrect {
+            background: linear-gradient(135deg, rgba(229, 62, 62, 0.1), rgba(229, 62, 62, 0.05));
+            color: var(--error-color);
+            border: 2px solid rgba(229, 62, 62, 0.2);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Container */
+        .progress-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .progress-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            margin: 16px 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--accent-color));
+            border-radius: var(--border-radius-lg);
+            transition: width 0.4s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Verb Forms Table */
+        .esol-table-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .table-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .esol-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            min-width: 600px;
+        }
+
+        .esol-table th,
+        .esol-table td {
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+        }
+
+        .esol-table th {
+            background: linear-gradient(135deg, var(--background-primary), rgba(102, 126, 234, 0.05));
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .esol-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .esol-table .correct-answer {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .nav-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-xl);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button.back {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .nav-button.back:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.next {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-button.next:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: 2em;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .game-stats {
+                gap: 20px;
+            }
+
+            .verb-display {
+                font-size: 2em;
+            }
+
+            .esol-table {
+                min-width: 400px;
+            }
+        }
+    </style>
+        .esol-game {
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .esol-game * {
+            box-sizing: inherit;
+        }
+
+        .esol-game-container {
+            background-color: rgba(38, 38, 38, 0.6);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(8px);
+        }
+
+        .esol-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .esol-header h2 {
+            color: #6366f1;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .esol-controls {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .esol-select {
+            flex: 1;
+            min-width: 140px;
+            padding: 0.5rem;
+            background-color: rgba(38, 38, 38, 0.8);
+            border: 1px solid #4b5563;
+            border-radius: 4px;
+            color: inherit;
+            font-size: 0.875rem;
+        }
+
+        .esol-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #6366f1;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            margin-bottom: 0.75rem;
+        }
+
+        .esol-button:hover {
+            background-color: #818cf8;
+        }
+
+        .esol-table-container {
+            overflow-x: auto;
+            margin: 1.25rem 0;
+            background-color: rgba(38, 38, 38, 0.4);
+            border-radius: 4px;
+            padding: 0.75rem;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .esol-table {
+            min-width: 600px;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 4px;
+            table-layout: fixed; /* Ensures equal column widths */
+        }
+
+        .esol-table th,
+        .esol-table td {
+            white-space: nowrap; /* Prevents text wrapping */
+            overflow: hidden; /* Hides overflow text */
+            text-overflow: ellipsis; /* Shows ... for overflow text */
+            padding: 0.75rem;
+            border-radius: 4px;
+            text-align: center;
+            vertical-align: middle; /* Centers content vertically */
+            height: 3.5rem; /* Fixed height for all cells */
+        }
+
+        .esol-table th {
+            background-color: #6366f1;
+            color: white;
+            font-weight: 600;
+        }
+
+        .esol-table td {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: inherit;
+        }
+
+        /* Input styles with improved visibility and alignment */
+        .esol-input,
+        .esol-table input[type="text"] {
+            width: 100%;
+            height: 2.5rem; /* Fixed height for inputs */
+            padding: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 2px solid #4b5563;
+            border-radius: 4px;
+            color: #000000;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center; /* Centers text in input */
+            display: block; /* Ensures proper alignment */
+            margin: 0 auto; /* Centers input in cell */
+        }
+
+        .esol-input:focus,
+        .esol-table input[type="text"]:focus {
+            outline: none;
+            border-color: #6366f1;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+        }
+
+        .esol-input::placeholder,
+        .esol-table input[type="text"]::placeholder {
+            color: #666666;
+        }
+
+        .esol-result {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+            background-color: rgba(51, 51, 51, 0.4);
+        }
+
+        .esol-score {
+            text-align: center;
+            padding: 1rem;
+            background-color: rgba(51, 51, 51, 0.4);
+            border-radius: 4px;
+            margin-top: 1.5rem;
+        }
+
+        .esol-instructions {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background-color: rgba(51, 51, 51, 0.4);
+            border-radius: 4px;
+            border: 1px solid #4b5563;
+        }
+
+        .esol-instructions h3 {
+            color: #6366f1;
+            margin-top: 0;
+        }
+
+        .esol-instructions strong {
+            color: #818cf8;
+        }
+
+        /* Success and error colors */
+        .esol-result.success {
+            color: #22c55e;
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+
+        .esol-result.error {
+            color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .esol-controls {
+                flex-direction: column;
+            }
+
+            .esol-select {
+                width: 100%;
+            }
+            
+            .esol-table {
+                margin: 0;
+                min-width: 500px; /* Slightly smaller minimum width for mobile */
+            }
+            
+            .esol-table th,
+            .esol-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="esol-game">
+    <div class="esol-game-container">
+        <div class="esol-header">
+            <h2>ESOL Verb Form Game</h2>
+            <p>Practice your knowledge of English verb forms</p>
+        </div>
+
+        <div class="esol-controls">
+            <select class="esol-select" id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+                <option value="only-v1">Only V1</option>
+                <option value="only-v1-3rd">Only V1-3rd</option>
+                <option value="only-v1-ing">Only V1-ing</option>
+                <option value="only-v2">Only V2</option>
+                <option value="only-v3">Only V3</option>
+            </select>
+            <select class="esol-select" id="verb-type">
+                <option value="all">All Verbs</option>
+                <option value="irregular">Irregular Verbs Only</option>
+            </select>
+        </div>
+
+        <button class="esol-button" id="generate-question">Generate New Question</button>
+
+        <div class="esol-table-container">
+            <table class="esol-table">
+                <thead>
+                    <tr>
+                        <th>V1</th>
+                        <th>V1-3rd</th>
+                        <th>V1-ing</th>
+                        <th>V2</th>
+                        <th>V3</th>
+                    </tr>
+                </thead>
+                <tbody id="verb-display"></tbody>
+            </table>
+        </div>
+
+        <button class="esol-button" id="check-answer">Check Answer</button>
+        <div class="esol-result" id="result"></div>
+        
+        <div class="esol-score">
+            <div id="score">Score: <span id="correct-count">0</span></div>
+            <div id="percentage">Correct Percentage: <span id="correct-percentage">0%</span></div>
+        </div>
+
+        <div class="esol-instructions">
+            <h3>How to Play</h3>
+            <p>1. Select the <strong>Difficulty</strong> level:</p>
+            <ul>
+                <li><strong>Easy:</strong> Only one blank space</li>
+                <li><strong>Medium:</strong> Three blanks</li>
+                <li><strong>Hard:</strong> Four blanks</li>
+                <li>Or choose to focus on one specific verb form</li>
+            </ul>
+            
+            <h3>Verb Forms Explained</h3>
+            <ul>
+                <li><strong>V1:</strong> Base form (e.g., "accept")</li>
+                <li><strong>V1-3rd:</strong> Third person singular (e.g., "accepts")</li>
+                <li><strong>V1-ing:</strong> Present participle (e.g., "accepting")</li>
+                <li><strong>V2:</strong> Past simple (e.g., "accepted")</li>
+                <li><strong>V3:</strong> Past participle (e.g., "accepted")</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <script>
+        let verbs = [];
+        let irregularVerbs = [];
+        let currentVerb;
+        let score = 0;
+        let totalQuestions = 0;
+
+        const verbDisplay = document.getElementById('verb-display');
+        const checkButton = document.getElementById('check-answer');
+        const resultDiv = document.getElementById('result');
+        const scoreSpan = document.getElementById('correct-count');
+        const percentageSpan = document.getElementById('correct-percentage');
+        const difficultySelect = document.getElementById('difficulty');
+        const verbTypeSelect = document.getElementById('verb-type');
+        const loadingDiv = document.getElementById('loading');
+        const gameContainer = document.getElementById('game-container');
+        const generateQuestionButton = document.getElementById('generate-question');
+        const scoreContainer = document.getElementById('score-container');
+
+        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnWBs92Jmx16VHpbXQECyZ5gK6G-oHSQpsGNB569Hh5PPTGgx4_6U-27ScOmJMdl2XRNifF_FClBqC/pub?output=csv';
+
+        async function fetchVerbs() {
+            try {
+                const response = await fetch(googleSheetUrl);
+                const data = await response.text();
+                parseCSV(data);
+            } catch (error) {
+                console.error('Error fetching verbs:', error);
+                loadingDiv.textContent = 'Error loading verbs. Please try again later.';
+            }
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line) {
+                    const verbForms = line.split(',').map(form => form.trim());
+                    if (verbForms.length === 5) {
+                        verbs.push(verbForms);
+                        
+                        if (verbForms[0] !== verbForms[3] || verbForms[0] !== verbForms[4]) {
+                            irregularVerbs.push(verbForms);
+                        }
+                    }
+                }
+            }
+            loadingDiv.style.display = 'none';
+            gameContainer.style.display = 'block';
+            displayVerb();
+        }
+
+        function getRandomVerb() {
+            const verbList = verbTypeSelect.value === 'irregular' ? irregularVerbs : verbs;
+            return verbList[Math.floor(Math.random() * verbList.length)];
+        }
+
+        function displayVerb() {
+            currentVerb = getRandomVerb();
+            const difficulty = difficultySelect.value;
+
+            let display = '<tr>';
+            let blankIndices = [];
+
+            if (difficulty === 'only-v1') blankIndices = [0];
+            else if (difficulty === 'only-v1-3rd') blankIndices = [1];
+            else if (difficulty === 'only-v1-ing') blankIndices = [2];
+            else if (difficulty === 'only-v2') blankIndices = [3];
+            else if (difficulty === 'only-v3') blankIndices = [4];
+            else {
+                // Corrected difficulty handling
+                let blankCount = difficulty === 'easy' ? 1 : (difficulty === 'medium' ? 3 : 4);  // Ensure Easy = 1, Medium = 3, Hard = 4
+                let allIndices = [0, 1, 2, 3, 4];
+
+                while (blankIndices.length < blankCount) {  // Show blankCount as blanks
+                    const randomIndex = Math.floor(Math.random() * allIndices.length);
+                    blankIndices.push(allIndices[randomIndex]);
+                    allIndices.splice(randomIndex, 1);
+                }
+            }
+
+            for (let i = 0; i < 5; i++) {
+                if (blankIndices.includes(i)) {
+                    display += `<td><input type="text" id="input-${i}"></td>`;
+                } else {
+                    display += `<td>${currentVerb[i]}</td>`;
+                }
+            }
+
+            display += '</tr>';
+            verbDisplay.innerHTML = display;
+
+            resultDiv.textContent = '';  // Clear previous result
+        }
+
+
+        function calculatePercentage() {
+            if (totalQuestions === 0) return 0;
+            return Math.round((score / totalQuestions) * 100);
+        }
+
+        function updatePercentageColor(percentage) {
+            if (percentage >= 70) {
+                percentageSpan.style.color = "green";  // Mostly right
+            } else {
+                percentageSpan.style.color = "red";  // Mostly wrong
+            }
+        }
+
+        function checkAnswer() {
+            let correct = true;
+            totalQuestions++;  // Increment total questions asked
+
+            for (let i = 0; i < 5; i++) {
+                const input = document.getElementById(`input-${i}`);
+                if (input && input.value.trim().toLowerCase() !== currentVerb[i].toLowerCase()) {
+                    correct = false;
+                    break;
+                }
+            }
+
+            if (correct) {
+                resultDiv.textContent = "Correct!";
+                resultDiv.style.color = "green";
+                score++;
+            } else {
+                resultDiv.textContent = "Incorrect. The correct answer is: " + currentVerb.join(' - ');
+                resultDiv.style.color = "red";
+            }
+
+            const percentage = calculatePercentage();
+            percentageSpan.textContent = `${percentage}%`;
+            updatePercentageColor(percentage);
+
+            scoreSpan.textContent = score;
+        }
+
+        checkButton.addEventListener('click', checkAnswer);
+        generateQuestionButton.addEventListener('click', displayVerb);
+        difficultySelect.addEventListener('change', displayVerb);
+        verbTypeSelect.addEventListener('change', displayVerb);
+
+        // Start the game by fetching verbs
+        fetchVerbs();
+      
+      
+     	// Add this code to both games' JavaScript sections
+
+        // Keyboard shortcuts handler
+        document.addEventListener('keydown', function(event) {
+            // Return/Enter key for checking answer
+            if (event.key === "Enter") {
+                // Prevent default enter behavior
+                event.preventDefault();
+                // Find and click the check answer button
+                document.getElementById('check-answer').click();
+            }
+
+            // Right arrow key for generating new question
+            if (event.key === "ArrowRight") {
+                // Prevent default arrow behavior
+                event.preventDefault();
+                // For Verb Form Challenge
+                const generateButton = document.getElementById('generate-question');
+                if (generateButton) {
+                    generateButton.click();
+                }
+                // For Random Verb Conjugation
+                if (typeof generateElements === 'function') {
+                    generateElements();
+                }
+            }
+        });
+
+        // Add visual hint about shortcuts to both games
+        const shortcutHint = document.createElement('div');
+        shortcutHint.style.textAlign = 'center';
+        shortcutHint.style.marginTop = '12px';
+        shortcutHint.style.color = 'var(--text-secondary)';
+        shortcutHint.innerHTML = 'Keyboard shortcuts: <strong>Enter/Return</strong> to check answer, <strong>→</strong> (right arrow) for next question';
+
+        // Add the hint below the score container in both games
+        document.querySelector('.score-container').after(shortcutHint);
+
+        // Focus input field after generating new question
+        function focusInputAfterGenerate() {
+            // Small delay to ensure input is ready
+            setTimeout(() => {
+                const inputs = document.querySelectorAll('input[type="text"]');
+                if (inputs.length > 0) {
+                    inputs[0].focus();
+                }
+            }, 100);
+        }
+
+        // Add focus call after generating questions
+        // For Verb Form Challenge
+        const generateButton = document.getElementById('generate-question');
+        if (generateButton) {
+            generateButton.addEventListener('click', focusInputAfterGenerate);
+        }
+
+        // For Random Verb Conjugation
+        const originalGenerateElements = window.generateElements;
+        if (typeof originalGenerateElements === 'function') {
+            window.generateElements = function() {
+                originalGenerateElements();
+                focusInputAfterGenerate();
+            };
+        }
+ 
+          </script>
+</body>
+</html>

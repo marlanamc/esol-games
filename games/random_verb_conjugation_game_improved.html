@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verb Conjugation Challenge - ESOL Game Arcade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d3748;
+            --accent-color: #3182ce;
+            --success-color: #38a169;
+            --warning-color: #d69e2e;
+            --error-color: #e53e3e;
+            --background-primary: #f7fafc;
+            --background-secondary: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-feature-settings: 'kern' 1, 'liga' 1;
+        }
+
+        .game-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header Section */
+        .game-header {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+        }
+
+        .game-header-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        .game-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+
+        .game-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Section */
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: block;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Controls Section */
+        .game-controls {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .controls-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .controls-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .controls-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .control-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .esol-select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            background: var(--background-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .esol-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+        }
+
+        .esol-select:hover {
+            border-color: var(--accent-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .esol-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: none;
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .esol-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .esol-button:hover::before {
+            left: 100%;
+        }
+
+        .esol-button.primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .esol-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .esol-button.secondary {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .esol-button.secondary:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Question Area */
+        .question-area {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .question-instruction {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .verb-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 32px 0;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, rgba(49, 130, 206, 0.05), rgba(26, 54, 93, 0.05));
+            border-radius: var(--border-radius-lg);
+            border: 2px solid rgba(49, 130, 206, 0.1);
+            position: relative;
+        }
+
+        .verb-display::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 2px;
+        }
+
+        .tense-indicator {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius-xl);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 16px;
+            box-shadow: var(--shadow-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-section {
+            margin: 32px 0;
+        }
+
+        .input-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: block;
+            text-align: center;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 24px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            font-size: 1.25rem;
+            font-weight: 500;
+            text-align: center;
+            margin: 16px 0;
+            transition: all 0.3s ease;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .answer-input.correct {
+            border-color: var(--success-color);
+            background: rgba(56, 161, 105, 0.05);
+            animation: pulse-success 0.6s ease;
+        }
+
+        .answer-input.incorrect {
+            border-color: var(--error-color);
+            background: rgba(229, 62, 62, 0.05);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes pulse-success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Feedback Area */
+        .feedback-area {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .feedback-message {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 20px 32px;
+            border-radius: var(--border-radius-xl);
+            display: inline-block;
+            margin: 16px;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.4s ease;
+        }
+
+        .feedback-correct {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            border: 2px solid rgba(56, 161, 105, 0.2);
+        }
+
+        .feedback-incorrect {
+            background: linear-gradient(135deg, rgba(229, 62, 62, 0.1), rgba(229, 62, 62, 0.05));
+            color: var(--error-color);
+            border: 2px solid rgba(229, 62, 62, 0.2);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Container */
+        .progress-container {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .progress-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: var(--background-primary);
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            margin: 16px 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--accent-color));
+            border-radius: var(--border-radius-lg);
+            transition: width 0.4s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Conjugation Table */
+        .conjugation-table {
+            background: var(--background-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .table-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .conjugation-table table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+        }
+
+        .conjugation-table th,
+        .conjugation-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .conjugation-table th {
+            background: linear-gradient(135deg, var(--background-primary), rgba(102, 126, 234, 0.05));
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .conjugation-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .conjugation-table .correct-answer {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(56, 161, 105, 0.05));
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .nav-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--border-radius-xl);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button.back {
+            background: var(--background-primary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .nav-button.back:hover {
+            background: var(--background-secondary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.next {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-button.next:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: 2em;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .game-stats {
+                gap: 20px;
+            }
+
+            .verb-display {
+                font-size: 2em;
+            }
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="game-header-content">
+                <span class="game-icon">🔄</span>
+                <h1 class="game-title">Verb Conjugation Challenge</h1>
+                <p class="game-subtitle">Professional English language learning through interactive verb practice</p>
+
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="score">0</span>
+                        <span class="stat-label">Score</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="streak">0</span>
+                        <span class="stat-label">Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="questions">0/10</span>
+                        <span class="stat-label">Progress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <div class="controls-header">
+                <h2 class="controls-title">Game Settings</h2>
+                <p class="controls-subtitle">Customize your learning experience</p>
+            </div>
+
+            <div class="controls-row">
+                <div class="control-group">
+                    <label class="control-label">Verb Difficulty</label>
+                    <select id="verbType" class="esol-select">
+                        <option value="regular">Regular Verbs</option>
+                        <option value="irregular">Irregular Verbs</option>
+                        <option value="mixed">Mixed Practice</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Grammar Focus</label>
+                    <select id="tense" class="esol-select">
+                        <option value="present">Present Simple</option>
+                        <option value="past">Past Simple</option>
+                        <option value="future">Future Simple</option>
+                        <option value="present_continuous">Present Continuous</option>
+                        <option value="past_continuous">Past Continuous</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="startGame" class="esol-button primary">🎮 Start Challenge</button>
+                <button id="newVerb" class="esol-button secondary" style="display: none;">🔄 New Question</button>
+                <button id="showAnswer" class="esol-button secondary" style="display: none;">💡 Show Hint</button>
+            </div>
+        </div>
+
+        <div class="question-area" id="questionArea" style="display: none;">
+            <div class="question-header">
+                <div class="question-text">Conjugate the verb in the correct form:</div>
+                <p class="question-instruction">Type the complete conjugation for the subject pronoun shown</p>
+            </div>
+
+            <div class="verb-display" id="verbDisplay">Loading verb...</div>
+            <span class="tense-indicator" id="tenseIndicator">Present Simple</span>
+
+            <div class="input-section">
+                <label class="input-label">Your Answer</label>
+                <input type="text" id="answerInput" class="answer-input" placeholder="Type the conjugated verb here...">
+            </div>
+
+            <div class="feedback-area">
+                <div id="feedbackMessage"></div>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-header">
+                <h3 class="progress-title">Learning Progress</h3>
+                <p class="progress-subtitle">Track your improvement throughout the challenge</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" class="progress-text">Question 1 of 10</p>
+        </div>
+
+        <div class="conjugation-table" id="conjugationTable" style="display: none;">
+            <div class="table-header">
+                <h3 class="table-title">Complete Verb Conjugation</h3>
+                <p class="table-subtitle">Reference guide for all forms of this verb</p>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Conjugation</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Table content will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button back" onclick="location.href='esol_game_arcade.html'">
+                ← Return to Arcade
+            </button>
+            <button class="nav-button next" id="nextButton" style="display: none;">
+                Continue Learning →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Game data
+        const verbs = {
+            regular: [
+                { infinitive: 'play', past: 'played', participle: 'played' },
+                { infinitive: 'work', past: 'worked', participle: 'worked' },
+                { infinitive: 'study', past: 'studied', participle: 'studied' },
+                { infinitive: 'help', past: 'helped', participle: 'helped' },
+                { infinitive: 'talk', past: 'talked', participle: 'talked' },
+                { infinitive: 'watch', past: 'watched', participle: 'watched' },
+                { infinitive: 'listen', past: 'listened', participle: 'listened' },
+                { infinitive: 'learn', past: 'learned', participle: 'learned' },
+                { infinitive: 'teach', past: 'taught', participle: 'taught' }
+            ],
+            irregular: [
+                { infinitive: 'go', past: 'went', participle: 'gone' },
+                { infinitive: 'be', past: 'was/were', participle: 'been' },
+                { infinitive: 'have', past: 'had', participle: 'had' },
+                { infinitive: 'do', past: 'did', participle: 'done' },
+                { infinitive: 'see', past: 'saw', participle: 'seen' },
+                { infinitive: 'eat', past: 'ate', participle: 'eaten' },
+                { infinitive: 'drink', past: 'drank', participle: 'drunk' },
+                { infinitive: 'sleep', past: 'slept', participle: 'slept' },
+                { infinitive: 'write', past: 'wrote', participle: 'written' },
+                { infinitive: 'drive', past: 'drove', participle: 'driven' },
+                { infinitive: 'take', past: 'took', participle: 'taken' },
+                { infinitive: 'give', past: 'gave', participle: 'given' },
+                { infinitive: 'make', past: 'made', participle: 'made' },
+                { infinitive: 'know', past: 'knew', participle: 'known' },
+                { infinitive: 'think', past: 'thought', participle: 'thought' }
+            ]
+        };
+
+        let currentGame = {
+            score: 0,
+            streak: 0,
+            questionCount: 0,
+            totalQuestions: 10,
+            currentVerb: null,
+            currentTense: 'present',
+            currentPronoun: 'I'
+        };
+
+        // Pronouns for different tenses
+        const pronouns = {
+            present: ['I', 'you', 'he', 'she', 'it', 'we', 'they'],
+            past: ['I', 'you', 'he', 'she', 'it', 'we', 'they'],
+            future: ['I', 'you', 'he', 'she', 'it', 'we', 'they'],
+            present_continuous: ['I', 'you', 'he', 'she', 'it', 'we', 'they'],
+            past_continuous: ['I', 'you', 'he', 'she', 'it', 'we', 'they']
+        };
+
+        // DOM elements
+        const elements = {
+            startGame: document.getElementById('startGame'),
+            newVerb: document.getElementById('newVerb'),
+            showAnswer: document.getElementById('showAnswer'),
+            questionArea: document.getElementById('questionArea'),
+            verbDisplay: document.getElementById('verbDisplay'),
+            tenseIndicator: document.getElementById('tenseIndicator'),
+            answerInput: document.getElementById('answerInput'),
+            feedbackMessage: document.getElementById('feedbackMessage'),
+            progressContainer: document.getElementById('progressContainer'),
+            progressFill: document.getElementById('progressFill'),
+            progressText: document.getElementById('progressText'),
+            conjugationTable: document.getElementById('conjugationTable'),
+            tableBody: document.getElementById('tableBody'),
+            nextButton: document.getElementById('nextButton'),
+            score: document.getElementById('score'),
+            streak: document.getElementById('streak'),
+            questions: document.getElementById('questions')
+        };
+
+        // Initialize game
+        function initGame() {
+            if (elements.startGame) {
+                elements.startGame.addEventListener('click', startGame);
+            }
+            if (elements.newVerb) {
+                elements.newVerb.addEventListener('click', loadNewQuestion);
+            }
+            if (elements.showAnswer) {
+                elements.showAnswer.addEventListener('click', showAnswer);
+            }
+            if (elements.answerInput) {
+                elements.answerInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkAnswer();
+                    }
+                });
+            }
+            if (elements.nextButton) {
+                elements.nextButton.addEventListener('click', loadNewQuestion);
+            }
+        }
+
+        // Start game
+        function startGame() {
+            currentGame.score = 0;
+            currentGame.streak = 0;
+            currentGame.questionCount = 0;
+            updateStats();
+            if (elements.startGame) elements.startGame.style.display = 'none';
+            if (elements.questionArea) elements.questionArea.style.display = 'block';
+            if (elements.progressContainer) elements.progressContainer.style.display = 'block';
+            loadNewQuestion();
+        }
+
+        // Load new question
+        function loadNewQuestion() {
+            if (currentGame.questionCount >= currentGame.totalQuestions) {
+                endGame();
+                return;
+            }
+
+            const verbTypeSelect = document.getElementById('verbType');
+            const tenseSelect = document.getElementById('tense');
+
+            if (verbTypeSelect && tenseSelect) {
+                const verbType = verbTypeSelect.value;
+                currentGame.currentTense = tenseSelect.value;
+
+                let verbList = [];
+                if (verbType === 'mixed') {
+                    verbList = [...verbs.regular, ...verbs.irregular];
+                } else {
+                    verbList = verbs[verbType];
+                }
+
+                currentGame.currentVerb = verbList[Math.floor(Math.random() * verbList.length)];
+                currentGame.currentPronoun = pronouns[currentGame.currentTense][Math.floor(Math.random() * pronouns[currentGame.currentTense].length)];
+
+                if (elements.verbDisplay) elements.verbDisplay.textContent = `${currentGame.currentPronoun} ${currentGame.currentVerb.infinitive}`;
+                if (elements.tenseIndicator) elements.tenseIndicator.textContent = getTenseDisplayName(currentGame.currentTense);
+                if (elements.answerInput) {
+                    elements.answerInput.value = '';
+                    elements.answerInput.classList.remove('correct', 'incorrect');
+                }
+                if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = '';
+                if (elements.newVerb) elements.newVerb.style.display = 'inline-block';
+                if (elements.showAnswer) elements.showAnswer.style.display = 'inline-block';
+                if (elements.nextButton) elements.nextButton.style.display = 'none';
+                if (elements.conjugationTable) elements.conjugationTable.style.display = 'none';
+
+                if (elements.answerInput) elements.answerInput.focus();
+                currentGame.questionCount++;
+                updateProgress();
+            }
+        }
+
+        // Check answer
+        function checkAnswer() {
+            if (!elements.answerInput) return;
+
+            const userAnswer = elements.answerInput.value.trim().toLowerCase();
+            const correctAnswer = getCorrectAnswer().toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer(correctAnswer);
+            }
+        }
+
+        // Handle correct answer
+        function handleCorrectAnswer() {
+            currentGame.score += 10;
+            currentGame.streak += 1;
+            if (elements.answerInput) elements.answerInput.classList.add('correct');
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = '<div class="feedback-message feedback-correct">🎉 Excellent! That\'s correct!</div>';
+            if (elements.newVerb) elements.newVerb.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            updateStats();
+        }
+
+        // Handle incorrect answer
+        function handleIncorrectAnswer(correctAnswer) {
+            currentGame.streak = 0;
+            if (elements.answerInput) elements.answerInput.classList.add('incorrect');
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = `<div class="feedback-message feedback-incorrect">❌ Sorry! The correct answer is: <strong>${correctAnswer}</strong></div>`;
+            if (elements.newVerb) elements.newVerb.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            showConjugationTable();
+            updateStats();
+        }
+
+        // Get correct answer
+        function getCorrectAnswer() {
+            const verb = currentGame.currentVerb;
+            const pronoun = currentGame.currentPronoun;
+            const tense = currentGame.currentTense;
+
+            let baseForm = verb.infinitive;
+
+            switch (tense) {
+                case 'present':
+                    if (pronoun === 'he' || pronoun === 'she' || pronoun === 'it') {
+                        return baseForm + 's';
+                    }
+                    return baseForm;
+
+                case 'past':
+                    return verb.past;
+
+                case 'future':
+                    return 'will ' + baseForm;
+
+                case 'present_continuous':
+                    let presentBe = pronoun === 'I' ? 'am' : (pronoun === 'he' || pronoun === 'she' || pronoun === 'it') ? 'is' : 'are';
+                    return presentBe + ' ' + baseForm + 'ing';
+
+                case 'past_continuous':
+                    let pastBe = (pronoun === 'I' || pronoun === 'he' || pronoun === 'she' || pronoun === 'it') ? 'was' : 'were';
+                    return pastBe + ' ' + baseForm + 'ing';
+
+                default:
+                    return baseForm;
+            }
+        }
+
+        // Show conjugation table
+        function showConjugationTable() {
+            if (!elements.tableBody || !elements.conjugationTable) return;
+
+            const verb = currentGame.currentVerb;
+            elements.tableBody.innerHTML = '';
+
+            const tablePronouns = ['I', 'you', 'he', 'she', 'it', 'we', 'they'];
+
+            tablePronouns.forEach(pronoun => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${pronoun}</td>
+                    <td>${getConjugationForPronoun(verb, pronoun, currentGame.currentTense)}</td>
+                `;
+                elements.tableBody.appendChild(row);
+            });
+
+            elements.conjugationTable.style.display = 'block';
+        }
+
+        // Get conjugation for specific pronoun
+        function getConjugationForPronoun(verb, pronoun, tense) {
+            let baseForm = verb.infinitive;
+
+            switch (tense) {
+                case 'present':
+                    if (pronoun === 'he' || pronoun === 'she' || pronoun === 'it') {
+                        return baseForm + 's';
+                    }
+                    return baseForm;
+
+                case 'past':
+                    return verb.past;
+
+                case 'future':
+                    return 'will ' + baseForm;
+
+                case 'present_continuous':
+                    let beForm = pronoun === 'I' ? 'am' : (pronoun === 'he' || pronoun === 'she' || pronoun === 'it') ? 'is' : 'are';
+                    return beForm + ' ' + baseForm + 'ing';
+
+                case 'past_continuous':
+                    let pastBeForm = (pronoun === 'I' || pronoun === 'he' || pronoun === 'she' || pronoun === 'it') ? 'was' : 'were';
+                    return pastBeForm + ' ' + baseForm + 'ing';
+
+                default:
+                    return baseForm;
+            }
+        }
+
+        // Show answer
+        function showAnswer() {
+            const correctAnswer = getCorrectAnswer();
+            if (elements.feedbackMessage) elements.feedbackMessage.innerHTML = `<div class="feedback-message feedback-incorrect">The correct answer is: <strong>${correctAnswer}</strong></div>`;
+            if (elements.newVerb) elements.newVerb.style.display = 'none';
+            if (elements.showAnswer) elements.showAnswer.style.display = 'none';
+            if (elements.nextButton) elements.nextButton.style.display = 'inline-block';
+            showConjugationTable();
+        }
+
+        // Update stats
+        function updateStats() {
+            if (elements.score) elements.score.textContent = currentGame.score;
+            if (elements.streak) elements.streak.textContent = currentGame.streak;
+            if (elements.questions) elements.questions.textContent = `${currentGame.questionCount}/${currentGame.totalQuestions}`;
+        }
+
+        // Update progress
+        function updateProgress() {
+            if (elements.progressFill && elements.progressText) {
+                const progress = (currentGame.questionCount / currentGame.totalQuestions) * 100;
+                elements.progressFill.style.width = progress + '%';
+                elements.progressText.textContent = `Question ${currentGame.questionCount} of ${currentGame.totalQuestions}`;
+            }
+        }
+
+        // Get tense display name
+        function getTenseDisplayName(tense) {
+            const names = {
+                present: 'Present Simple',
+                past: 'Past Simple',
+                future: 'Future Simple',
+                present_continuous: 'Present Continuous',
+                past_continuous: 'Past Continuous'
+            };
+            return names[tense] || tense;
+        }
+
+        // End game
+        function endGame() {
+            if (elements.questionArea) elements.questionArea.style.display = 'none';
+            if (elements.progressContainer) elements.progressContainer.style.display = 'none';
+            if (elements.conjugationTable) elements.conjugationTable.style.display = 'none';
+
+            const finalScore = currentGame.score;
+            let message = '';
+
+            if (finalScore >= 80) {
+                message = '🏆 Excellent work! You\'re a conjugation master!';
+            } else if (finalScore >= 60) {
+                message = '👍 Good job! Keep practicing to improve!';
+            } else if (finalScore >= 40) {
+                message = '📚 Nice effort! Review the tenses and try again!';
+            } else {
+                message = '💪 Don\'t give up! Practice makes perfect!';
+            }
+
+            if (elements.questionArea) {
+                elements.questionArea.innerHTML = `
+                    <div style="text-align: center;">
+                        <h2>Game Complete!</h2>
+                        <div style="font-size: 3em; margin: 20px 0;">${finalScore}/100</div>
+                        <p style="font-size: 1.2em; margin: 20px 0;">${message}</p>
+                        <button onclick="location.reload()" class="esol-button primary" style="margin: 20px;">Play Again</button>
+                        <button onclick="location.href='esol_game_arcade.html'" class="esol-button secondary" style="margin: 20px;">Back to Arcade</button>
+                    </div>
+                `;
+                elements.questionArea.style.display = 'block';
+            }
+        }
+
+        // Initialize the game when page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
