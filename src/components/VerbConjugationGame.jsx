@@ -850,45 +850,51 @@ const VerbConjugationGame = ({ onBack }) => {
 
           {/* Game Mode Selection */}
           <div className="controls-row" style={{ marginBottom: '24px' }}>
-            <div className="control-group" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto' }}>
-              <label className="control-label" style={{ textAlign: 'center', fontSize: '18px' }}>🎮 GAME MODE</label>
-              <div className="button-group" style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
+            <div className="control-group" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
+              <label className="control-label" style={{ textAlign: 'center', fontSize: '16px', marginBottom: '12px' }}>🎮 GAME MODE</label>
+              <div className="button-group" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
                   className={`setting-button ${settings.gameMode === 'practice' ? 'active' : ''}`}
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'practice' }))}
-                  style={{ flex: '0 1 300px', fontSize: '18px', padding: '20px', minWidth: '250px' }}
+                  style={{ flex: '1 1 200px', fontSize: '15px', padding: '14px 12px', minWidth: '180px', maxWidth: '280px' }}
                 >
-                  {settings.gameMode === 'practice' && '✓ '}Practice Mode
-                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '8px' }}>Take your time, get detailed feedback</div>
+                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
+                    {settings.gameMode === 'practice' && '✓ '}Practice Mode
+                  </div>
+                  <div style={{ fontSize: '12px', opacity: 0.85, lineHeight: '1.3' }}>Take your time, get detailed feedback</div>
                 </button>
                 <button
                   className={`setting-button ${settings.gameMode === 'timed' ? 'active' : ''}`}
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'timed' }))}
-                  style={{ flex: '0 1 300px', fontSize: '18px', padding: '20px', minWidth: '250px' }}
+                  style={{ flex: '1 1 200px', fontSize: '15px', padding: '14px 12px', minWidth: '180px', maxWidth: '280px' }}
                 >
-                  {settings.gameMode === 'timed' && '✓ '}⏱️ Timed Mode (60s)
-                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '8px' }}>Race the clock! Auto-advance after correct answers</div>
+                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
+                    {settings.gameMode === 'timed' && '✓ '}⏱️ Timed Mode (60s)
+                  </div>
+                  <div style={{ fontSize: '12px', opacity: 0.85, lineHeight: '1.3' }}>Race the clock! Auto-advance after correct answers</div>
                 </button>
                 <button
                   className={`setting-button ${settings.gameMode === 'challenge' ? 'active' : ''}`}
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'challenge' }))}
-                  style={{ flex: '0 1 300px', fontSize: '18px', padding: '20px', minWidth: '250px', position: 'relative' }}
+                  style={{ flex: '1 1 200px', fontSize: '15px', padding: '14px 12px', minWidth: '180px', maxWidth: '280px', position: 'relative' }}
                 >
-                  {settings.gameMode === 'challenge' && '✓ '}🎯 Challenge Mode
-                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '8px' }}>Structured curriculum rounds (see info)</div>
-                  <div style={{ position: 'absolute', top: '8px', right: '8px' }}>
+                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
+                    {settings.gameMode === 'challenge' && '✓ '}🎯 Challenge Mode
+                  </div>
+                  <div style={{ fontSize: '12px', opacity: 0.85, lineHeight: '1.3' }}>Structured curriculum rounds (see info)</div>
+                  <div style={{ position: 'absolute', top: '6px', right: '6px' }}>
                     <button
                       style={{
                         background: 'rgba(99, 102, 241, 0.3)',
                         border: '1px solid rgba(99, 102, 241, 0.5)',
                         borderRadius: '50%',
-                        width: '20px',
-                        height: '20px',
+                        width: '18px',
+                        height: '18px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         cursor: 'pointer',
-                        fontSize: '12px',
+                        fontSize: '11px',
                         color: '#cbd5e1',
                         padding: 0
                       }}
@@ -908,7 +914,7 @@ const VerbConjugationGame = ({ onBack }) => {
                       style={{
                         display: 'none',
                         position: 'absolute',
-                        top: '28px',
+                        top: '24px',
                         right: '0',
                         background: 'rgba(30, 41, 59, 0.98)',
                         border: '1px solid rgba(71, 85, 105, 0.5)',
