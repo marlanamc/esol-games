@@ -698,6 +698,19 @@ const VerbConjugationGame = ({ onBack }) => {
     generateQuestion()
   }
 
+  // Skip current question in challenge mode and count as incorrect
+  const skipQuestion = () => {
+    // Increment questions, reset streak; do not change score
+    setCurrentGame(prev => ({
+      ...prev,
+      streak: 0,
+      questionCount: prev.questionCount + 1
+    }))
+
+    // Immediately advance to next question in challenge mode
+    nextQuestion()
+  }
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       if (showFeedback) {
@@ -1592,6 +1605,15 @@ const VerbConjugationGame = ({ onBack }) => {
             >
               Check Answer
             </button>
+            {settings.gameMode === 'challenge' && !showFeedback && (
+              <button
+                className="btn btn-secondary"
+                style={{ fontSize: '16px', padding: '12px 24px' }}
+                onClick={skipQuestion}
+              >
+                Skip (Count Incorrect)
+              </button>
+            )}
             {showFeedback && settings.gameMode === 'practice' && (
               <button className="btn btn-secondary" style={{ fontSize: '16px', padding: '12px 24px' }} onClick={nextQuestion}>
                 Next Question →
