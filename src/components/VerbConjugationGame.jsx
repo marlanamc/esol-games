@@ -843,103 +843,136 @@ const VerbConjugationGame = ({ onBack }) => {
             </div>
           </div>
 
-          {/* Manual Advanced Settings */}
-          <div className="controls-row" style={{ marginTop: '32px', borderTop: '1px solid rgba(71, 85, 105, 0.3)', paddingTop: '24px' }}>
-            <div className="control-group" style={{ width: '100%' }}>
-              <label className="control-label">⚙️ GAME SETTINGS</label>
-              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
-                Customize time, tense, form, and verb type settings below.
-              </p>
+          {/* Challenge Mode - Only TENSE selection */}
+          {settings.gameMode === 'challenge' && (
+            <div className="controls-row" style={{ marginTop: '32px', borderTop: '1px solid rgba(71, 85, 105, 0.3)', paddingTop: '24px' }}>
+              <div className="control-group" style={{ width: '100%' }}>
+                <label className="control-label">📚 SELECT TENSE(S) FOR CHALLENGE</label>
+                <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
+                  Choose one or multiple tenses. Time, form, and verb type are preset for each round.
+                </p>
+                <div className="button-group">
+                  <button
+                    className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
+                    onClick={() => toggleAll('tense', ['simple', 'continuous', 'perfect', 'perfect continuous'])}
+                  >
+                    ✓ All Tenses
+                  </button>
+                  {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
+                    <button
+                      key={tense}
+                      className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
+                      onClick={() => toggleSetting('tense', tense)}
+                    >
+                      {settings.tense.includes(tense) && '✓ '}{tense}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="controls-row">
-            <div className="control-group">
-              <label className="control-label">⏰ TIME</label>
-              <div className="button-group">
-                <button
-                  className={`setting-button all-button ${['present', 'past', 'future'].every(time => settings.time.includes(time)) ? 'active' : ''}`}
-                  onClick={() => toggleAll('time', ['present', 'past', 'future'])}
-                >
-                  ✓ All Times
-                </button>
-                {['present', 'past', 'future'].map(time => (
-                  <button
-                    key={time}
-                    className={`setting-button ${settings.time.includes(time) ? 'active' : ''}`}
-                    onClick={() => toggleSetting('time', time)}
-                  >
-                    {settings.time.includes(time) && '✓ '}{time}
-                  </button>
-                ))}
+          {/* Regular Mode - All Settings */}
+          {settings.gameMode !== 'challenge' && (
+            <>
+              <div className="controls-row" style={{ marginTop: '32px', borderTop: '1px solid rgba(71, 85, 105, 0.3)', paddingTop: '24px' }}>
+                <div className="control-group" style={{ width: '100%' }}>
+                  <label className="control-label">⚙️ GAME SETTINGS</label>
+                  <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
+                    Customize time, tense, form, and verb type settings below.
+                  </p>
+                </div>
               </div>
-            </div>
-            
-            <div className="control-group">
-              <label className="control-label">📚 TENSE</label>
-              <div className="button-group">
-                <button
-                  className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
-                  onClick={() => toggleAll('tense', ['simple', 'continuous', 'perfect', 'perfect continuous'])}
-                >
-                  ✓ All Tenses
-                </button>
-                {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
-                  <button
-                    key={tense}
-                    className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
-                    onClick={() => toggleSetting('tense', tense)}
-                  >
-                    {settings.tense.includes(tense) && '✓ '}{tense}
-                  </button>
-                ))}
+
+              <div className="controls-row">
+                <div className="control-group">
+                  <label className="control-label">⏰ TIME</label>
+                  <div className="button-group">
+                    <button
+                      className={`setting-button all-button ${['present', 'past', 'future'].every(time => settings.time.includes(time)) ? 'active' : ''}`}
+                      onClick={() => toggleAll('time', ['present', 'past', 'future'])}
+                    >
+                      ✓ All Times
+                    </button>
+                    {['present', 'past', 'future'].map(time => (
+                      <button
+                        key={time}
+                        className={`setting-button ${settings.time.includes(time) ? 'active' : ''}`}
+                        onClick={() => toggleSetting('time', time)}
+                      >
+                        {settings.time.includes(time) && '✓ '}{time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="control-group">
+                  <label className="control-label">📚 TENSE</label>
+                  <div className="button-group">
+                    <button
+                      className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
+                      onClick={() => toggleAll('tense', ['simple', 'continuous', 'perfect', 'perfect continuous'])}
+                    >
+                      ✓ All Tenses
+                    </button>
+                    {['simple', 'continuous', 'perfect', 'perfect continuous'].map(tense => (
+                      <button
+                        key={tense}
+                        className={`setting-button ${settings.tense.includes(tense) ? 'active' : ''}`}
+                        onClick={() => toggleSetting('tense', tense)}
+                      >
+                        {settings.tense.includes(tense) && '✓ '}{tense}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          
-          <div className="controls-row">
-            <div className="control-group">
-              <label className="control-label">📝 FORM</label>
-              <div className="button-group">
-                <button
-                  className={`setting-button all-button ${['affirmative', 'negative', 'question'].every(form => settings.form.includes(form)) ? 'active' : ''}`}
-                  onClick={() => toggleAll('form', ['affirmative', 'negative', 'question'])}
-                >
-                  ✓ All Forms
-                </button>
-                {['affirmative', 'negative', 'question'].map(form => (
-                  <button
-                    key={form}
-                    className={`setting-button ${settings.form.includes(form) ? 'active' : ''}`}
-                    onClick={() => toggleSetting('form', form)}
-                  >
-                    {settings.form.includes(form) && '✓ '}{form}
-                  </button>
-                ))}
+              
+              <div className="controls-row">
+                <div className="control-group">
+                  <label className="control-label">📝 FORM</label>
+                  <div className="button-group">
+                    <button
+                      className={`setting-button all-button ${['affirmative', 'negative', 'question'].every(form => settings.form.includes(form)) ? 'active' : ''}`}
+                      onClick={() => toggleAll('form', ['affirmative', 'negative', 'question'])}
+                    >
+                      ✓ All Forms
+                    </button>
+                    {['affirmative', 'negative', 'question'].map(form => (
+                      <button
+                        key={form}
+                        className={`setting-button ${settings.form.includes(form) ? 'active' : ''}`}
+                        onClick={() => toggleSetting('form', form)}
+                      >
+                        {settings.form.includes(form) && '✓ '}{form}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="control-group">
+                  <label className="control-label">🔤 VERB TYPE</label>
+                  <div className="button-group">
+                    <button
+                      className={`setting-button all-button ${['regular', 'irregular'].every(type => settings.verbType.includes(type)) ? 'active' : ''}`}
+                      onClick={() => toggleAll('verbType', ['regular', 'irregular'])}
+                    >
+                      ✓ All Types
+                    </button>
+                    {['regular', 'irregular'].map(type => (
+                      <button
+                        key={type}
+                        className={`setting-button ${settings.verbType.includes(type) ? 'active' : ''}`}
+                        onClick={() => toggleSetting('verbType', type)}
+                      >
+                        {settings.verbType.includes(type) && '✓ '}{type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            <div className="control-group">
-              <label className="control-label">🔤 VERB TYPE</label>
-              <div className="button-group">
-                <button
-                  className={`setting-button all-button ${['regular', 'irregular'].every(type => settings.verbType.includes(type)) ? 'active' : ''}`}
-                  onClick={() => toggleAll('verbType', ['regular', 'irregular'])}
-                >
-                  ✓ All Types
-                </button>
-                {['regular', 'irregular'].map(type => (
-                  <button
-                    key={type}
-                    className={`setting-button ${settings.verbType.includes(type) ? 'active' : ''}`}
-                    onClick={() => toggleSetting('verbType', type)}
-                  >
-                    {settings.verbType.includes(type) && '✓ '}{type}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+            </>
+          )}
           
           <div style={{ textAlign: 'center', marginTop: '32px' }}>
             <button className="btn btn-primary" onClick={startGame}>
