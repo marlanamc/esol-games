@@ -661,10 +661,18 @@ const VerbConjugationGame = ({ onBack }) => {
   const startGame = () => {
     // Map uiSettings to engine settings
     const toArray = (ms, allArray) => (ms.all || !ms.items || ms.items.length === 0 ? allArray : ms.items)
-    const timeArr = toArray(uiSettings.time, ['present', 'past', 'future'])
-    const tenseArr = toArray(uiSettings.tense, ['simple', 'continuous', 'perfect', 'perfectContinuous']).map(t => t === 'perfectContinuous' ? 'perfect continuous' : t)
-    const formArr = toArray(uiSettings.form, ['affirmative', 'negative', 'question'])
-    const typeArr = toArray(uiSettings.verbType, ['regular', 'irregular'])
+    let timeArr = toArray(uiSettings.time, ['present', 'past', 'future'])
+    let tenseArr = toArray(uiSettings.tense, ['simple', 'continuous', 'perfect', 'perfectContinuous']).map(t => t === 'perfectContinuous' ? 'perfect continuous' : t)
+    let formArr = toArray(uiSettings.form, ['affirmative', 'negative', 'question'])
+    let typeArr = toArray(uiSettings.verbType, ['regular', 'irregular'])
+
+    // In Challenge mode, ignore any prior custom selections and use fully preset options
+    if (uiSettings.mode === 'challenge') {
+      timeArr = ['present', 'past', 'future']
+      tenseArr = ['simple', 'continuous', 'perfect', 'perfect continuous']
+      formArr = ['affirmative', 'negative', 'question']
+      typeArr = ['regular', 'irregular']
+    }
 
     setSettings(prev => ({
       ...prev,
@@ -1113,10 +1121,22 @@ const VerbConjugationGame = ({ onBack }) => {
                     style={{ flex: '1 1 260px', minWidth: '220px', textAlign: 'left' }}
                     onClick={() => {
                       setUiSettings((s) => {
-                        const base = { ...s, mode: m.id, challengePresetId: m.id === 'challenge' ? s.challengePresetId : null }
+                        if (m.id === 'challenge') {
+                          // Force fully preset state for challenge (no custom multi-selects apply)
+                          return {
+                            ...s,
+                            mode: 'challenge',
+                            challengePresetId: null,
+                            time: { all: true, items: [] },
+                            tense: { all: true, items: [] },
+                            form: { all: true, items: [] },
+                            verbType: { all: true, items: [] }
+                          }
+                        }
+                        const base = { ...s, mode: m.id, challengePresetId: null }
                         const restored = loadModeState(m.id)
                         const next = restored ? { ...base, ...restored, mode: m.id } : base
-                        if (m.id !== 'challenge') saveModeState(m.id, next)
+                        saveModeState(m.id, next)
                         return next
                       })
                     }}
