@@ -236,6 +236,16 @@ const VerbConjugationGame = ({ onBack }) => {
     })
   }
 
+  const resetSettingsToDefaults = () => {
+    setSettings(prev => ({
+      ...prev,
+      time: ['present', 'past', 'future'],
+      tense: ['simple', 'continuous', 'perfect', 'perfect continuous'],
+      form: ['affirmative', 'negative', 'question'],
+      verbType: ['regular', 'irregular']
+    }))
+  }
+
   const normalizeAnswer = (answer) => {
     if (!answer) return ''
     return answer.toLowerCase()
@@ -1108,7 +1118,7 @@ const VerbConjugationGame = ({ onBack }) => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="controls-row">
                 <div className="control-group">
                   <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
@@ -1154,6 +1164,19 @@ const VerbConjugationGame = ({ onBack }) => {
                       </button>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              <div className="controls-row" style={{ marginTop: 12 }}>
+                <div className="control-group" style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={resetSettingsToDefaults}
+                    style={{ fontSize: '14px', padding: '10px 16px' }}
+                    title="Reset all selections to default"
+                  >
+                    Reset to Defaults
+                  </button>
                 </div>
               </div>
             </>
