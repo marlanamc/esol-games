@@ -1,5 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Target, ArrowLeft, RotateCcw } from 'lucide-react'
+import { 
+  Target,
+  ArrowLeft,
+  RotateCcw,
+  Gamepad2,
+  Timer,
+  BookOpen,
+  Settings,
+  Clock,
+  FileText,
+  Type,
+  PartyPopper,
+  AlarmClock
+} from 'lucide-react'
 
 const VerbConjugationGame = ({ onBack }) => {
   const [currentGame, setCurrentGame] = useState({
@@ -904,7 +917,9 @@ const VerbConjugationGame = ({ onBack }) => {
           {/* Game Mode Selection */}
           <div className="controls-row" style={{ marginBottom: '24px' }}>
             <div className="control-group" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
-              <label className="control-label" style={{ textAlign: 'center', fontSize: '16px', marginBottom: '12px' }}>🎮 GAME MODE</label>
+              <label className="control-label" style={{ textAlign: 'center', fontSize: '16px', marginBottom: '12px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <Gamepad2 size={18} /> GAME MODE
+              </label>
               <div className="game-mode-buttons" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                 <button
                   className={`setting-button ${settings.gameMode === 'practice' ? 'active' : ''}`}
@@ -921,8 +936,9 @@ const VerbConjugationGame = ({ onBack }) => {
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'timed' }))}
                   style={{ flex: '1 1 200px', fontSize: '15px', padding: '14px 12px', minWidth: '200px', maxWidth: '300px' }}
                 >
-                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
-                    {settings.gameMode === 'timed' && '✓ '}⏱️ Timed Mode (60s)
+                  <div style={{ fontWeight: '600', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {settings.gameMode === 'timed' && '✓ '}
+                    <Timer size={16} /> Timed Mode (60s)
                   </div>
                   <div style={{ fontSize: '12px', opacity: 0.85, lineHeight: '1.3' }}>Race the clock! Auto-advance after correct answers</div>
                 </button>
@@ -931,8 +947,9 @@ const VerbConjugationGame = ({ onBack }) => {
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'challenge' }))}
                   style={{ flex: '1 1 200px', fontSize: '15px', padding: '14px 12px', minWidth: '200px', maxWidth: '300px', position: 'relative' }}
                 >
-                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
-                    {settings.gameMode === 'challenge' && '✓ '}🎯 Challenge Mode
+                  <div style={{ fontWeight: '600', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {settings.gameMode === 'challenge' && '✓ '}
+                    <Target size={16} /> Challenge Mode
                   </div>
                   <div style={{ fontSize: '12px', opacity: 0.85, lineHeight: '1.3' }}>Structured curriculum rounds (see info)</div>
                   <div style={{ position: 'absolute', top: '6px', right: '6px' }}>
@@ -982,7 +999,7 @@ const VerbConjugationGame = ({ onBack }) => {
                         lineHeight: '1.5'
                       }}
                     >
-                      <strong>Challenge Rounds:</strong><br />
+                      <strong style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><Target size={12}/> Challenge Rounds:</strong><br />
                       Select tense(s) below, then configure:<br />
                       1: Present Only<br />
                       2: Past Only<br />
@@ -991,7 +1008,7 @@ const VerbConjugationGame = ({ onBack }) => {
                       5: Negative Only<br />
                       6: Question Only<br />
                       7: All Times/All Forms<br />
-                      ⏱️ 1 minute timed
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><Timer size={12}/> 1 minute timed</span>
                     </div>
                   </div>
                 </button>
@@ -1003,7 +1020,9 @@ const VerbConjugationGame = ({ onBack }) => {
           {settings.gameMode === 'challenge' && (
             <div className="controls-row" style={{ marginTop: '32px', borderTop: '1px solid rgba(71, 85, 105, 0.3)', paddingTop: '24px' }}>
               <div className="control-group" style={{ width: '100%' }}>
-                <label className="control-label">📚 SELECT TENSE(S) FOR CHALLENGE</label>
+                <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <BookOpen size={16}/> SELECT TENSE(S) FOR CHALLENGE
+                </label>
                 <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
                   Choose one or multiple tenses. Time, form, and verb type are preset for each round.
                 </p>
@@ -1033,7 +1052,9 @@ const VerbConjugationGame = ({ onBack }) => {
             <>
               <div className="controls-row" style={{ marginTop: '32px', borderTop: '1px solid rgba(71, 85, 105, 0.3)', paddingTop: '24px' }}>
                 <div className="control-group" style={{ width: '100%' }}>
-                  <label className="control-label">⚙️ GAME SETTINGS</label>
+                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <Settings size={16}/> GAME SETTINGS
+                  </label>
                   <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', marginTop: '8px' }}>
                     Customize time, tense, form, and verb type settings below.
                   </p>
@@ -1042,7 +1063,9 @@ const VerbConjugationGame = ({ onBack }) => {
 
               <div className="controls-row">
                 <div className="control-group">
-                  <label className="control-label">⏰ TIME</label>
+                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <Clock size={16}/> TIME
+                  </label>
                   <div className="button-group">
                     <button
                       className={`setting-button all-button ${['present', 'past', 'future'].every(time => settings.time.includes(time)) ? 'active' : ''}`}
@@ -1063,7 +1086,9 @@ const VerbConjugationGame = ({ onBack }) => {
                 </div>
                 
                 <div className="control-group">
-                  <label className="control-label">📚 TENSE</label>
+                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <BookOpen size={16}/> TENSE
+                  </label>
                   <div className="button-group">
                     <button
                       className={`setting-button all-button ${['simple', 'continuous', 'perfect', 'perfect continuous'].every(tense => settings.tense.includes(tense)) ? 'active' : ''}`}
@@ -1086,7 +1111,9 @@ const VerbConjugationGame = ({ onBack }) => {
               
               <div className="controls-row">
                 <div className="control-group">
-                  <label className="control-label">📝 FORM</label>
+                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <FileText size={16}/> FORM
+                  </label>
                   <div className="button-group">
                     <button
                       className={`setting-button all-button ${['affirmative', 'negative', 'question'].every(form => settings.form.includes(form)) ? 'active' : ''}`}
@@ -1107,7 +1134,9 @@ const VerbConjugationGame = ({ onBack }) => {
                 </div>
                 
                 <div className="control-group">
-                  <label className="control-label">🔤 VERB TYPE</label>
+                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <Type size={16}/> VERB TYPE
+                  </label>
                   <div className="button-group">
                     <button
                       className={`setting-button all-button ${['regular', 'irregular'].every(type => settings.verbType.includes(type)) ? 'active' : ''}`}
@@ -1379,7 +1408,11 @@ const VerbConjugationGame = ({ onBack }) => {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             animation: 'slideDown 0.6s ease-out'
-          }}>🎉 Challenge Complete!</h2>
+          }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+              <PartyPopper size={36}/> Challenge Complete!
+            </span>
+          </h2>
           {(() => {
             const rounds = Object.values(roundScores || {})
             const totalCorrect = rounds.reduce((sum, r) => sum + (r?.score || 0), 0)
@@ -1464,7 +1497,11 @@ const VerbConjugationGame = ({ onBack }) => {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             animation: 'slideDown 0.6s ease-out'
-          }}>⏰ Time's Up!</h2>
+          }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+              <AlarmClock size={36}/> Time's Up!
+            </span>
+          </h2>
           <div style={{ fontSize: '24px', marginBottom: '32px' }}>
             <div style={{ marginBottom: '16px', animation: 'fadeInUp 0.7s ease-out' }}>
               <span style={{ 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { BookOpen, ArrowLeft, RotateCcw } from 'lucide-react'
+import { BookOpen, ArrowLeft, RotateCcw, Target, Type } from 'lucide-react'
 
 const VerbFormsGame = ({ onBack }) => {
   const [currentGame, setCurrentGame] = useState({
@@ -409,7 +409,9 @@ const VerbFormsGame = ({ onBack }) => {
           
           <div className="controls-row">
             <div className="control-group">
-              <label className="control-label" style={{ color: '#FF6B6B' }}>🎯 DIFFICULTY</label>
+              <label className="control-label" style={{ color: '#FF6B6B', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <Target size={16}/> DIFFICULTY
+              </label>
               <select 
                 className="esol-select"
                 style={{ backgroundColor: '#FF6B6B20', borderColor: '#FF6B6B' }}
@@ -428,7 +430,9 @@ const VerbFormsGame = ({ onBack }) => {
             </div>
             
             <div className="control-group">
-              <label className="control-label" style={{ color: '#96CEB4' }}>🔤 VERB TYPE</label>
+              <label className="control-label" style={{ color: '#96CEB4', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <Type size={16}/> VERB TYPE
+              </label>
               <select 
                 className="esol-select"
                 style={{ backgroundColor: '#96CEB420', borderColor: '#96CEB4' }}
