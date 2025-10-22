@@ -1091,6 +1091,8 @@ const VerbConjugationGame = ({ onBack }) => {
             <p className="controls-subtitle">Pick a mode, choose what to practice, then start.</p>
           </div>
 
+          <div className="settings-grid">
+            <div className="settings-left">
           {/* Mode select */}
           <div className="controls-row">
             <div className="control-group" style={{ width: '100%' }}>
@@ -1174,7 +1176,9 @@ const VerbConjugationGame = ({ onBack }) => {
               </div>
             </div>
           )}
+            </div>{/* /.settings-left */}
 
+            <div className="settings-right">
           {/* Setting groups */}
           {[
             { key: 'time', icon: <Clock size={16}/>, title: 'TIME', allLabel: 'All Times', items: [
@@ -1237,6 +1241,8 @@ const VerbConjugationGame = ({ onBack }) => {
               </div>
             </div>
           </div>
+            </div>{/* /.settings-right */}
+          </div>{/* /.settings-grid */}
 
           {/* Footer */}
           <div className="controls-row" style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 16 }}>

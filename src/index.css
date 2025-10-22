@@ -1197,3 +1197,26 @@ body::before {
     padding: 16px;
   }
 }
+/* Responsive layout for redesigned game settings */
+.settings-grid {
+  display: grid;
+  gap: 16px;
+}
+.settings-left,
+.settings-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 1024px) {
+  .settings-grid {
+    grid-template-columns: 1fr 1.2fr;
+    align-items: start;
+  }
+  .game-mode-buttons .setting-button {
+    min-width: 260px;
+  }
+  .control-group .button-group {
+    gap: 10px;
+  }
+}
