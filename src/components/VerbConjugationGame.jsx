@@ -583,7 +583,7 @@ const VerbConjugationGame = ({ onBack }) => {
       if (settings.gameMode === 'timed') {
         setTimeout(() => {
           nextQuestion()
-        }, 3000)
+        }, 2000)
       }
     } else {
       setCurrentGame(prev => ({
