@@ -852,7 +852,7 @@ const VerbConjugationGame = ({ onBack }) => {
           <div className="controls-row" style={{ marginBottom: '24px' }}>
             <div className="control-group" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
               <label className="control-label" style={{ textAlign: 'center', fontSize: '16px', marginBottom: '12px' }}>🎮 GAME MODE</label>
-              <div className="button-group" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexDirection: 'row', flexWrap: 'nowrap' }}>
+              <div className="game-mode-buttons" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexDirection: 'row', flexWrap: 'nowrap' }}>
                 <button
                   className={`setting-button ${settings.gameMode === 'practice' ? 'active' : ''}`}
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'practice' }))}
