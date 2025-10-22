@@ -192,20 +192,22 @@ const VerbFormsGame = ({ onBack }) => {
     setUserAnswer('')
     setShowFeedback(false)
     setFeedback('')
-    
-    // Auto-focus the first input field after a brief delay
-    setTimeout(() => {
+  }
+  
+  // Auto-focus the first empty input field when a new question is generated
+  useEffect(() => {
+    if (currentGame.currentVerb && !showFeedback) {
       const fieldOrder = ['base', 'third', 'gerund', 'past', 'participle']
       const refs = [baseInputRef, thirdInputRef, gerundInputRef, pastInputRef, participleInputRef]
       
       for (let i = 0; i < fieldOrder.length; i++) {
-        if (formsToHide.includes(fieldOrder[i]) && refs[i].current) {
+        if (currentGame.formsToHide?.includes(fieldOrder[i]) && refs[i].current) {
           refs[i].current.focus()
           break
         }
       }
-    }, 100)
-  }
+    }
+  }, [currentGame.currentVerb, showFeedback])
 
   const startGame = () => {
     setGameStarted(true)

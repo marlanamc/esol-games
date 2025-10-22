@@ -404,14 +404,14 @@ const VerbConjugationGame = ({ onBack }) => {
     setUserAnswer('')
     setShowFeedback(false)
     setFeedback('')
-    
-    // Auto-focus the input after a brief delay to ensure DOM is updated
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus()
-      }
-    }, 100)
   }
+  
+  // Auto-focus the input when a new question is generated
+  useEffect(() => {
+    if (currentGame.currentVerb && !showFeedback && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [currentGame.currentVerb, showFeedback])
 
   const startGame = () => {
     setGameStarted(true)
