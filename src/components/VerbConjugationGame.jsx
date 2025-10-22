@@ -981,28 +981,56 @@ const VerbConjugationGame = ({ onBack }) => {
           padding: '48px 24px',
           maxWidth: '600px',
           margin: '0 auto',
-          backgroundColor: '#f8fafe',
+          background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%)',
           borderRadius: '16px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+          border: '1px solid rgba(71, 85, 105, 0.3)',
+          animation: 'fadeInScale 0.5s ease-out',
+          backdropFilter: 'blur(20px)'
         }}>
-          <h2 style={{ fontSize: '48px', marginBottom: '16px', color: '#6366f1' }}>⏰ Time's Up!</h2>
+          <h2 style={{ 
+            fontSize: '48px', 
+            marginBottom: '16px', 
+            background: 'linear-gradient(135deg, #ff6b6b 0%, #ec4899 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            animation: 'slideDown 0.6s ease-out'
+          }}>⏰ Time's Up!</h2>
           <div style={{ fontSize: '24px', marginBottom: '32px' }}>
-            <div style={{ marginBottom: '16px' }}>
-              <span style={{ fontSize: '64px', fontWeight: 'bold', color: '#10b981' }}>{currentGame.score}</span>
-              <div style={{ fontSize: '18px', color: '#475569', marginTop: '8px', fontWeight: '500' }}>Correct Answers</div>
+            <div style={{ marginBottom: '16px', animation: 'fadeInUp 0.7s ease-out' }}>
+              <span style={{ 
+                fontSize: '64px', 
+                fontWeight: 'bold', 
+                color: '#10b981',
+                textShadow: '0 4px 8px rgba(16, 185, 129, 0.3)',
+                display: 'inline-block',
+                animation: 'pulse 2s ease-in-out infinite'
+              }}>{currentGame.score}</span>
+              <div style={{ fontSize: '18px', color: '#cbd5e1', marginTop: '8px', fontWeight: '500' }}>Correct Answers</div>
             </div>
             <div style={{ display: 'flex', gap: '48px', justifyContent: 'center', marginTop: '24px' }}>
-              <div>
-                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1e293b' }}>{currentGame.questionCount}</div>
-                <div style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>Total Questions</div>
+              <div style={{ animation: 'fadeInLeft 0.8s ease-out' }}>
+                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#f1f5f9' }}>{currentGame.questionCount}</div>
+                <div style={{ fontSize: '14px', color: '#cbd5e1', fontWeight: '500' }}>Total Questions</div>
               </div>
-              <div>
-                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1e293b' }}>{Math.round((currentGame.score / Math.max(currentGame.questionCount, 1)) * 100)}%</div>
-                <div style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>Accuracy</div>
+              <div style={{ animation: 'fadeInRight 0.8s ease-out' }}>
+                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#f1f5f9' }}>{Math.round((currentGame.score / Math.max(currentGame.questionCount, 1)) * 100)}%</div>
+                <div style={{ fontSize: '14px', color: '#cbd5e1', fontWeight: '500' }}>Accuracy</div>
               </div>
             </div>
           </div>
-          <button className="btn btn-primary" onClick={resetGame} style={{ fontSize: '20px', padding: '16px 32px' }}>
+          <button 
+            className="btn btn-primary" 
+            onClick={resetGame} 
+            style={{ 
+              fontSize: '20px', 
+              padding: '16px 32px',
+              animation: 'fadeInUp 1s ease-out',
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)'
+            }}
+          >
             Play Again
           </button>
         </div>
