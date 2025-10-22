@@ -177,6 +177,7 @@ const VerbConjugationGame = ({ onBack }) => {
   }
 
   const normalizeAnswer = (answer) => {
+    if (!answer) return ''
     return answer.toLowerCase()
       .trim()
       .replace(/\s+/g, ' ') // normalize multiple spaces
