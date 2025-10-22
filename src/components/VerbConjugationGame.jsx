@@ -850,32 +850,32 @@ const VerbConjugationGame = ({ onBack }) => {
 
           {/* Game Mode Selection */}
           <div className="controls-row" style={{ marginBottom: '24px' }}>
-            <div className="control-group" style={{ width: '100%' }}>
-              <label className="control-label">🎮 GAME MODE</label>
-              <div className="button-group" style={{ display: 'flex', gap: '12px' }}>
+            <div className="control-group" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto' }}>
+              <label className="control-label" style={{ textAlign: 'center', fontSize: '18px' }}>🎮 GAME MODE</label>
+              <div className="button-group" style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
                 <button
                   className={`setting-button ${settings.gameMode === 'practice' ? 'active' : ''}`}
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'practice' }))}
-                  style={{ flex: 1, fontSize: '18px', padding: '16px' }}
+                  style={{ flex: '0 1 300px', fontSize: '18px', padding: '20px', minWidth: '250px' }}
                 >
                   {settings.gameMode === 'practice' && '✓ '}Practice Mode
-                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '4px' }}>Take your time, get detailed feedback</div>
+                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '8px' }}>Take your time, get detailed feedback</div>
                 </button>
                 <button
                   className={`setting-button ${settings.gameMode === 'timed' ? 'active' : ''}`}
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'timed' }))}
-                  style={{ flex: 1, fontSize: '18px', padding: '16px' }}
+                  style={{ flex: '0 1 300px', fontSize: '18px', padding: '20px', minWidth: '250px' }}
                 >
                   {settings.gameMode === 'timed' && '✓ '}⏱️ Timed Mode (60s)
-                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '4px' }}>Race the clock! Auto-advance after correct answers</div>
+                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '8px' }}>Race the clock! Auto-advance after correct answers</div>
                 </button>
                 <button
                   className={`setting-button ${settings.gameMode === 'challenge' ? 'active' : ''}`}
                   onClick={() => setSettings(prev => ({ ...prev, gameMode: 'challenge' }))}
-                  style={{ flex: 1, fontSize: '18px', padding: '16px', position: 'relative' }}
+                  style={{ flex: '0 1 300px', fontSize: '18px', padding: '20px', minWidth: '250px', position: 'relative' }}
                 >
                   {settings.gameMode === 'challenge' && '✓ '}🎯 Challenge Mode
-                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '4px' }}>Structured curriculum rounds (see info)</div>
+                  <div style={{ fontSize: '14px', opacity: 0.8, marginTop: '8px' }}>Structured curriculum rounds (see info)</div>
                   <div style={{ position: 'absolute', top: '8px', right: '8px' }}>
                     <button
                       style={{
