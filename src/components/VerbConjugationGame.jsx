@@ -750,6 +750,64 @@ const VerbConjugationGame = ({ onBack }) => {
             <p className="controls-instructions">Click buttons to select/deselect options. You can choose multiple options in each category.</p>
           </div>
 
+          {/* Challenge Presets */}
+          <div className="controls-row" style={{ marginBottom: '24px' }}>
+            <div className="control-group" style={{ width: '100%' }}>
+              <label className="control-label">🎯 CHALLENGE PRESETS</label>
+              <div className="button-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
+                <button
+                  className="setting-button"
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present'], tense: ['simple'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  style={{ fontSize: '14px', padding: '12px' }}
+                >
+                  Round 1: Present Simple<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                </button>
+                <button
+                  className="setting-button"
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['past'], tense: ['simple'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  style={{ fontSize: '14px', padding: '12px' }}
+                >
+                  Round 2: Past Simple<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                </button>
+                <button
+                  className="setting-button"
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['future'], tense: ['simple'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  style={{ fontSize: '14px', padding: '12px' }}
+                >
+                  Round 3: Future Simple<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                </button>
+                <button
+                  className="setting-button"
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], tense: ['simple'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  style={{ fontSize: '14px', padding: '12px' }}
+                >
+                  Round 4: All Simple<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                </button>
+                <button
+                  className="setting-button"
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], tense: ['continuous'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  style={{ fontSize: '14px', padding: '12px' }}
+                >
+                  Round 5: All Continuous<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                </button>
+                <button
+                  className="setting-button"
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], tense: ['perfect'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  style={{ fontSize: '14px', padding: '12px' }}
+                >
+                  Round 6: All Perfect<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                </button>
+                <button
+                  className="setting-button"
+                  onClick={() => setSettings(prev => ({ ...prev, time: ['present', 'past', 'future'], tense: ['simple', 'continuous', 'perfect', 'perfect continuous'], form: ['affirmative', 'negative', 'question'], gameMode: 'timed' }))}
+                  style={{ fontSize: '14px', padding: '12px' }}
+                >
+                  Round 7: Master Challenge<br /><span style={{ fontSize: '12px', opacity: 0.8 }}>⏱️ 1 min</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* Game Mode Selection */}
           <div className="controls-row" style={{ marginBottom: '24px' }}>
             <div className="control-group" style={{ width: '100%' }}>
