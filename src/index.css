@@ -1092,14 +1092,19 @@ body::before {
   margin-top: 8px;
 }
 
-/* Game mode buttons - horizontal layout */
+/* Game mode buttons - responsive layout */
 .game-mode-buttons {
   display: flex !important;
   flex-direction: row !important;
-  flex-wrap: nowrap !important;
+  flex-wrap: wrap !important;
   gap: 12px;
   justify-content: center;
   margin-top: 8px;
+}
+
+.game-mode-buttons .setting-button {
+  flex: 1 1 200px;
+  max-width: 300px;
 }
 
 .setting-button {
