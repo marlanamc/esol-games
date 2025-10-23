@@ -76,7 +76,7 @@ const VerbConjugationGame = ({ onBack }) => {
   useEffect(() => {
     // On mount, attempt restore for practice
     const restored = loadModeState('practice')
-    if (restored) setUiSettings((s) => ({ ...s, ...restored }))
+    if (restored) setUiSettings((s) => ({ ...s, ...restored, mode: 'practice' }))
   }, [])
 
   // Helper to update a group with All vs specific logic
@@ -90,20 +90,27 @@ const VerbConjugationGame = ({ onBack }) => {
   const updateGroupItem = (group, item) => {
     setUiSettings((s) => {
       const current = s[group]
+      
+      // If "All" is selected, clicking an item should deselect all and select only that item
       if (current.all) {
         const nextSet = { all: false, items: [item] }
         const next = { ...s, [group]: nextSet }
         if (s.mode !== 'challenge') saveModeState(s.mode, next)
         return next
       }
+      
+      // Otherwise, toggle the item
       const exists = current.items.includes(item)
       let items = exists ? current.items.filter((i) => i !== item) : [...current.items, item]
+      
+      // If no items are selected, select all
       if (items.length === 0) {
-        items = []
-        const next = { ...s, [group]: { all: true, items } }
+        const next = { ...s, [group]: { all: true, items: [] } }
         if (s.mode !== 'challenge') saveModeState(s.mode, next)
         return next
       }
+      
+      // Otherwise, keep the selected items
       const next = { ...s, [group]: { all: false, items } }
       if (s.mode !== 'challenge') saveModeState(s.mode, next)
       return next
@@ -616,7 +623,6 @@ const VerbConjugationGame = ({ onBack }) => {
   }, [currentGame.currentVerb, showFeedback])
 
   const getChallengeRoundConfig = (round) => {
-    const selectedTenses = settings.tense
     switch(round) {
       case 1:
         return { time: ['present'], form: ['affirmative', 'negative', 'question'] }
@@ -666,12 +672,20 @@ const VerbConjugationGame = ({ onBack }) => {
     let formArr = toArray(uiSettings.form, ['affirmative', 'negative', 'question'])
     let typeArr = toArray(uiSettings.verbType, ['regular', 'irregular'])
 
-    // In Challenge mode, Time/Form/VerbType are preset; Tense is user-selected
+    // In Challenge mode, apply round config FIRST
     if (uiSettings.mode === 'challenge') {
-      timeArr = ['present', 'past', 'future']
+      // Validate that at least one tense is selected
+      if (tenseArr.length === 0) {
+        alert('Please select at least one tense for challenge mode.')
+        return
+      }
+      
+      // Apply round 1 config immediately
+      const roundConfig = getChallengeRoundConfig(1)
+      timeArr = roundConfig.time // ['present'] for round 1
+      formArr = roundConfig.form  // ['affirmative', 'negative', 'question'] for round 1
+      typeArr = ['regular', 'irregular'] // All types
       // tenseArr stays as selected in UI (already mapped)
-      formArr = ['affirmative', 'negative', 'question']
-      typeArr = ['regular', 'irregular']
     }
 
     setSettings(prev => ({
@@ -692,16 +706,6 @@ const VerbConjugationGame = ({ onBack }) => {
     if (uiSettings.mode === 'timed' || uiSettings.mode === 'challenge') {
       setTimeRemaining(uiSettings.timedSeconds || 60)
       setTimerActive(true)
-    }
-    
-    // Apply challenge round config if in challenge mode
-    if (uiSettings.mode === 'challenge') {
-      const roundConfig = getChallengeRoundConfig(1)
-      setSettings(prev => ({
-        ...prev,
-        time: roundConfig.time,
-        form: roundConfig.form
-      }))
     }
     
     generateQuestion()
@@ -1099,201 +1103,229 @@ const VerbConjugationGame = ({ onBack }) => {
             <p className="controls-subtitle">Pick a mode, choose what to practice, then start.</p>
           </div>
 
+          {/* Main Settings Grid */}
           <div className="settings-grid">
+            
+            {/* Left Column: Mode Selection */}
             <div className="settings-left">
-          {/* Mode select */}
-          <div className="controls-row">
-            <div className="control-group" style={{ width: '100%' }}>
-              <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                <Gamepad2 size={18} /> GAME MODE
-              </label>
-              <div role="radiogroup" aria-label="Game mode" className="game-mode-buttons" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                {[
-                  { id: 'practice', title: 'Practice', desc: 'Take your time. Get feedback after each answer.' },
-                  { id: 'timed', title: 'Timed (60s)', desc: 'Race the clock. Auto-advance on correct answers.' },
-                  { id: 'challenge', title: 'Challenge', desc: 'Preset rounds that follow our curriculum.' }
-                ].map((m) => (
-                  <button
-                    key={m.id}
-                    role="radio"
-                    aria-checked={uiSettings.mode === m.id}
-                    className={`setting-button ${uiSettings.mode === m.id ? 'active' : ''}`}
-                    style={{ flex: '1 1 260px', minWidth: '220px', textAlign: 'left' }}
-                    onClick={() => {
-                      setUiSettings((s) => {
-                        if (m.id === 'challenge') {
-                          // Force fully preset state for challenge (no custom multi-selects apply)
-                          return {
-                            ...s,
-                            mode: 'challenge',
-                            challengePresetId: null,
-                            time: { all: true, items: [] },
-                            tense: { all: true, items: [] },
-                            form: { all: true, items: [] },
-                            verbType: { all: true, items: [] }
-                          }
-                        }
-                        const base = { ...s, mode: m.id, challengePresetId: null }
-                        const restored = loadModeState(m.id)
-                        const next = restored ? { ...base, ...restored, mode: m.id } : base
-                        saveModeState(m.id, next)
-                        return next
-                      })
-                    }}
-                  >
-                    <div style={{ fontWeight: 700, marginBottom: 4 }}>{m.title}</div>
-                    <div style={{ fontSize: 12, opacity: 0.85 }}>{m.desc}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Timed options */}
-          {uiSettings.mode === 'timed' && (
-            <div className="controls-row">
-              <div className="control-group" style={{ width: '100%' }}>
-                <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <Timer size={16}/> Round length
-                </label>
-                <div className="button-group">
-                  {[30, 60, 90].map((sec) => (
-                    <button
-                      key={sec}
-                      className={`setting-button ${uiSettings.timedSeconds === sec ? 'active' : ''}`}
-                      onClick={() => {
-                        setUiSettings((s) => { const next = { ...s, timedSeconds: sec }; saveModeState('timed', next); return next })
-                      }}
-                    >
-                      {sec}s
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Challenge: show info + Tense selection only */}
-          {uiSettings.mode === 'challenge' && (
-            <>
-              <div className="controls-row">
-                <div className="control-group" style={{ width: '100%' }}>
-                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                    <Target size={16}/> Challenge Mode
-                  </label>
-                  <div style={{
-                    background: 'rgba(71,85,105,0.25)',
-                    border: '1px solid rgba(71,85,105,0.5)',
-                    borderRadius: 8,
-                    padding: '12px 16px',
-                    color: '#e5e7eb'
-                  }}>
-                    Rounds are preset. Time and form vary by round. Choose the tense(s) to include below.
+              
+              {/* Game Mode Card */}
+              <div className="settings-card">
+                <div className="settings-card-header">
+                  <div className="settings-card-icon">
+                    <Gamepad2 size={20} />
                   </div>
+                  <h3 className="settings-card-title">Game Mode</h3>
                 </div>
-              </div>
-              <div className="controls-row">
-                <div className="control-group" style={{ width: '100%' }}>
-                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                    <BookOpen size={16}/> SELECT TENSE(S)
-                  </label>
-                  <div className="button-group">
-                    <button
-                      className={`setting-button all-button ${uiSettings.tense.all ? 'active' : ''}`}
-                      aria-pressed={uiSettings.tense.all}
-                      onClick={() => updateGroupAll('tense')}
-                    >
-                      ✓ All Tenses
-                    </button>
+                <div className="settings-card-content">
+                  <div role="radiogroup" aria-label="Game mode" className="game-mode-buttons">
                     {[
-                      { id: 'simple', label: 'simple' },
-                      { id: 'continuous', label: 'continuous' },
-                      { id: 'perfect', label: 'perfect' },
-                      { id: 'perfectContinuous', label: 'perfect continuous' }
-                    ].map((opt) => (
+                      { id: 'practice', title: 'Practice', desc: 'Take your time. Get feedback after each answer.', icon: <BookOpen size={16} /> },
+                      { id: 'timed', title: 'Timed', desc: 'Race the clock. Auto-advance on correct answers.', icon: <Timer size={16} /> },
+                      { id: 'challenge', title: 'Challenge', desc: 'Preset rounds that follow our curriculum.', icon: <Target size={16} /> }
+                    ].map((m) => (
                       <button
-                        key={opt.id}
-                        className={`setting-button ${!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id) ? 'active' : ''}`}
-                        aria-pressed={!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id)}
-                        onClick={() => updateGroupItem('tense', opt.id)}
+                        key={m.id}
+                        role="radio"
+                        aria-checked={uiSettings.mode === m.id}
+                        className={`mode-button ${uiSettings.mode === m.id ? 'active' : ''}`}
+                        onClick={() => {
+                          setUiSettings((s) => {
+                            if (m.id === 'challenge') {
+                              return {
+                                ...s,
+                                mode: 'challenge',
+                                challengePresetId: null,
+                                time: { all: true, items: [] },
+                                tense: { all: true, items: [] },
+                                form: { all: true, items: [] },
+                                verbType: { all: true, items: [] }
+                              }
+                            }
+                            const base = { ...s, mode: m.id, challengePresetId: null }
+                            const restored = loadModeState(m.id)
+                            const next = restored ? { ...base, ...restored, mode: m.id } : base
+                            saveModeState(m.id, next)
+                            return next
+                          })
+                        }}
                       >
-                        {!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id) && '✓ '}{opt.label}
+                        <div className="mode-button-icon">{m.icon}</div>
+                        <div className="mode-button-content">
+                          <div className="mode-button-title">{m.title}</div>
+                          <div className="mode-button-desc">{m.desc}</div>
+                        </div>
                       </button>
                     ))}
                   </div>
                 </div>
               </div>
-            </>
-          )}
-            </div>{/* /.settings-left */}
 
+              {/* Timed Options Card */}
+              {uiSettings.mode === 'timed' && (
+                <div className="settings-card">
+                  <div className="settings-card-header">
+                    <div className="settings-card-icon">
+                      <Timer size={20} />
+                    </div>
+                    <h3 className="settings-card-title">Time Limit</h3>
+                  </div>
+                  <div className="settings-card-content">
+                    <div className="button-group">
+                      {[30, 60, 90].map((sec) => (
+                        <button
+                          key={sec}
+                          className={`setting-button ${uiSettings.timedSeconds === sec ? 'active' : ''}`}
+                          onClick={() => {
+                            setUiSettings((s) => { const next = { ...s, timedSeconds: sec }; saveModeState('timed', next); return next })
+                          }}
+                        >
+                          {sec}s
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Challenge Info Card */}
+              {uiSettings.mode === 'challenge' && (
+                <div className="settings-card">
+                  <div className="settings-card-header">
+                    <div className="settings-card-icon">
+                      <Target size={20} />
+                    </div>
+                    <h3 className="settings-card-title">Challenge Mode</h3>
+                  </div>
+                  <div className="settings-card-content">
+                    <div className="info-box">
+                      <p><strong>How it works:</strong></p>
+                      <p>Each round has preset Time and Form settings. You choose which Tense(s) to practice.</p>
+                      <p style={{ marginTop: '8px' }}>
+                        <strong>Round 1:</strong> Present time only<br/>
+                        <strong>Round 2:</strong> Past time only<br/>
+                        <strong>Round 3:</strong> Future time only<br/>
+                        <strong>Rounds 4-7:</strong> Form-focused rounds
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+            {/* Right Column: Settings */}
             <div className="settings-right">
-          {/* Setting groups (hidden in Challenge except Tense shown above) */}
-          {uiSettings.mode !== 'challenge' && [
-            { key: 'time', icon: <Clock size={16}/>, title: 'TIME', allLabel: 'All Times', items: [
-              { id: 'present', label: 'present' }, { id: 'past', label: 'past' }, { id: 'future', label: 'future' }
-            ]},
-            { key: 'tense', icon: <BookOpen size={16}/>, title: 'TENSE', allLabel: 'All Tenses', items: [
-              { id: 'simple', label: 'simple' }, { id: 'continuous', label: 'continuous' }, { id: 'perfect', label: 'perfect' }, { id: 'perfectContinuous', label: 'perfect continuous' }
-            ]},
-            { key: 'form', icon: <FileText size={16}/>, title: 'FORM', allLabel: 'All Forms', items: [
-              { id: 'affirmative', label: 'affirmative' }, { id: 'negative', label: 'negative' }, { id: 'question', label: 'question' }
-            ]},
-            { key: 'verbType', icon: <Type size={16}/>, title: 'VERB TYPE', allLabel: 'All Types', items: [
-              { id: 'regular', label: 'regular' }, { id: 'irregular', label: 'irregular' }
-            ]}
-          ].map((group) => {
-            const locked = uiSettings.mode === 'challenge' && uiSettings.challengePresetId
-            const state = uiSettings[group.key]
-            return (
-              <div key={group.key} className="controls-row">
-                <div className="control-group">
-                  <label className="control-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                    {group.icon} {group.title} {locked && (<Lock size={14} style={{ opacity: 0.7 }} />)}
-                  </label>
-                  <div className="button-group">
-                    <button
-                      className={`setting-button all-button ${state.all ? 'active' : ''}`}
-                      aria-pressed={state.all}
-                      onClick={() => !locked && updateGroupAll(group.key)}
-                    >
-                      ✓ {group.allLabel}
-                    </button>
-                    {group.items.map((opt) => (
+              
+              {/* Challenge Mode: Tense Selection Only */}
+              {uiSettings.mode === 'challenge' && (
+                <div className="settings-card">
+                  <div className="settings-card-header">
+                    <div className="settings-card-icon">
+                      <BookOpen size={20} />
+                    </div>
+                    <h3 className="settings-card-title">Select Tense(s)</h3>
+                  </div>
+                  <div className="settings-card-content">
+                    <div className="button-group">
                       <button
-                        key={opt.id}
-                        className={`setting-button ${!state.all && state.items.includes(opt.id) ? 'active' : ''}`}
-                        aria-pressed={!state.all && state.items.includes(opt.id)}
-                        onClick={() => !locked && updateGroupItem(group.key, opt.id)}
+                        className={`setting-button all-button ${uiSettings.tense.all ? 'active' : ''}`}
+                        aria-pressed={uiSettings.tense.all}
+                        onClick={() => updateGroupAll('tense')}
                       >
-                        {!state.all && state.items.includes(opt.id) && '✓ '}{opt.label}
+                        ✓ All Tenses
                       </button>
-                    ))}
+                      {[
+                        { id: 'simple', label: 'simple' },
+                        { id: 'continuous', label: 'continuous' },
+                        { id: 'perfect', label: 'perfect' },
+                        { id: 'perfectContinuous', label: 'perfect continuous' }
+                      ].map((opt) => (
+                        <button
+                          key={opt.id}
+                          className={`setting-button ${!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id) ? 'active' : ''}`}
+                          aria-pressed={!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id)}
+                          onClick={() => updateGroupItem('tense', opt.id)}
+                        >
+                          {!uiSettings.tense.all && uiSettings.tense.items.includes(opt.id) && '✓ '}{opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Practice/Timed Mode: All Settings */}
+              {uiSettings.mode !== 'challenge' && [
+                { key: 'time', icon: <Clock size={16}/>, title: 'Time', allLabel: 'All Times', items: [
+                  { id: 'present', label: 'present' }, { id: 'past', label: 'past' }, { id: 'future', label: 'future' }
+                ]},
+                { key: 'tense', icon: <BookOpen size={16}/>, title: 'Tense', allLabel: 'All Tenses', items: [
+                  { id: 'simple', label: 'simple' }, { id: 'continuous', label: 'continuous' }, { id: 'perfect', label: 'perfect' }, { id: 'perfectContinuous', label: 'perfect continuous' }
+                ]},
+                { key: 'form', icon: <FileText size={16}/>, title: 'Form', allLabel: 'All Forms', items: [
+                  { id: 'affirmative', label: 'affirmative' }, { id: 'negative', label: 'negative' }, { id: 'question', label: 'question' }
+                ]},
+                { key: 'verbType', icon: <Type size={16}/>, title: 'Verb Type', allLabel: 'All Types', items: [
+                  { id: 'regular', label: 'regular' }, { id: 'irregular', label: 'irregular' }
+                ]}
+              ].map((group) => {
+                const locked = uiSettings.mode === 'challenge' && uiSettings.challengePresetId
+                const state = uiSettings[group.key]
+                return (
+                  <div key={group.key} className="settings-card">
+                    <div className="settings-card-header">
+                      <div className="settings-card-icon">
+                        {group.icon}
+                      </div>
+                      <h3 className="settings-card-title">{group.title}</h3>
+                      {locked && <Lock size={14} style={{ opacity: 0.7 }} />}
+                    </div>
+                    <div className="settings-card-content">
+                      <div className="button-group">
+                        <button
+                          className={`setting-button all-button ${state.all ? 'active' : ''}`}
+                          aria-pressed={state.all}
+                          onClick={() => !locked && updateGroupAll(group.key)}
+                          title={state.all ? `${group.allLabel} selected - Click any item to switch to that item only` : `Click to select all ${group.title.toLowerCase()}s`}
+                        >
+                          ✓ {group.allLabel}
+                        </button>
+                        {group.items.map((opt) => (
+                          <button
+                            key={opt.id}
+                            className={`setting-button ${!state.all && state.items.includes(opt.id) ? 'active' : ''}`}
+                            aria-pressed={!state.all && state.items.includes(opt.id)}
+                            onClick={() => !locked && updateGroupItem(group.key, opt.id)}
+                          >
+                            {!state.all && state.items.includes(opt.id) && '✓ '}{opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+
+              {/* Summary Card */}
+              <div className="settings-card summary-card">
+                <div className="settings-card-header">
+                  <div className="settings-card-icon">
+                    <FileText size={20} />
+                  </div>
+                  <h3 className="settings-card-title">Your Round</h3>
+                </div>
+                <div className="settings-card-content">
+                  <div className="summary-box" aria-live="polite">
+                    {summarizeSelection(uiSettings)}
                   </div>
                 </div>
               </div>
-            )
-          })}
 
-          {/* Summary */}
-          <div className="controls-row" style={{ marginTop: '8px' }}>
-            <div className="control-group" style={{ width: '100%' }}>
-              <label className="control-label">Your Round</label>
-              <div aria-live="polite" style={{
-                background: 'rgba(99,102,241,0.12)',
-                border: '1px solid rgba(99,102,241,0.4)',
-                borderRadius: 8,
-                padding: '12px 16px',
-                color: '#e5e7eb'
-              }}>
-                {summarizeSelection(uiSettings)}
-              </div>
             </div>
           </div>
-            </div>{/* /.settings-right */}
-          </div>{/* /.settings-grid */}
 
-          {/* Footer */}
+          {/* Action Buttons */}
           <div className="controls-row settings-footer">
             <button className="btn btn-secondary" onClick={() => {
               const def = makeDefaultUISettings(); setUiSettings(def); saveModeState('practice', def)
@@ -1625,8 +1657,11 @@ const VerbConjugationGame = ({ onBack }) => {
             <div style={{ fontSize: 'clamp(20px, 3.2vw, 28px)', fontWeight: 800, color: '#c7d2fe', lineHeight: 1.2 }}>
               Round {challengeRound}: {getRoundName(challengeRound)}
             </div>
-            <div style={{ fontSize: '12px', letterSpacing: '0.12em', color: '#cbd5e1', opacity: 0.9, marginTop: '4px' }}>
+            <div style={{ fontSize: '12px', letterSpacing: '0.12em', color: '#cbd5e1', opacity: 0.9, marginTop: '4px', marginBottom: '8px' }}>
               CHALLENGE
+            </div>
+            <div style={{ fontSize: '14px', color: '#cbd5e1', opacity: 0.95 }}>
+              Practicing: {settings.tense.map(t => t === 'perfect continuous' ? 'Perfect Continuous' : t.charAt(0).toUpperCase() + t.slice(1)).join(', ')}
             </div>
           </div>
         )}
@@ -1805,7 +1840,7 @@ const VerbConjugationGame = ({ onBack }) => {
         <div style={{
           textAlign: 'center',
           padding: '48px 24px',
-          maxWidth: '800px',
+          maxWidth: '900px',
           margin: '0 auto',
           background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%)',
           borderRadius: '16px',
@@ -1814,18 +1849,36 @@ const VerbConjugationGame = ({ onBack }) => {
           animation: 'fadeInScale 0.5s ease-out',
           backdropFilter: 'blur(20px)'
         }}>
+          {/* Celebration Animation */}
+          <div style={{ 
+            animation: 'zoomIn 0.8s ease-out',
+            marginBottom: '16px'
+          }}>
+            <div style={{
+              fontSize: '72px',
+              background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              fontWeight: '900',
+              animation: 'pulse 2s ease-in-out infinite',
+              textShadow: '0 0 20px rgba(251, 191, 36, 0.5)'
+            }}>
+              🎉 Good Job! 🎉
+            </div>
+          </div>
+          
           <h2 style={{ 
-            fontSize: '48px', 
+            fontSize: '40px', 
             marginBottom: '16px', 
-            background: 'linear-gradient(135deg, #ff6b6b 0%, #ec4899 100%)',
+            background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-            animation: 'slideDown 0.6s ease-out'
+            animation: 'slideDown 0.6s ease-out',
+            fontWeight: '800'
           }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
-              <PartyPopper size={36}/> Challenge Complete!
-            </span>
+            Challenge Complete!
           </h2>
           {(() => {
             const rounds = Object.values(roundScores || {})
@@ -1855,38 +1908,91 @@ const VerbConjugationGame = ({ onBack }) => {
             )
           })()}
 
-          <div style={{ marginBottom: '32px' }}>
-            <div style={{ fontSize: '20px', color: '#cbd5e1', marginBottom: '24px' }}>
-              Round Scores Summary
+          {/* Round Scores Summary */}
+          <div style={{ marginBottom: '40px' }}>
+            <div style={{ fontSize: '24px', color: '#cbd5e1', marginBottom: '28px', fontWeight: '600' }}>
+              Round-by-Round Breakdown
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '12px' }}>
-              {Object.keys(roundScores).map(round => (
-                <div key={round} style={{
-                  background: 'rgba(71, 85, 105, 0.3)',
-                  borderRadius: '8px',
-                  padding: '12px',
-                  border: '1px solid rgba(71, 85, 105, 0.5)'
-                }}>
-                  <div style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '4px' }}>Round {round}</div>
-                  <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#10b981' }}>{roundScores[round].score}</div>
-                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>/{roundScores[round].questions}</div>
-                </div>
-              ))}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px' }}>
+              {Object.keys(roundScores).sort((a, b) => parseInt(a) - parseInt(b)).map((round, index) => {
+                const roundNum = parseInt(round)
+                const accuracy = Math.round((roundScores[round].score / Math.max(roundScores[round].questions, 1)) * 100)
+                return (
+                  <div 
+                    key={round} 
+                    style={{
+                      background: 'rgba(71, 85, 105, 0.4)',
+                      borderRadius: '12px',
+                      padding: '16px',
+                      border: '2px solid rgba(71, 85, 105, 0.6)',
+                      transition: 'all 0.3s ease',
+                      animation: `fadeInScale 0.5s ease-out ${index * 0.1}s both`
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-4px)'
+                      e.currentTarget.style.borderColor = '#6366f1'
+                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(99, 102, 241, 0.3)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)'
+                      e.currentTarget.style.borderColor = 'rgba(71, 85, 105, 0.6)'
+                      e.currentTarget.style.boxShadow = 'none'
+                    }}
+                  >
+                    <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Round {round}
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#6366f1', marginBottom: '8px', fontWeight: '600' }}>
+                      {getRoundName(roundNum)}
+                    </div>
+                    <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#10b981', marginBottom: '4px' }}>
+                      {roundScores[round].score}
+                    </div>
+                    <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
+                      /{roundScores[round].questions} ({accuracy}%)
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
-          <button 
-            className="btn btn-primary" 
-            onClick={resetGame} 
-            style={{ 
-              fontSize: '20px', 
-              padding: '16px 32px',
-              animation: 'fadeInUp 1s ease-out',
-              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-              boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)'
-            }}
-          >
-            Play Again
-          </button>
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button 
+              className="btn btn-primary" 
+              onClick={resetGame} 
+              style={{ 
+                fontSize: '22px', 
+                padding: '18px 48px',
+                animation: 'fadeInUp 1s ease-out',
+                background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
+                boxShadow: '0 8px 25px rgba(16, 185, 129, 0.4)',
+                fontWeight: '700',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)'
+                e.currentTarget.style.boxShadow = '0 12px 35px rgba(16, 185, 129, 0.6)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(16, 185, 129, 0.4)'
+              }}
+            >
+              🎮 Play Again
+            </button>
+            <button 
+              className="btn btn-secondary" 
+              onClick={onBack} 
+              style={{ 
+                fontSize: '22px', 
+                padding: '18px 48px',
+                animation: 'fadeInUp 1.1s ease-out',
+                fontWeight: '700'
+              }}
+            >
+              ← Back to Games
+            </button>
+          </div>
         </div>
       )}
 
