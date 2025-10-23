@@ -708,7 +708,11 @@ const VerbConjugationGame = ({ onBack }) => {
       setTimerActive(true)
     }
     
-    generateQuestion()
+    // Only generate question immediately for practice and timed modes
+    // Challenge mode will generate question via useEffect after settings are applied
+    if (uiSettings.mode !== 'challenge') {
+      generateQuestion()
+    }
   }
 
   const getEnhancedFeedback = (userAnswer, correctAnswer, combination) => {
@@ -971,7 +975,7 @@ const VerbConjugationGame = ({ onBack }) => {
     ) {
       generateQuestion()
     }
-  }, [challengeRound])
+  }, [challengeRound, gameStarted, settings.gameMode])
 
   const resetGame = () => {
     setCurrentGame({
